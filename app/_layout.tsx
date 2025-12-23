@@ -56,9 +56,9 @@ export default function RootLayout() {
           <Stack.Screen name="emergency-access" />
           <Stack.Screen name="default-schedule" />
           <Stack.Screen name="(tabs)" />
-        </Stack>
-        <StatusBar style="auto" />
-      </ThemeProvider>
+      </Stack>
+      <StatusBar style="auto" />
+    </ThemeProvider>
     </GestureHandlerRootView>
   );
 }
