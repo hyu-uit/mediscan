@@ -1,46 +1,16 @@
 import { LinearGradient } from "expo-linear-gradient";
-import {
-  ArrowLeft,
-  ArrowRight,
-  Bell,
-  CircleAlert,
-  Pill,
-} from "lucide-react-native";
+import { ArrowLeft, Phone, PhoneCall, PhoneOff } from "lucide-react-native";
 import { Pressable, Text, View } from "react-native";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 
-interface NotificationAccessScreenProps {
+interface EmergencyAccessScreenProps {
   onBack?: () => void;
-  onEnableNotifications?: () => void;
-  onMaybeLater?: () => void;
+  onEnablePhoneCalls?: () => void;
+  onSkip?: () => void;
 }
 
-interface FeatureItemProps {
-  icon: React.ReactNode;
-  title: string;
-  description: string;
-}
-
-function FeatureItem({ icon, title, description }: FeatureItemProps) {
-  return (
-    <View className="flex-row items-center gap-4 py-3">
-      <View className="w-10 h-10 rounded-full bg-primary-light items-center justify-center">
-        {icon}
-      </View>
-      <View className="flex-1">
-        <Text className="text-base text-neutral-900 dark:text-neutral-100 font-poppins-semibold">
-          {title}
-        </Text>
-        <Text className="text-sm text-neutral-500 dark:text-neutral-400 font-poppins">
-          {description}
-        </Text>
-      </View>
-    </View>
-  );
-}
-
-// Small decorative bell icon component
-function DecorativeBell({
+// Decorative phone icon component
+function DecorativePhone({
   size,
   style,
   badge,
@@ -65,7 +35,7 @@ function DecorativeBell({
         style,
       ]}
     >
-      <Bell size={size} color="#36EC37" />
+      <PhoneOff size={size} color="#36EC37" />
       {badge && (
         <View
           className="absolute bg-red-500 rounded-full items-center justify-center"
@@ -80,7 +50,7 @@ function DecorativeBell({
             className="text-white font-poppins-bold"
             style={{ fontSize: size * 0.3 }}
           >
-            1
+            !
           </Text>
         </View>
       )}
@@ -88,11 +58,11 @@ function DecorativeBell({
   );
 }
 
-export function NotificationAccessScreen({
+export function EmergencyAccessScreen({
   onBack,
-  onEnableNotifications,
-  onMaybeLater,
-}: NotificationAccessScreenProps) {
+  onEnablePhoneCalls,
+  onSkip,
+}: EmergencyAccessScreenProps) {
   const insets = useSafeAreaInsets();
 
   return (
@@ -126,18 +96,18 @@ export function NotificationAccessScreen({
         <View className="flex-1">
           {/* Illustration Container */}
           <View className="items-center justify-center py-8">
-            {/* Decorative bells around the main circle */}
+            {/* Decorative phones around the main circle */}
             <View className="absolute top-4 left-4">
-              <DecorativeBell size={20} />
+              <DecorativePhone size={20} />
             </View>
             <View className="absolute top-0 right-8">
-              <DecorativeBell size={16} badge />
+              <DecorativePhone size={16} badge />
             </View>
             <View className="absolute bottom-16 left-0">
-              <DecorativeBell size={14} />
+              <DecorativePhone size={14} />
             </View>
             <View className="absolute bottom-8 right-0">
-              <DecorativeBell size={18} badge />
+              <DecorativePhone size={18} badge />
             </View>
 
             {/* Outer dashed circle */}
@@ -149,9 +119,9 @@ export function NotificationAccessScreen({
                 borderStyle: "dashed",
               }}
             >
-              {/* Inner circle with bell */}
+              {/* Inner circle with phone */}
               <View className="w-32 h-32 rounded-full bg-white items-center justify-center shadow-lg">
-                <Bell size={48} color="#36EC37" />
+                <PhoneOff size={48} color="#36EC37" />
               </View>
 
               {/* Decorative dots */}
@@ -165,32 +135,41 @@ export function NotificationAccessScreen({
           {/* Content */}
           <View className="items-center">
             <Text className="text-3xl text-center leading-10 mb-4 text-neutral-900 dark:text-neutral-100 font-poppins-bold">
-              Don't miss a <Text className="text-primary">pill</Text>
+              Emergency Backup
             </Text>
 
             <Text className="text-base leading-6 text-center mb-6 text-neutral-500 dark:text-neutral-400 font-poppins-medium">
-              Timely reminders are the heart of this app. Enable notifications
-              to ensure you take your medication exactly when prescribed.
+              We use phone calls only when you miss a critical notification.
+              This ensures you never accidentally skip your medication. We
+              respect your privacy and won't call for any other reason.
             </Text>
           </View>
 
-          {/* Feature List */}
-          <View className="bg-white dark:bg-neutral-800 rounded-2xl px-4 py-2 shadow-sm">
-            <FeatureItem
-              icon={<Bell size={20} color="#36EC37" />}
-              title="Daily Reminders"
-              description="Get alerted at your specific times"
-            />
-            <FeatureItem
-              icon={<CircleAlert size={20} color="#EF4444" />}
-              title="Escalating Alerts"
-              description="We'll nudge harder if you forget"
-            />
-            <FeatureItem
-              icon={<Pill size={20} color="#3B82F6" />}
-              title="Refill Warnings"
-              description="Know before you run out"
-            />
+          {/* Incoming Call Preview Card */}
+          <View className="bg-white dark:bg-neutral-800 rounded-2xl px-5 py-4 shadow-sm">
+            <View className="flex-row items-center justify-between">
+              <View className="flex-row items-center gap-3">
+                <View className="w-12 h-12 rounded-full bg-primary-light items-center justify-center">
+                  <Phone size={24} color="#36EC37" />
+                </View>
+                <View>
+                  <Text className="text-xs text-primary font-poppins-semibold uppercase tracking-wider">
+                    Incoming Call
+                  </Text>
+                  <Text className="text-base text-neutral-900 dark:text-neutral-100 font-poppins-semibold">
+                    Critical Med Reminder
+                  </Text>
+                </View>
+              </View>
+              <View className="flex-row gap-3">
+                <View className="w-10 h-10 rounded-full bg-red-100 items-center justify-center">
+                  <PhoneOff size={18} color="#EF4444" />
+                </View>
+                <View className="w-10 h-10 rounded-full bg-primary items-center justify-center">
+                  <PhoneCall size={18} color="#ffffff" />
+                </View>
+              </View>
+            </View>
           </View>
         </View>
 
@@ -198,18 +177,18 @@ export function NotificationAccessScreen({
         {/* Primary CTA Button */}
         <Pressable
           className="flex-row items-center justify-center w-full py-4 px-6 rounded-xl gap-2 bg-primary active:opacity-90"
-          onPress={onEnableNotifications}
+          onPress={onEnablePhoneCalls}
         >
+          <Phone size={20} color="#171717" />
           <Text className="text-lg text-neutral-900 font-poppins-semibold">
-            Enable Notifications
+            Enable Phone Calls
           </Text>
-          <ArrowRight size={20} color="#171717" />
         </Pressable>
 
         {/* Secondary Link */}
-        <Pressable className="mt-5 py-3 items-center" onPress={onMaybeLater}>
+        <Pressable className="mt-5 py-3 items-center" onPress={onSkip}>
           <Text className="text-base text-neutral-900 dark:text-neutral-100 font-poppins-medium">
-            Maybe later
+            Skip for now
           </Text>
         </Pressable>
       </View>

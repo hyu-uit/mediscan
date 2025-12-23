@@ -10,8 +10,8 @@ export default function NotificationAccessPage() {
 
   const handleEnableNotifications = () => {
     // TODO: Request notification permission
-    // For now, navigate to tabs
-    router.push("/(tabs)");
+    // Navigate to emergency screen
+    router.push("/emergency-access");
   };
 
   const handleMaybeLater = () => {
