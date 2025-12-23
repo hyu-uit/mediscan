@@ -5,8 +5,7 @@ export default function WelcomePage() {
   const router = useRouter();
 
   const handleStartScanning = () => {
-    // TODO: Navigate to prescription scanning flow
-    router.push("/(tabs)");
+    router.push("/camera-access");
   };
 
   const handleSignIn = () => {
