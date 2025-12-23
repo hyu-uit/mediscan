@@ -15,7 +15,7 @@ export function WelcomeScreen({
   const { height } = useWindowDimensions();
 
   return (
-    <View className="flex-1 bg-white dark:bg-neutral-900">
+    <View className="flex-1 bg-surface dark:bg-neutral-900">
       {/* Hero Image */}
       <View
         className="w-full overflow-hidden"
@@ -34,12 +34,12 @@ export function WelcomeScreen({
         <LinearGradient
           colors={[
             "transparent",
-            "rgba(255,255,255,0.05)",
-            "rgba(255,255,255,0.15)",
-            "rgba(255,255,255,0.35)",
-            "rgba(255,255,255,0.65)",
-            "rgba(255,255,255,0.85)",
-            "#ffffff",
+            "rgba(246,248,246,0.05)",
+            "rgba(246,248,246,0.15)",
+            "rgba(246,248,246,0.35)",
+            "rgba(246,248,246,0.65)",
+            "rgba(246,248,246,0.85)",
+            "#F6F8F6",
           ]}
           locations={[0, 0.15, 0.3, 0.5, 0.7, 0.85, 1]}
           style={{

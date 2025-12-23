@@ -10,8 +10,8 @@ export default function CameraAccessPage() {
 
   const handleEnableCamera = () => {
     // TODO: Request camera permission
-    // For now, navigate to tabs
-    router.push("/(tabs)");
+    // Navigate to notification screen
+    router.push("/notification-access");
   };
 
   const handleTypeManually = () => {

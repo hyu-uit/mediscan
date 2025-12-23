@@ -18,7 +18,7 @@ export function CameraAccessScreen({
 
   return (
     <View
-      className="flex-1 bg-white dark:bg-neutral-900 px-8 pb-12"
+      className="flex-1 bg-surface dark:bg-neutral-900 px-8 pb-12"
       style={{ paddingTop: insets.top + 16 }}
     >
       {/* Back Button */}
