@@ -1,27 +1,32 @@
-import { Tabs } from "expo-router";
-import React from "react";
-
-import { Colors } from "@/constants/theme";
-import { useColorScheme } from "@/hooks/use-color-scheme";
-import { House } from "lucide-react-native";
+import { Icon, Label, NativeTabs } from "expo-router/unstable-native-tabs";
 
 export default function TabLayout() {
-  const colorScheme = useColorScheme();
-
   return (
-    <Tabs
-      screenOptions={{
-        tabBarActiveTintColor: Colors[colorScheme ?? "light"].tint,
-        headerShown: false,
+    <NativeTabs
+      tintColor="#36EC37"
+      labelStyle={{
+        color: "#94A3B8",
       }}
     >
-      <Tabs.Screen
-        name="index"
-        options={{
-          title: "Home",
-          tabBarIcon: ({ color }) => <House size={28} color={color} />,
-        }}
-      />
-    </Tabs>
+      <NativeTabs.Trigger name="index">
+        <Icon sf="house.fill" />
+        <Label>Home</Label>
+      </NativeTabs.Trigger>
+
+      <NativeTabs.Trigger name="schedule">
+        <Icon sf="calendar" />
+        <Label>Schedule</Label>
+      </NativeTabs.Trigger>
+
+      <NativeTabs.Trigger name="history">
+        <Icon sf="clock.arrow.circlepath" />
+        <Label>History</Label>
+      </NativeTabs.Trigger>
+
+      <NativeTabs.Trigger name="profile">
+        <Icon sf="person.fill" />
+        <Label>Profile</Label>
+      </NativeTabs.Trigger>
+    </NativeTabs>
   );
 }

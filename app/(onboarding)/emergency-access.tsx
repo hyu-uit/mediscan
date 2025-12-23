@@ -10,13 +10,12 @@ export default function EmergencyAccessPage() {
 
   const handleEnablePhoneCalls = () => {
     // TODO: Request phone call permission
-    // Navigate to default schedule screen
-    router.push("/default-schedule");
+    router.push("/(onboarding)/default-schedule");
   };
 
   const handleSkip = () => {
     // Skip phone calls and go to default schedule
-    router.push("/default-schedule");
+    router.push("/(onboarding)/default-schedule");
   };
 
   return (

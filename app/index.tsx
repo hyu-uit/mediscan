@@ -1,22 +1,12 @@
-import { WelcomeScreen } from "@/features/onboarding/welcome";
-import { useRouter } from "expo-router";
+import { Redirect } from "expo-router";
 
-export default function WelcomePage() {
-  const router = useRouter();
+export default function Index() {
+  // TODO: Check if user has completed onboarding
+  const hasCompletedOnboarding = true;
 
-  const handleStartScanning = () => {
-    router.push("/camera-access");
-  };
+  if (hasCompletedOnboarding) {
+    return <Redirect href="/(tabs)" />;
+  }
 
-  const handleSignIn = () => {
-    // TODO: Navigate to sign-in screen
-    console.log("Sign In pressed");
-  };
-
-  return (
-    <WelcomeScreen
-      onStartScanning={handleStartScanning}
-      onSignIn={handleSignIn}
-    />
-  );
+  return <Redirect href="/(onboarding)" />;
 }
