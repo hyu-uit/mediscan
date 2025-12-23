@@ -32,7 +32,7 @@ const variantStyles: Record<
   },
   outline: {
     container:
-      "bg-transparent border-2 border-neutral-300 dark:border-neutral-600",
+      "bg-transparent border border-neutral-300 dark:border-neutral-600",
     text: "text-neutral-900 dark:text-neutral-100",
   },
   danger: {
