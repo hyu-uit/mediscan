@@ -112,9 +112,7 @@ export function HistoryScreen() {
             variant="outline"
             size="sm"
             icon={<Upload size={14} color="#171717" />}
-            onPress={() => {
-              // Export functionality placeholder
-            }}
+            onPress={() => {}}
           >
             Export Report
           </Button>
@@ -142,22 +140,13 @@ export function HistoryScreen() {
         </View>
 
         {/* History Groups */}
-        <View style={{ paddingTop: 8 }} />
+        <View className="pt-2" />
         {MOCK_HISTORY.map((group) => (
-          <View key={group.label} style={{ marginBottom: 24 }}>
-            <Text
-              style={{
-                paddingHorizontal: 24,
-                fontSize: 14,
-                color: "#6B7280",
-                fontFamily: "Poppins_700Bold",
-                letterSpacing: 0.5,
-                marginBottom: 16,
-              }}
-            >
+          <View key={group.label} className="mb-6">
+            <Text className="px-6 text-sm text-neutral-500 font-poppins-bold tracking-wide mb-4">
               {group.label}
             </Text>
-            <View style={{ paddingHorizontal: 24 }}>
+            <View className="px-6">
               {group.items.map((item, index) => (
                 <HistoryItem
                   key={item.id}

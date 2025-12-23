@@ -14,31 +14,28 @@ export interface HistoryItemProps {
 const STATUS_CONFIG = {
   confirmed: {
     label: "CONFIRMED",
-    badgeBg: "#DCFCE7",
-    badgeText: "#16A34A",
+    badgeBg: "bg-green-100",
+    badgeText: "text-green-600",
     iconBg: "#DCFCE7",
     iconColor: "#22C55E",
-    lineColor: "#22C55E",
     Icon: Pill,
     timePrefix: "Taken at",
   },
   missed: {
     label: "MISSED",
-    badgeBg: "#FEE2E2",
-    badgeText: "#DC2626",
+    badgeBg: "bg-red-100",
+    badgeText: "text-red-600",
     iconBg: "#FEE2E2",
     iconColor: "#EF4444",
-    lineColor: "#EF4444",
     Icon: X,
     timePrefix: "Scheduled",
   },
   late: {
     label: "LATE",
-    badgeBg: "#FEF3C7",
-    badgeText: "#D97706",
+    badgeBg: "bg-amber-100",
+    badgeText: "text-amber-600",
     iconBg: "#FEF3C7",
     iconColor: "#F59E0B",
-    lineColor: "#F59E0B",
     Icon: Pill,
     timePrefix: "Taken at",
   },
@@ -55,87 +52,39 @@ export function HistoryItem({
   const IconComponent = config.Icon;
 
   return (
-    <View style={{ flexDirection: "row" }}>
+    <View className="flex-row">
       {/* Timeline */}
-      <View style={{ alignItems: "center", width: 40 }}>
+      <View className="items-center w-10">
         {/* Icon */}
         <View
-          style={{
-            width: 32,
-            height: 32,
-            borderRadius: 16,
-            backgroundColor: config.iconBg,
-            alignItems: "center",
-            justifyContent: "center",
-          }}
+          className="w-8 h-8 rounded-full items-center justify-center"
+          style={{ backgroundColor: config.iconBg }}
         >
           <IconComponent size={18} color={config.iconColor} />
         </View>
         {/* Line */}
-        {!isLast && (
-          <View
-            style={{
-              flex: 1,
-              width: 2,
-              backgroundColor: "#E5E7EB",
-              marginVertical: 4,
-            }}
-          />
-        )}
+        {!isLast && <View className="flex-1 w-0.5 bg-neutral-200 my-1" />}
       </View>
 
       {/* Card */}
       <View
-        style={{
-          flex: 1,
-          backgroundColor: "white",
-          borderRadius: 16,
-          padding: 16,
-          marginLeft: 12,
-          marginBottom: isLast ? 0 : 12,
-          flexDirection: "row",
-          alignItems: "center",
-        }}
+        className={`flex-1 bg-white rounded-2xl p-4 ml-3 flex-row items-center ${
+          !isLast ? "mb-3" : ""
+        }`}
       >
         {/* Content */}
-        <View style={{ flex: 1 }}>
-          <Text
-            style={{
-              fontSize: 16,
-              color: "#171717",
-              fontFamily: "Poppins_600SemiBold",
-            }}
-          >
+        <View className="flex-1">
+          <Text className="text-base text-neutral-900 font-poppins-semibold">
             {name}
           </Text>
-          <Text
-            style={{
-              fontSize: 13,
-              color: "#6B7280",
-              fontFamily: "Poppins_400Regular",
-              marginTop: 2,
-            }}
-          >
+          <Text className="text-sm text-neutral-500 font-poppins mt-0.5">
             {dosage} • {config.timePrefix} {time}
           </Text>
         </View>
 
         {/* Status Badge */}
-        <View
-          style={{
-            backgroundColor: config.badgeBg,
-            paddingHorizontal: 12,
-            paddingVertical: 6,
-            borderRadius: 20,
-          }}
-        >
-          <Text
-            style={{
-              fontSize: 11,
-              fontFamily: "Poppins_600SemiBold",
-              color: config.badgeText,
-            }}
-          >
+        <View className={`px-3 py-1.5 rounded-full ${config.badgeBg}`}>
+          <Text className={`text-xs font-poppins-semibold ${config.badgeText}`}>
             {config.label}
           </Text>
         </View>

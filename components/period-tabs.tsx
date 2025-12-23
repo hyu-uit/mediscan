@@ -1,4 +1,4 @@
-import { Pressable, Text, View } from "react-native";
+import { Text, TouchableOpacity, View } from "react-native";
 
 export type PeriodOption = "daily" | "weekly" | "monthly";
 
@@ -15,15 +15,13 @@ const TABS: { value: PeriodOption; label: string }[] = [
 
 export function PeriodTabs({ selected, onSelect }: PeriodTabsProps) {
   return (
-    <View className="flex-row bg-[#ECF0F3] dark:bg-neutral-800 rounded-xl p-1">
+    <View className="flex-row bg-neutral-100 dark:bg-neutral-800 rounded-xl p-1">
       {TABS.map((tab) => {
         const isSelected = selected === tab.value;
         return (
-          <Pressable
+          <TouchableOpacity
             key={tab.value}
-            onPress={() => {
-              onSelect(tab.value);
-            }}
+            onPress={() => onSelect(tab.value)}
             className={`flex-1 py-2.5 rounded-lg items-center ${
               isSelected ? "bg-white dark:bg-neutral-700" : ""
             }`}
@@ -37,7 +35,7 @@ export function PeriodTabs({ selected, onSelect }: PeriodTabsProps) {
             >
               {tab.label}
             </Text>
-          </Pressable>
+          </TouchableOpacity>
         );
       })}
     </View>
