@@ -16,7 +16,7 @@ export function WelcomeScreen({
   const { height } = useWindowDimensions();
 
   return (
-    <View className="flex-1 bg-surface dark:bg-neutral-900">
+    <View className="flex-1 bg-background dark:bg-neutral-900">
       {/* Hero Image */}
       <View
         className="w-full overflow-hidden"

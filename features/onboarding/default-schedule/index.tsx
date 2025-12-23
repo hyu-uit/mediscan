@@ -123,7 +123,7 @@ export function DefaultScheduleScreen({
 
   return (
     <View
-      className="flex-1 bg-surface dark:bg-neutral-900 px-6"
+      className="flex-1 bg-background dark:bg-neutral-900 px-6"
       style={{ paddingTop: insets.top }}
     >
       {/* Header */}

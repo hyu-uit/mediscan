@@ -20,7 +20,7 @@ export function EmergencyAccessScreen({
   const insets = useSafeAreaInsets();
 
   return (
-    <View className="flex-1 bg-surface dark:bg-neutral-900">
+    <View className="flex-1 bg-background dark:bg-neutral-900">
       {/* Gradient Background */}
       <LinearGradient
         colors={["#E8FFF0", "#F0FFF5", "#F6F8F6"]}
