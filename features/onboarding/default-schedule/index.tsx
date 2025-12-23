@@ -12,6 +12,7 @@ import { useState } from "react";
 import { Pressable, Text, View } from "react-native";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 
+import { TimeSlotColors } from "@/constants/theme";
 import { TimeSlot, TimeSlotCard } from "./time-slot-card";
 
 interface DefaultScheduleScreenProps {
@@ -42,40 +43,40 @@ const TIME_SLOTS: TimeSlot[] = [
     id: "morning",
     name: "Morning",
     time: "08:00 AM",
-    icon: <Sunrise size={24} color="#EA580C" />,
-    bgColor: "#FFEDD5",
+    icon: <Sunrise size={24} color={TimeSlotColors.morning.color} />,
+    bgColor: TimeSlotColors.morning.bgColor,
     defaultEnabled: true,
   },
   {
     id: "noon",
     name: "Noon",
     time: "12:00 PM",
-    icon: <Sun size={24} color="#D97706" />,
-    bgColor: "#FEF3C7",
+    icon: <Sun size={24} color={TimeSlotColors.noon.color} />,
+    bgColor: TimeSlotColors.noon.bgColor,
     defaultEnabled: true,
   },
   {
     id: "afternoon",
     name: "Afternoon",
     time: "04:00 PM",
-    icon: <CloudSun size={24} color="#0EA5E9" />,
-    bgColor: "#E0F2FE",
+    icon: <CloudSun size={24} color={TimeSlotColors.afternoon.color} />,
+    bgColor: TimeSlotColors.afternoon.bgColor,
     defaultEnabled: true,
   },
   {
     id: "night",
     name: "Night",
     time: "08:00 PM",
-    icon: <MoonStar size={24} color="#6366F1" />,
-    bgColor: "#EEF2FF",
+    icon: <MoonStar size={24} color={TimeSlotColors.night.color} />,
+    bgColor: TimeSlotColors.night.bgColor,
     defaultEnabled: true,
   },
   {
     id: "before-sleep",
     name: "Before Sleep",
     time: "10:00 PM",
-    icon: <Bed size={24} color="#57534E" />,
-    bgColor: "#F5F5F4",
+    icon: <Bed size={24} color={TimeSlotColors["before-sleep"].color} />,
+    bgColor: TimeSlotColors["before-sleep"].bgColor,
     defaultEnabled: false,
   },
 ];

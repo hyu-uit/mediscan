@@ -1,37 +1,28 @@
+import { Header } from "@/components/header";
 import { ScanPreview } from "@/components/scan-preview";
 import { ScanTapCard } from "@/components/scan-tap-card";
 import { ScheduleItem } from "@/components/schedule-item";
-import { Bell } from "lucide-react-native";
+import { TimeSlotVariant } from "@/constants/theme";
 import { useState } from "react";
-import { ScrollView, Text, TouchableOpacity, View } from "react-native";
+import { ScrollView, Text, View } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 
-// Get time-based greeting
-function getGreeting(): string {
-  const hour = new Date().getHours();
-  if (hour >= 5 && hour < 12) return "Good Morning,";
-  if (hour >= 12 && hour < 17) return "Good Afternoon,";
-  return "Good Evening,";
-}
-
-// Time slot colors matching default schedule
-const TIME_SLOT_COLORS = {
-  morning: { color: "#EA580C", bgColor: "#FFEDD5" },
-  noon: { color: "#D97706", bgColor: "#FEF3C7" },
-  afternoon: { color: "#0EA5E9", bgColor: "#E0F2FE" },
-  night: { color: "#6366F1", bgColor: "#EEF2FF" },
-  beforeSleep: { color: "#57534E", bgColor: "#F5F5F4" },
-};
-
 // Mock data for today's schedule
-const MOCK_SCHEDULE = [
+const MOCK_SCHEDULE: {
+  id: string;
+  name: string;
+  dosage: string;
+  instructions: string;
+  time: string;
+  variant: TimeSlotVariant;
+}[] = [
   {
     id: "1",
     name: "Amoxicillin",
     dosage: "500mg",
     instructions: "Take with food",
     time: "8:00 AM",
-    ...TIME_SLOT_COLORS.morning,
+    variant: "morning",
   },
   {
     id: "2",
@@ -39,7 +30,7 @@ const MOCK_SCHEDULE = [
     dosage: "1000IU",
     instructions: "Once daily",
     time: "12:00 PM",
-    ...TIME_SLOT_COLORS.noon,
+    variant: "noon",
   },
 ];
 
@@ -53,7 +44,6 @@ export function HomeScreen({
   onNotificationPress,
 }: HomeScreenProps) {
   const [isScanning, setIsScanning] = useState(false);
-  const greeting = getGreeting();
   const remainingMeds = MOCK_SCHEDULE.length;
 
   const handleTapToScan = () => {
@@ -78,7 +68,7 @@ export function HomeScreen({
 
   return (
     <SafeAreaView
-      className="flex-1 bg-surface dark:bg-neutral-900"
+      className="flex-1 bg-background dark:bg-neutral-900"
       edges={["top"]}
     >
       <ScrollView
@@ -87,33 +77,7 @@ export function HomeScreen({
         showsVerticalScrollIndicator={false}
       >
         {/* Header */}
-        <View className="flex-row items-center justify-between px-6 pt-4 mb-8">
-          <View className="flex-row items-center">
-            {/* Avatar */}
-            <View className="w-12 h-12 rounded-full bg-neutral-200 dark:bg-neutral-700 items-center justify-center mr-3">
-              <Text className="text-lg font-poppins-semibold text-neutral-500 dark:text-neutral-400">
-                S
-              </Text>
-            </View>
-            {/* Greeting */}
-            <View>
-              <Text className="text-sm text-neutral-500 dark:text-neutral-400 font-poppins">
-                {greeting}
-              </Text>
-              <Text className="text-lg text-neutral-900 dark:text-neutral-100 font-poppins-bold">
-                Sarah
-              </Text>
-            </View>
-          </View>
-
-          {/* Notification Bell */}
-          <TouchableOpacity
-            className="w-10 h-10 rounded-full bg-white dark:bg-neutral-200 items-center justify-center shadow-xs"
-            onPress={onNotificationPress}
-          >
-            <Bell size={20} color="#171717" />
-          </TouchableOpacity>
-        </View>
+        <Header userName="Sarah" onNotificationPress={onNotificationPress} />
 
         {/* Scan Prescription Section */}
         <View className="px-6 mb-8">
@@ -162,8 +126,7 @@ export function HomeScreen({
               dosage={item.dosage}
               instructions={item.instructions}
               time={item.time}
-              color={item.color}
-              bgColor={item.bgColor}
+              variant={item.variant}
             />
           ))}
         </View>

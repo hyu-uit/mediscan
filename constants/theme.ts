@@ -9,6 +9,17 @@ const tintColorLight = "#0a7ea4";
 const tintColorDark = "#fff";
 const primaryGreen = "#4CD964";
 
+// Time slot colors
+export const TimeSlotColors = {
+  morning: { color: "#EA580C", bgColor: "#FFEDD5" },
+  noon: { color: "#D97706", bgColor: "#FEF3C7" },
+  afternoon: { color: "#0EA5E9", bgColor: "#E0F2FE" },
+  night: { color: "#6366F1", bgColor: "#EEF2FF" },
+  "before-sleep": { color: "#57534E", bgColor: "#F5F5F4" },
+} as const;
+
+export type TimeSlotVariant = keyof typeof TimeSlotColors;
+
 export const Colors = {
   background: "#F6F8F6",
   light: {

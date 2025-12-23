@@ -1,3 +1,4 @@
+import { TimeSlotColors, TimeSlotVariant } from "@/constants/theme";
 import { Pressable, Text, View } from "react-native";
 
 export interface TimeSlot {
@@ -39,7 +40,10 @@ export function TimeSlotCard({
       </Text>
 
       {/* Time */}
-      <Text className="text-lg text-primary font-poppins-semibold">
+      <Text
+        className="text-lg font-poppins-semibold"
+        style={{ color: TimeSlotColors[slot.id as TimeSlotVariant]?.color }}
+      >
         {displayTime ?? slot.time}
       </Text>
     </Pressable>

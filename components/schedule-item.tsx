@@ -1,3 +1,5 @@
+import { Badge, BadgeVariant } from "@/components/badge";
+import { TimeSlotColors } from "@/constants/theme";
 import { Pill } from "lucide-react-native";
 import { Text, View } from "react-native";
 
@@ -6,8 +8,7 @@ export interface ScheduleItemProps {
   dosage: string;
   instructions?: string;
   time: string;
-  color: string;
-  bgColor: string;
+  variant: BadgeVariant;
 }
 
 export function ScheduleItem({
@@ -15,10 +16,10 @@ export function ScheduleItem({
   dosage,
   instructions,
   time,
-  color,
-  bgColor,
+  variant,
 }: ScheduleItemProps) {
   const dosageText = instructions ? `${dosage} • ${instructions}` : dosage;
+  const { color, bgColor } = TimeSlotColors[variant];
 
   return (
     <View className="flex-row items-center bg-white dark:bg-neutral-800 rounded-2xl px-4 py-4 mb-3 shadow-xs">
@@ -41,14 +42,7 @@ export function ScheduleItem({
       </View>
 
       {/* Time Badge */}
-      <View
-        className="px-3 py-1.5 rounded-full"
-        style={{ backgroundColor: bgColor }}
-      >
-        <Text className="text-sm font-poppins-semibold" style={{ color }}>
-          {time}
-        </Text>
-      </View>
+      <Badge title={time} variant={variant} />
     </View>
   );
 }

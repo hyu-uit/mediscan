@@ -3,9 +3,10 @@ import { Icon, Label, NativeTabs } from "expo-router/unstable-native-tabs";
 export default function TabLayout() {
   return (
     <NativeTabs
-      tintColor="#36EC37"
+      tintColor="#4CD964"
       labelStyle={{
         color: "#94A3B8",
+        selected: { color: "#4CD964" },
       }}
     >
       <NativeTabs.Trigger name="index">

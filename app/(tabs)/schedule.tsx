@@ -1,11 +1,10 @@
-import { Text, View } from "react-native";
+import { ScheduleScreen } from "@/features/schedule";
 
-export default function ScheduleScreen() {
-  return (
-    <View className="flex-1 items-center justify-center bg-background dark:bg-neutral-900">
-      <Text className="text-2xl font-poppins-bold text-neutral-900 dark:text-neutral-100">
-        Schedule
-      </Text>
-    </View>
-  );
+export default function SchedulePage() {
+  const handleNotificationPress = () => {
+    console.log("Notification bell pressed");
+    // TODO: Navigate to notifications screen
+  };
+
+  return <ScheduleScreen onNotificationPress={handleNotificationPress} />;
 }
