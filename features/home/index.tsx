@@ -1,5 +1,8 @@
+import { ScanPreview } from "@/components/scan-preview";
+import { ScanTapCard } from "@/components/scan-tap-card";
 import { ScheduleItem } from "@/components/schedule-item";
-import { Bell, ImagePlus, ScanLine } from "lucide-react-native";
+import { Bell } from "lucide-react-native";
+import { useState } from "react";
 import { ScrollView, Text, TouchableOpacity, View } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 
@@ -41,22 +44,41 @@ const MOCK_SCHEDULE = [
 ];
 
 interface HomeScreenProps {
-  onTapToScan?: () => void;
   onUploadFromGallery?: () => void;
   onNotificationPress?: () => void;
 }
 
 export function HomeScreen({
-  onTapToScan,
   onUploadFromGallery,
   onNotificationPress,
 }: HomeScreenProps) {
+  const [isScanning, setIsScanning] = useState(false);
   const greeting = getGreeting();
   const remainingMeds = MOCK_SCHEDULE.length;
 
+  const handleTapToScan = () => {
+    setIsScanning(true);
+  };
+
+  const handleCapture = (uri: string) => {
+    // TODO: Process captured image with OCR
+    console.log("Captured image:", uri);
+    setIsScanning(false);
+  };
+
+  const handleGallery = () => {
+    // TODO: Open image picker
+    console.log("Gallery pressed");
+    onUploadFromGallery?.();
+  };
+
+  const handleToggleCancel = () => {
+    setIsScanning(false);
+  };
+
   return (
     <SafeAreaView
-      className="flex-1 bg-background dark:bg-neutral-900"
+      className="flex-1 bg-surface dark:bg-neutral-900"
       edges={["top"]}
     >
       <ScrollView
@@ -86,7 +108,7 @@ export function HomeScreen({
 
           {/* Notification Bell */}
           <TouchableOpacity
-            className="w-10 h-10 rounded-full bg-white dark:bg-neutral-800 items-center justify-center shadow-xs"
+            className="w-10 h-10 rounded-full bg-white dark:bg-neutral-200 items-center justify-center shadow-xs"
             onPress={onNotificationPress}
           >
             <Bell size={20} color="#171717" />
@@ -96,43 +118,27 @@ export function HomeScreen({
         {/* Scan Prescription Section */}
         <View className="px-6 mb-8">
           <Text className="text-2xl text-center text-neutral-900 dark:text-neutral-100 font-poppins-bold mb-1">
-            Scan Prescription
+            {isScanning ? "Scan New Prescription" : "Scan Prescription"}
           </Text>
           <Text className="text-sm text-center text-neutral-500 dark:text-neutral-400 font-poppins mb-4">
-            Capture a new prescription to set reminders
+            {isScanning
+              ? "Align the document within the frame"
+              : "Capture a new prescription to set reminders"}
           </Text>
 
-          {/* Tap to Scan Card */}
-          <TouchableOpacity
-            className="items-center justify-center py-8 mb-3 rounded-2xl bg-white dark:bg-neutral-800"
-            style={{
-              borderWidth: 2,
-              borderColor: "#36EC37",
-              borderStyle: "dashed",
-            }}
-            onPress={onTapToScan}
-          >
-            <View className="w-16 h-16 rounded-2xl bg-primary-light items-center justify-center mb-3">
-              <ScanLine size={32} color="#36EC37" />
-            </View>
-            <Text className="text-xl text-neutral-900 dark:text-neutral-100 font-poppins-bold mb-1">
-              Tap to Scan
-            </Text>
-            <Text className="text-sm text-neutral-500 dark:text-neutral-400 font-poppins-medium text-center px-8">
-              Use your camera to capture prescription details automatically
-            </Text>
-          </TouchableOpacity>
-
-          {/* Upload from Gallery Button */}
-          <TouchableOpacity
-            className="flex-row items-center justify-center bg-white dark:bg-neutral-800 rounded-2xl py-4 shadow-xs"
-            onPress={onUploadFromGallery}
-          >
-            <ImagePlus size={20} color="#171717" />
-            <Text className="text-base text-neutral-900 dark:text-neutral-100 font-poppins-semibold ml-2">
-              Upload from Gallery
-            </Text>
-          </TouchableOpacity>
+          {/* Conditional Scan UI */}
+          {isScanning ? (
+            <ScanPreview
+              onCapture={handleCapture}
+              onGallery={handleGallery}
+              onCancel={handleToggleCancel}
+            />
+          ) : (
+            <ScanTapCard
+              onTapToScan={handleTapToScan}
+              onUploadFromGallery={onUploadFromGallery}
+            />
+          )}
         </View>
 
         {/* Today's Schedule Section */}
