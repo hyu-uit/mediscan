@@ -9,10 +9,12 @@ export interface SettingsSectionProps {
 export function SettingsSection({ title, children }: SettingsSectionProps) {
   return (
     <View className="mb-6">
-      <Text className="text-xs text-neutral-500 font-poppins-semibold tracking-widest uppercase mb-3 px-1">
+      <Text className="text-xs text-neutral-500 dark:text-neutral-400 font-poppins-semibold tracking-widest uppercase mb-3 px-1">
         {title}
       </Text>
-      <View className="bg-white rounded-2xl overflow-hidden">{children}</View>
+      <View className="bg-white dark:bg-neutral-800 rounded-2xl overflow-hidden">
+        {children}
+      </View>
     </View>
   );
 }

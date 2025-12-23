@@ -23,15 +23,15 @@ export function ProfileHeader({ name, email, avatarUrl }: ProfileHeaderProps) {
           className="w-20 h-20 rounded-full mb-3"
         />
       ) : (
-        <View className="w-20 h-20 rounded-full bg-neutral-200 items-center justify-center mb-3">
-          <Text className="text-3xl text-neutral-500 font-poppins-semibold">
+        <View className="w-20 h-20 rounded-full bg-neutral-200 dark:bg-neutral-700 items-center justify-center mb-3">
+          <Text className="text-3xl text-neutral-500 dark:text-neutral-400 font-poppins-semibold">
             {initials}
           </Text>
         </View>
       )}
 
       {/* Name */}
-      <Text className="text-xl text-neutral-900 font-poppins-bold mb-0.5">
+      <Text className="text-xl text-neutral-900 dark:text-neutral-100 font-poppins-bold mb-0.5">
         {name}
       </Text>
 

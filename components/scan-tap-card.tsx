@@ -1,5 +1,5 @@
 import { ImagePlus, ScanLine } from "lucide-react-native";
-import { Text, TouchableOpacity, View } from "react-native";
+import { Text, TouchableOpacity, useColorScheme, View } from "react-native";
 
 interface ScanTapCardProps {
   onTapToScan?: () => void;
@@ -10,6 +10,9 @@ export function ScanTapCard({
   onTapToScan,
   onUploadFromGallery,
 }: ScanTapCardProps) {
+  const colorScheme = useColorScheme();
+  const isDark = colorScheme === "dark";
+
   return (
     <View>
       {/* Tap to Scan Card */}
@@ -38,7 +41,7 @@ export function ScanTapCard({
         className="flex-row items-center justify-center bg-white dark:bg-neutral-800 rounded-2xl py-4 shadow-xs"
         onPress={onUploadFromGallery}
       >
-        <ImagePlus size={20} color="#171717" />
+        <ImagePlus size={20} color={isDark ? "#F5F5F5" : "#171717"} />
         <Text className="text-base text-neutral-900 dark:text-neutral-100 font-poppins-semibold ml-2">
           Upload from Gallery
         </Text>

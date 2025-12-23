@@ -37,17 +37,17 @@ export function SettingsRow({
   const content = (
     <View
       className={`flex-row items-center px-4 py-3.5 ${
-        !isLast ? "border-b border-neutral-100" : ""
+        !isLast ? "border-b border-neutral-100 dark:border-neutral-700" : ""
       }`}
     >
       {/* Icon */}
-      <View className="w-10 h-10 rounded-xl bg-neutral-100 items-center justify-center mr-3">
+      <View className="w-10 h-10 rounded-xl bg-neutral-100 dark:bg-neutral-700 items-center justify-center mr-3">
         {icon}
       </View>
 
       {/* Content */}
       <View className="flex-1">
-        <Text className="text-base text-neutral-900 font-poppins-medium">
+        <Text className="text-base text-neutral-900 dark:text-neutral-100 font-poppins-medium">
           {title}
         </Text>
         {subtitle && (

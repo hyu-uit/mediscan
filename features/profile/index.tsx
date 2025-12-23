@@ -32,10 +32,10 @@ export function ProfileScreen() {
       >
         {/* Header */}
         <View className="flex-row justify-between items-center px-6 pt-2 mb-6">
-          <Text className="text-2xl text-neutral-900 font-poppins-bold">
+          <Text className="text-2xl text-neutral-900 dark:text-neutral-100 font-poppins-bold">
             Profile & Settings
           </Text>
-          <TouchableOpacity className="w-10 h-10 rounded-full bg-white items-center justify-center">
+          <TouchableOpacity className="w-10 h-10 rounded-full bg-white dark:bg-neutral-800 items-center justify-center">
             <Bell size={20} color="#171717" />
           </TouchableOpacity>
         </View>

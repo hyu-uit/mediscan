@@ -9,9 +9,9 @@ export function ActionChip({ label, onPress }: ActionChipProps) {
   return (
     <TouchableOpacity
       onPress={onPress}
-      className="px-4 py-2 rounded-full border border-neutral-200 bg-white"
+      className="px-4 py-2 rounded-full border border-neutral-200 dark:border-neutral-700 bg-white dark:bg-neutral-800"
     >
-      <Text className="text-sm text-neutral-900 font-poppins-medium">
+      <Text className="text-sm text-neutral-900 dark:text-neutral-100 font-poppins-medium">
         {label}
       </Text>
     </TouchableOpacity>
