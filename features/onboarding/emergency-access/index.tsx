@@ -1,3 +1,4 @@
+import { Button } from "@/components/button";
 import { LinearGradient } from "expo-linear-gradient";
 import { ArrowLeft, Phone, PhoneCall, PhoneOff } from "lucide-react-native";
 import { Pressable, Text, View } from "react-native";
@@ -33,10 +34,7 @@ export function EmergencyAccessScreen({
         }}
       />
 
-      <View
-        className="flex-1 px-8 pb-12"
-        style={{ paddingTop: insets.top + 16 }}
-      >
+      <View className="flex-1 px-8 pb-12" style={{ paddingTop: insets.top }}>
         {/* Back Button */}
         <Pressable
           className="w-10 h-10 items-center justify-center -ml-2"
@@ -127,25 +125,22 @@ export function EmergencyAccessScreen({
         </View>
 
         {/* Bottom Buttons */}
-        {/* Primary CTA Button */}
-        <Pressable
-          className="flex-row items-center justify-center w-full py-4 px-6 rounded-xl gap-2 bg-primary active:opacity-90"
+        <Button
+          fullWidth
+          size="lg"
+          icon={<Phone size={20} color="#171717" />}
           onPress={onEnablePhoneCalls}
         >
-          <Phone size={20} color="#171717" />
-          <Text className="text-lg text-neutral-900 font-poppins-semibold">
-            Enable Phone Calls
-          </Text>
-        </Pressable>
+          Enable Phone Calls
+        </Button>
 
         {/* Secondary Link */}
-        <Pressable className="mt-5 py-3 items-center" onPress={onSkip}>
-          <Text className="text-base text-neutral-900 dark:text-neutral-100 font-poppins-medium">
+        <View className="mt-5 items-center">
+          <Button variant="text" onPress={onSkip}>
             Skip for now
-          </Text>
-        </Pressable>
+          </Button>
+        </View>
       </View>
     </View>
   );
 }
-

@@ -1,5 +1,12 @@
+import { Button } from "@/components/button";
 import { LinearGradient } from "expo-linear-gradient";
-import { ArrowLeft, ArrowRight, Bell, CircleAlert, Pill } from "lucide-react-native";
+import {
+  ArrowLeft,
+  ArrowRight,
+  Bell,
+  CircleAlert,
+  Pill,
+} from "lucide-react-native";
 import { Pressable, Text, View } from "react-native";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 
@@ -34,10 +41,7 @@ export function NotificationAccessScreen({
         }}
       />
 
-      <View
-        className="flex-1 px-8 pb-12"
-        style={{ paddingTop: insets.top + 16 }}
-      >
+      <View className="flex-1 px-8 pb-12" style={{ paddingTop: insets.top }}>
         {/* Back Button */}
         <Pressable
           className="w-10 h-10 items-center justify-center -ml-2"
@@ -119,25 +123,23 @@ export function NotificationAccessScreen({
         </View>
 
         {/* Bottom Buttons */}
-        {/* Primary CTA Button */}
-        <Pressable
-          className="flex-row items-center justify-center w-full py-4 px-6 rounded-xl gap-2 bg-primary active:opacity-90"
+        <Button
+          fullWidth
+          size="lg"
+          icon={<ArrowRight size={20} color="#171717" />}
+          iconPosition="right"
           onPress={onEnableNotifications}
         >
-          <Text className="text-lg text-neutral-900 font-poppins-semibold">
-            Enable Notifications
-          </Text>
-          <ArrowRight size={20} color="#171717" />
-        </Pressable>
+          Enable Notifications
+        </Button>
 
         {/* Secondary Link */}
-        <Pressable className="mt-5 py-3 items-center" onPress={onMaybeLater}>
-          <Text className="text-base text-neutral-900 dark:text-neutral-100 font-poppins-medium">
+        <View className="mt-5 items-center">
+          <Button variant="text" onPress={onMaybeLater}>
             Maybe later
-          </Text>
-        </Pressable>
+          </Button>
+        </View>
       </View>
     </View>
   );
 }
-

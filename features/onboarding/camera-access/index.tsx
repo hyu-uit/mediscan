@@ -1,3 +1,4 @@
+import { Button } from "@/components/button";
 import { Image } from "expo-image";
 import { ArrowLeft, Camera, Lock } from "lucide-react-native";
 import { Pressable, Text, View } from "react-native";
@@ -19,7 +20,7 @@ export function CameraAccessScreen({
   return (
     <View
       className="flex-1 bg-surface dark:bg-neutral-900 px-8 pb-12"
-      style={{ paddingTop: insets.top + 16 }}
+      style={{ paddingTop: insets.top }}
     >
       {/* Back Button */}
       <Pressable
@@ -67,21 +68,16 @@ export function CameraAccessScreen({
         </Text>
 
         {/* Primary CTA Button */}
-        <Pressable
-          className="flex-row items-center justify-center w-full py-4 px-6 rounded-xl gap-2 bg-primary active:opacity-90"
-          onPress={onEnableCamera}
-        >
-          <Text className="text-lg text-neutral-900 font-poppins-semibold">
-            Enable Camera Access
-          </Text>
-        </Pressable>
+        <Button fullWidth size="lg" onPress={onEnableCamera}>
+          Enable Camera Access
+        </Button>
 
         {/* Secondary Link */}
-        <Pressable className="mt-5 py-3" onPress={onTypeManually}>
-          <Text className="text-base text-neutral-900 dark:text-neutral-100 font-poppins-medium">
+        <View className="mt-5">
+          <Button variant="text" onPress={onTypeManually}>
             Type Manually
-          </Text>
-        </Pressable>
+          </Button>
+        </View>
 
         {/* Privacy Notice */}
         <View className="flex-row items-center mt-6 gap-2">
@@ -94,4 +90,3 @@ export function CameraAccessScreen({
     </View>
   );
 }
-

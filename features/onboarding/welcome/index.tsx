@@ -1,7 +1,8 @@
+import { Button } from "@/components/button";
 import { Image } from "expo-image";
 import { LinearGradient } from "expo-linear-gradient";
 import { Camera } from "lucide-react-native";
-import { Pressable, Text, View, useWindowDimensions } from "react-native";
+import { Text, View, useWindowDimensions } from "react-native";
 
 interface WelcomeScreenProps {
   onStartScanning?: () => void;
@@ -64,22 +65,21 @@ export function WelcomeScreen({
         </Text>
 
         {/* Primary CTA Button */}
-        <Pressable
-          className="flex-row items-center justify-center w-full py-4 px-6 rounded-xl gap-2 bg-primary active:opacity-90"
+        <Button
+          fullWidth
+          size="lg"
+          icon={<Camera size={22} color="#171717" />}
           onPress={onStartScanning}
         >
-          <Camera size={22} color="#171717" />
-          <Text className="text-lg text-neutral-900 font-poppins-semibold">
-            Start Scanning
-          </Text>
-        </Pressable>
+          Start Scanning
+        </Button>
 
         {/* Secondary Link */}
-        <Pressable className="mt-5 py-3" onPress={onSignIn}>
-          <Text className="text-base text-neutral-900 dark:text-neutral-100 font-poppins-medium">
+        <View className="mt-5">
+          <Button variant="text" onPress={onSignIn}>
             I already have an account
-          </Text>
-        </Pressable>
+          </Button>
+        </View>
       </View>
     </View>
   );

@@ -1,3 +1,5 @@
+import { Button } from "@/components/button";
+import { TimePicker, TimeValue } from "@/components/time-picker";
 import {
   Bed,
   ChevronLeft,
@@ -6,6 +8,7 @@ import {
   Sun,
   Sunrise,
 } from "lucide-react-native";
+import { useState } from "react";
 import { Pressable, Text, View } from "react-native";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 
@@ -14,6 +17,24 @@ import { TimeSlot, TimeSlotCard } from "./time-slot-card";
 interface DefaultScheduleScreenProps {
   onBack?: () => void;
   onSaveConfiguration?: (schedule: Record<string, boolean>) => void;
+}
+
+// Parse time string like "08:00 AM" to TimeValue
+function parseTime(timeStr: string): TimeValue {
+  const match = timeStr.match(/(\d{2}):(\d{2})\s*(AM|PM)/i);
+  if (match) {
+    return {
+      hour: match[1],
+      minute: match[2],
+      period: match[3].toUpperCase() as "AM" | "PM",
+    };
+  }
+  return { hour: "08", minute: "00", period: "AM" };
+}
+
+// Format TimeValue to display string
+function formatTime(time: TimeValue): string {
+  return `${time.hour}:${time.minute} ${time.period}`;
 }
 
 const TIME_SLOTS: TimeSlot[] = [
@@ -65,6 +86,32 @@ export function DefaultScheduleScreen({
 }: DefaultScheduleScreenProps) {
   const insets = useSafeAreaInsets();
 
+  // State for custom times per slot
+  const [times, setTimes] = useState<Record<string, TimeValue>>(() =>
+    TIME_SLOTS.reduce((acc, slot) => {
+      acc[slot.id] = parseTime(slot.time);
+      return acc;
+    }, {} as Record<string, TimeValue>)
+  );
+
+  // State for time picker
+  const [pickerOpen, setPickerOpen] = useState(false);
+  const [editingSlot, setEditingSlot] = useState<TimeSlot | null>(null);
+
+  const handleSlotPress = (slot: TimeSlot) => {
+    setEditingSlot(slot);
+    setPickerOpen(true);
+  };
+
+  const handleTimeChange = (newTime: TimeValue) => {
+    if (editingSlot) {
+      setTimes((prev) => ({
+        ...prev,
+        [editingSlot.id]: newTime,
+      }));
+    }
+  };
+
   const handleSave = () => {
     // Build schedule from default values
     const schedule = TIME_SLOTS.reduce((acc, slot) => {
@@ -105,23 +152,31 @@ export function DefaultScheduleScreen({
         {/* Time Slots */}
         <View>
           {TIME_SLOTS.map((slot) => (
-            <TimeSlotCard key={slot.id} slot={slot} />
+            <TimeSlotCard
+              key={slot.id}
+              slot={slot}
+              displayTime={formatTime(times[slot.id])}
+              onPress={() => handleSlotPress(slot)}
+            />
           ))}
         </View>
       </View>
 
       {/* Bottom Button */}
       <View className="pb-12">
-        <Pressable
-          className="flex-row items-center justify-center w-full py-4 px-6 rounded-xl bg-primary active:opacity-90"
-          onPress={handleSave}
-        >
-          <Text className="text-lg text-neutral-900 font-poppins-semibold">
-            Save Configuration
-          </Text>
-        </Pressable>
+        <Button fullWidth size="lg" onPress={handleSave}>
+          Save Configuration
+        </Button>
       </View>
+
+      {/* Time Picker */}
+      <TimePicker
+        isOpen={pickerOpen}
+        onClose={() => setPickerOpen(false)}
+        onSave={handleTimeChange}
+        initialTime={editingSlot ? times[editingSlot.id] : undefined}
+        title={editingSlot ? `Edit ${editingSlot.name} Time` : "Edit Time"}
+      />
     </View>
   );
 }
-
