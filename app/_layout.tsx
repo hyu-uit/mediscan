@@ -52,6 +52,7 @@ export default function RootLayout() {
         <Stack.Screen name="camera-access" />
         <Stack.Screen name="notification-access" />
         <Stack.Screen name="emergency-access" />
+        <Stack.Screen name="default-schedule" />
         <Stack.Screen name="(tabs)" />
       </Stack>
       <StatusBar style="auto" />

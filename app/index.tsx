@@ -1,4 +1,4 @@
-import { WelcomeScreen } from "@/components/onboarding/welcome";
+import { WelcomeScreen } from "@/features/onboarding/welcome";
 import { useRouter } from "expo-router";
 
 export default function WelcomePage() {

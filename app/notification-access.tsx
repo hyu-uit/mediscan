@@ -1,4 +1,4 @@
-import { NotificationAccessScreen } from "@/components/onboarding/notification-access";
+import { NotificationAccessScreen } from "@/features/onboarding/notification-access";
 import { useRouter } from "expo-router";
 
 export default function NotificationAccessPage() {

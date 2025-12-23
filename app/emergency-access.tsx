@@ -1,4 +1,4 @@
-import { EmergencyAccessScreen } from "@/components/onboarding/emergency-access";
+import { EmergencyAccessScreen } from "@/features/onboarding/emergency-access";
 import { useRouter } from "expo-router";
 
 export default function EmergencyAccessPage() {
@@ -10,13 +10,13 @@ export default function EmergencyAccessPage() {
 
   const handleEnablePhoneCalls = () => {
     // TODO: Request phone call permission
-    // For now, navigate to tabs
-    router.push("/(tabs)");
+    // Navigate to default schedule screen
+    router.push("/default-schedule");
   };
 
   const handleSkip = () => {
-    // Skip phone calls and go to main app
-    router.push("/(tabs)");
+    // Skip phone calls and go to default schedule
+    router.push("/default-schedule");
   };
 
   return (

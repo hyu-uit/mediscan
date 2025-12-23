@@ -3,59 +3,12 @@ import { ArrowLeft, Phone, PhoneCall, PhoneOff } from "lucide-react-native";
 import { Pressable, Text, View } from "react-native";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 
+import { DecorativePhone } from "./decorative-phone";
+
 interface EmergencyAccessScreenProps {
   onBack?: () => void;
   onEnablePhoneCalls?: () => void;
   onSkip?: () => void;
-}
-
-// Decorative phone icon component
-function DecorativePhone({
-  size,
-  style,
-  badge,
-}: {
-  size: number;
-  style?: object;
-  badge?: boolean;
-}) {
-  return (
-    <View
-      className="rounded-full bg-white items-center justify-center"
-      style={[
-        {
-          width: size + 16,
-          height: size + 16,
-          shadowColor: "#000",
-          shadowOffset: { width: 0, height: 2 },
-          shadowOpacity: 0.1,
-          shadowRadius: 4,
-          elevation: 3,
-        },
-        style,
-      ]}
-    >
-      <PhoneOff size={size} color="#36EC37" />
-      {badge && (
-        <View
-          className="absolute bg-red-500 rounded-full items-center justify-center"
-          style={{
-            width: size * 0.5,
-            height: size * 0.5,
-            top: 2,
-            right: 2,
-          }}
-        >
-          <Text
-            className="text-white font-poppins-bold"
-            style={{ fontSize: size * 0.3 }}
-          >
-            !
-          </Text>
-        </View>
-      )}
-    </View>
-  );
 }
 
 export function EmergencyAccessScreen({
@@ -146,7 +99,7 @@ export function EmergencyAccessScreen({
           </View>
 
           {/* Incoming Call Preview Card */}
-          <View className="bg-white dark:bg-neutral-800 rounded-2xl px-5 py-4 shadow-sm">
+          <View className="bg-white dark:bg-neutral-800 rounded-2xl px-5 py-4 shadow-xs">
             <View className="flex-row items-center justify-between">
               <View className="flex-row items-center gap-3">
                 <View className="w-12 h-12 rounded-full bg-primary-light items-center justify-center">
@@ -195,3 +148,4 @@ export function EmergencyAccessScreen({
     </View>
   );
 }
+

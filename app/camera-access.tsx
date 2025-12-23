@@ -1,4 +1,4 @@
-import { CameraAccessScreen } from "@/components/onboarding/camera-access";
+import { CameraAccessScreen } from "@/features/onboarding/camera-access";
 import { useRouter } from "expo-router";
 
 export default function CameraAccessPage() {

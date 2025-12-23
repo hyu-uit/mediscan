@@ -1,91 +1,15 @@
 import { LinearGradient } from "expo-linear-gradient";
-import {
-  ArrowLeft,
-  ArrowRight,
-  Bell,
-  CircleAlert,
-  Pill,
-} from "lucide-react-native";
+import { ArrowLeft, ArrowRight, Bell, CircleAlert, Pill } from "lucide-react-native";
 import { Pressable, Text, View } from "react-native";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
+
+import { DecorativeBell } from "./decorative-bell";
+import { FeatureItem } from "./feature-item";
 
 interface NotificationAccessScreenProps {
   onBack?: () => void;
   onEnableNotifications?: () => void;
   onMaybeLater?: () => void;
-}
-
-interface FeatureItemProps {
-  icon: React.ReactNode;
-  title: string;
-  description: string;
-}
-
-function FeatureItem({ icon, title, description }: FeatureItemProps) {
-  return (
-    <View className="flex-row items-center gap-4 py-3">
-      <View className="w-10 h-10 rounded-full bg-primary-light items-center justify-center">
-        {icon}
-      </View>
-      <View className="flex-1">
-        <Text className="text-base text-neutral-900 dark:text-neutral-100 font-poppins-semibold">
-          {title}
-        </Text>
-        <Text className="text-sm text-neutral-500 dark:text-neutral-400 font-poppins">
-          {description}
-        </Text>
-      </View>
-    </View>
-  );
-}
-
-// Small decorative bell icon component
-function DecorativeBell({
-  size,
-  style,
-  badge,
-}: {
-  size: number;
-  style?: object;
-  badge?: boolean;
-}) {
-  return (
-    <View
-      className="rounded-full bg-white items-center justify-center"
-      style={[
-        {
-          width: size + 16,
-          height: size + 16,
-          shadowColor: "#000",
-          shadowOffset: { width: 0, height: 2 },
-          shadowOpacity: 0.1,
-          shadowRadius: 4,
-          elevation: 3,
-        },
-        style,
-      ]}
-    >
-      <Bell size={size} color="#36EC37" />
-      {badge && (
-        <View
-          className="absolute bg-red-500 rounded-full items-center justify-center"
-          style={{
-            width: size * 0.5,
-            height: size * 0.5,
-            top: 2,
-            right: 2,
-          }}
-        >
-          <Text
-            className="text-white font-poppins-bold"
-            style={{ fontSize: size * 0.3 }}
-          >
-            1
-          </Text>
-        </View>
-      )}
-    </View>
-  );
 }
 
 export function NotificationAccessScreen({
@@ -175,7 +99,7 @@ export function NotificationAccessScreen({
           </View>
 
           {/* Feature List */}
-          <View className="bg-white dark:bg-neutral-800 rounded-2xl px-4 py-2 shadow-sm">
+          <View className="bg-white dark:bg-neutral-800 rounded-2xl px-4 py-2 shadow-xs">
             <FeatureItem
               icon={<Bell size={20} color="#36EC37" />}
               title="Daily Reminders"
@@ -216,3 +140,4 @@ export function NotificationAccessScreen({
     </View>
   );
 }
+
