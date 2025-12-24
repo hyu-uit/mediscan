@@ -3,6 +3,7 @@ import { Button } from "@/components/button";
 import { ProfileHeader } from "@/components/profile-header";
 import { SettingsRow } from "@/components/settings-row";
 import { SettingsSection } from "@/components/settings-section";
+import { useLogout } from "@/hooks/useAuth";
 import {
   Bell,
   Clock,
@@ -19,17 +20,14 @@ import { SafeAreaView } from "react-native-safe-area-context";
 
 export function ProfileScreen() {
   const [darkMode, setDarkMode] = useState(false);
+  const { logout } = useLogout();
 
   return (
     <SafeAreaView
       className="flex-1 bg-background dark:bg-neutral-900"
       edges={["top"]}
     >
-      <ScrollView
-        className="flex-1"
-        showsVerticalScrollIndicator={false}
-        contentContainerStyle={{ paddingBottom: 40 }}
-      >
+      <ScrollView className="flex-1" showsVerticalScrollIndicator={false}>
         {/* Header */}
         <View className="flex-row justify-between items-center px-6 pt-2 mb-6">
           <Text className="text-2xl text-neutral-900 dark:text-neutral-100 font-poppins-bold">
@@ -128,7 +126,7 @@ export function ProfileScreen() {
               size="lg"
               fullWidth
               icon={<LogOut size={18} color="#EF4444" />}
-              onPress={() => {}}
+              onPress={logout}
             >
               <Text className="text-red-500 font-poppins-semibold">
                 Sign Out
@@ -141,6 +139,8 @@ export function ProfileScreen() {
             App Version 2.4.1 (Build 890)
           </Text>
         </View>
+        {/* Bottom Padding */}
+        <View className="h-8" />
       </ScrollView>
     </SafeAreaView>
   );

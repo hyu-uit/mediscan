@@ -1,5 +1,6 @@
 import { yupResolver } from "@hookform/resolvers/yup";
 import * as Crypto from "expo-crypto";
+import { useRouter } from "expo-router";
 import {
   ArrowLeft,
   Eye,
@@ -7,6 +8,7 @@ import {
   Lock,
   Mail,
   ShieldCheck,
+  User,
 } from "lucide-react-native";
 import { useState } from "react";
 import { useForm } from "react-hook-form";
@@ -19,89 +21,67 @@ import {
   View,
 } from "react-native";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
-import * as yup from "yup";
 
 import { AppLogo } from "@/components/app-logo";
 import { Button } from "@/components/button";
 import { FormInput } from "@/components/form-input";
 import { GoogleLoginButton } from "@/components/google-login-button";
+import { useRegister } from "@/hooks/useAuth";
+import { SignupFormData, signupSchema } from "@/schemas/auth.schema";
 
-const signupSchema = yup.object({
-  email: yup
-    .string()
-    .required("Email is required")
-    .email("Please enter a valid email"),
-  password: yup.string().required("Password is required"),
-  confirmPassword: yup
-    .string()
-    .required("Please confirm your password")
-    .oneOf([yup.ref("password")], "Passwords must match"),
-});
-
-type SignupFormData = yup.InferType<typeof signupSchema>;
-
-interface SignupScreenProps {
-  onBack?: () => void;
-  onSignUp?: () => void;
-  onGoogleSignUp?: () => void;
-  onLogIn?: () => void;
-}
-
-export function SignupScreen({
-  onBack,
-  onSignUp,
-  onGoogleSignUp,
-  onLogIn,
-}: SignupScreenProps) {
+export function SignupScreen() {
+  const router = useRouter();
   const insets = useSafeAreaInsets();
   const [showPassword, setShowPassword] = useState(false);
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
   const [isGoogleLoading, setIsGoogleLoading] = useState(false);
 
-  const {
-    control,
-    handleSubmit,
-    formState: { isSubmitting },
-  } = useForm<SignupFormData>({
+  const registerMutation = useRegister();
+
+  const { control, handleSubmit } = useForm<SignupFormData>({
     resolver: yupResolver(signupSchema),
     defaultValues: {
+      name: "",
       email: "",
       password: "",
       confirmPassword: "",
     },
   });
 
-  const onSubmit = async (data: SignupFormData) => {
-    // Placeholder for registration logic
-    console.log("Sign up attempt:", data.email);
-    // Simulate API call
-    await new Promise((resolve) => setTimeout(resolve, 1000));
-    onSignUp?.();
+  const onSubmit = (data: SignupFormData) => {
+    registerMutation.mutate({
+      name: data.name,
+      email: data.email,
+      password: data.password,
+    });
   };
 
   const handleGoogleSignUp = async () => {
     try {
       setIsGoogleLoading(true);
-      // Generate a random nonce for security
       const nonce = await Crypto.digestStringAsync(
         Crypto.CryptoDigestAlgorithm.SHA256,
         Math.random().toString()
       );
-
-      // Placeholder for Google OAuth configuration
       console.log(
         "Google sign up initiated with nonce:",
         nonce.substring(0, 8)
       );
-
-      // Simulate OAuth flow
       await new Promise((resolve) => setTimeout(resolve, 1500));
-      onGoogleSignUp?.();
+      // TODO: Implement actual Google OAuth
     } catch (error) {
       console.error("Google sign up error:", error);
     } finally {
       setIsGoogleLoading(false);
     }
+  };
+
+  const handleBack = () => {
+    router.back();
+  };
+
+  const handleLogIn = () => {
+    router.back();
   };
 
   return (
@@ -120,7 +100,7 @@ export function SignupScreen({
           style={{ paddingTop: insets.top + 12 }}
         >
           <TouchableOpacity
-            onPress={onBack}
+            onPress={handleBack}
             className="p-2 -ml-2"
             activeOpacity={0.7}
           >
@@ -150,6 +130,16 @@ export function SignupScreen({
 
           {/* Form */}
           <View className="gap-4 mb-6">
+            <FormInput
+              control={control}
+              name="name"
+              label="Full Name"
+              placeholder="John Doe"
+              autoCapitalize="words"
+              autoComplete="name"
+              leftIcon={<User size={20} color="#9CA3AF" />}
+            />
+
             <FormInput
               control={control}
               name="email"
@@ -207,9 +197,9 @@ export function SignupScreen({
             fullWidth
             size="lg"
             onPress={handleSubmit(onSubmit)}
-            disabled={isSubmitting}
+            disabled={registerMutation.isPending}
           >
-            {isSubmitting ? "Creating account..." : "Sign Up"}
+            {registerMutation.isPending ? "Creating account..." : "Sign Up"}
           </Button>
 
           {/* Divider */}
@@ -233,7 +223,7 @@ export function SignupScreen({
             <Text className="text-sm font-poppins text-neutral-500 dark:text-neutral-400">
               Already have an account?{" "}
             </Text>
-            <TouchableOpacity onPress={onLogIn}>
+            <TouchableOpacity onPress={handleLogIn}>
               <Text className="text-sm font-poppins-semibold text-primary">
                 Log In
               </Text>

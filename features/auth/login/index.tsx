@@ -1,5 +1,6 @@
 import { yupResolver } from "@hookform/resolvers/yup";
 import * as Crypto from "expo-crypto";
+import { useRouter } from "expo-router";
 import { ArrowRight, Eye, EyeOff, Lock, Mail } from "lucide-react-native";
 import { useState } from "react";
 import { useForm } from "react-hook-form";
@@ -11,44 +12,22 @@ import {
   TouchableOpacity,
   View,
 } from "react-native";
-import * as yup from "yup";
 
 import { AppLogo } from "@/components/app-logo";
 import { Button } from "@/components/button";
 import { FormInput } from "@/components/form-input";
 import { GoogleLoginButton } from "@/components/google-login-button";
+import { useLogin } from "@/hooks/useAuth";
+import { LoginFormData, loginSchema } from "@/schemas/auth.schema";
 
-const loginSchema = yup.object({
-  email: yup
-    .string()
-    .required("Email is required")
-    .email("Please enter a valid email"),
-  password: yup.string().required("Password is required"),
-});
-
-type LoginFormData = yup.InferType<typeof loginSchema>;
-
-interface LoginScreenProps {
-  onLogin?: () => void;
-  onForgotPassword?: () => void;
-  onSignUp?: () => void;
-  onGoogleLogin?: () => void;
-}
-
-export function LoginScreen({
-  onLogin,
-  onForgotPassword,
-  onSignUp,
-  onGoogleLogin,
-}: LoginScreenProps) {
+export function LoginScreen() {
+  const router = useRouter();
   const [showPassword, setShowPassword] = useState(false);
   const [isGoogleLoading, setIsGoogleLoading] = useState(false);
 
-  const {
-    control,
-    handleSubmit,
-    formState: { isSubmitting },
-  } = useForm<LoginFormData>({
+  const loginMutation = useLogin();
+
+  const { control, handleSubmit } = useForm<LoginFormData>({
     resolver: yupResolver(loginSchema),
     defaultValues: {
       email: "",
@@ -56,35 +35,37 @@ export function LoginScreen({
     },
   });
 
-  const onSubmit = async (data: LoginFormData) => {
-    // Placeholder for authentication logic
-    console.log("Login attempt:", data.email);
-    // Simulate API call
-    await new Promise((resolve) => setTimeout(resolve, 1000));
-    onLogin?.();
+  const onSubmit = (data: LoginFormData) => {
+    loginMutation.mutate({
+      email: data.email,
+      password: data.password,
+    });
   };
 
   const handleGoogleLogin = async () => {
     try {
       setIsGoogleLoading(true);
-      // Generate a random nonce for security
       const nonce = await Crypto.digestStringAsync(
         Crypto.CryptoDigestAlgorithm.SHA256,
         Math.random().toString()
       );
-
-      // Placeholder for Google OAuth configuration
-      // In production, configure with actual Google OAuth credentials
       console.log("Google login initiated with nonce:", nonce.substring(0, 8));
-
-      // Simulate OAuth flow
       await new Promise((resolve) => setTimeout(resolve, 1500));
-      onGoogleLogin?.();
+      // TODO: Implement actual Google OAuth
     } catch (error) {
       console.error("Google login error:", error);
     } finally {
       setIsGoogleLoading(false);
     }
+  };
+
+  const handleForgotPassword = () => {
+    // TODO: Navigate to forgot password screen
+    console.log("Navigate to forgot password");
+  };
+
+  const handleSignUp = () => {
+    router.push("/(auth)/signup");
   };
 
   return (
@@ -148,7 +129,7 @@ export function LoginScreen({
 
               <TouchableOpacity
                 className="self-end mt-2"
-                onPress={onForgotPassword}
+                onPress={handleForgotPassword}
               >
                 <Text className="text-sm font-poppins-medium text-neutral-500 dark:text-neutral-400">
                   Forgot Password?
@@ -163,11 +144,11 @@ export function LoginScreen({
               fullWidth
               size="lg"
               onPress={handleSubmit(onSubmit)}
-              disabled={isSubmitting}
+              disabled={loginMutation.isPending}
               icon={<ArrowRight size={20} color="#171717" />}
               iconPosition="right"
             >
-              {isSubmitting ? "Signing in..." : "Login"}
+              {loginMutation.isPending ? "Signing in..." : "Login"}
             </Button>
           </View>
 
@@ -191,7 +172,7 @@ export function LoginScreen({
             <Text className="text-sm font-poppins text-neutral-500 dark:text-neutral-400">
               Don't have an account?{" "}
             </Text>
-            <TouchableOpacity onPress={onSignUp}>
+            <TouchableOpacity onPress={handleSignUp}>
               <Text className="text-sm font-poppins-semibold text-primary">
                 Sign up
               </Text>
