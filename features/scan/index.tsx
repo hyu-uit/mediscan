@@ -19,11 +19,15 @@ export function ScanScreen() {
     // TODO: Process captured image with OCR
     console.log("Captured image:", uri);
     setIsScanning(false);
+    // Navigate to confirm schedule screen
+    router.replace("/confirm-schedule");
   };
 
   const handleGallery = () => {
-    // TODO: Open image picker
+    // TODO: Open image picker and process result
     console.log("Gallery pressed");
+    // For now, navigate to confirm schedule as if image was selected
+    router.replace("/confirm-schedule");
   };
 
   const handleCancel = () => {
