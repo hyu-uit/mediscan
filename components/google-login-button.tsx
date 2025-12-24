@@ -5,6 +5,7 @@ interface GoogleLoginButtonProps {
   onPress?: () => void;
   loading?: boolean;
   disabled?: boolean;
+  label?: string;
 }
 
 function GoogleIcon({ size = 20 }: { size?: number }) {
@@ -34,6 +35,7 @@ export function GoogleLoginButton({
   onPress,
   loading = false,
   disabled = false,
+  label = "Login with Google",
 }: GoogleLoginButtonProps) {
   return (
     <TouchableOpacity
@@ -58,7 +60,7 @@ export function GoogleLoginButton({
             <GoogleIcon size={20} />
           </View>
           <Text className="text-base font-poppins-semibold text-neutral-900 dark:text-neutral-100">
-            Login with Google
+            {label}
           </Text>
         </>
       )}

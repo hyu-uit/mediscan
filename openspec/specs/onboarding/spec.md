@@ -3,9 +3,7 @@
 ## Purpose
 
 This capability covers all onboarding-related screens and flows for new users, guiding them through the initial app setup including welcome, permissions, and schedule configuration.
-
 ## Requirements
-
 ### Requirement: Welcome Screen
 
 The app SHALL display a Welcome Screen as the first step of the onboarding flow. The screen MUST include a hero image, a welcome heading, a descriptive subtitle, a primary action button to start scanning, and a secondary link for existing users.
@@ -28,7 +26,7 @@ The app SHALL display a Welcome Screen as the first step of the onboarding flow.
 #### Scenario: User taps existing account link
 
 - **WHEN** user taps "I already have an account"
-- **THEN** the app navigates to the sign-in screen
+- **THEN** the app navigates to the Login screen
 
 ### Requirement: Onboarding Component Structure
 
@@ -193,3 +191,4 @@ The app SHALL display a Default Schedule Screen as part of the onboarding flow. 
 
 - **WHEN** user taps the back arrow
 - **THEN** the app navigates back to the Emergency Backup screen
+

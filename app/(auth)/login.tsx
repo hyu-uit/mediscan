@@ -27,8 +27,7 @@ export default function LoginRoute() {
   };
 
   const handleSignUp = () => {
-    // Placeholder: navigate to sign up
-    console.log("Navigate to sign up");
+    router.push("/(auth)/signup");
   };
 
   return (
