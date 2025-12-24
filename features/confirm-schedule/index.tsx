@@ -1,9 +1,13 @@
 import { Button } from "@/components/button";
 import { MedicineCard } from "@/components/medicine-card";
+import { FrequencyType } from "@/features/edit-medicine/types";
+import { useBulkCreateSchedules } from "@/hooks/useSchedule";
+import { ScheduleMedicine, useScheduleStore } from "@/stores/schedule-store";
 import { router, useLocalSearchParams } from "expo-router";
 import { ChevronLeft, CircleHelp, Plus } from "lucide-react-native";
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useMemo, useRef } from "react";
 import {
+  Alert,
   ScrollView,
   Text,
   TouchableOpacity,
@@ -12,26 +16,55 @@ import {
 } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 
-// Medicine type for the schedule
-interface ScheduleMedicine {
-  id: string;
-  name: string;
-  dosage: string;
-  frequency: string;
-  intakeTimes: { id: string; time: string }[];
-  instructions: {
-    id: string;
-    text: string;
-    icon?: "food" | "default";
-  }[];
+// Helper to format frequency for display
+function formatFrequency(medicine: ScheduleMedicine): string {
+  switch (medicine.frequencyType) {
+    case FrequencyType.DAILY:
+      return "Daily";
+    case FrequencyType.INTERVAL:
+      return `Every ${
+        medicine.intervalValue
+      } ${medicine.intervalUnit.toLowerCase()}`;
+    case FrequencyType.SPECIFIC_DAYS:
+      return medicine.selectedDays.join(", ");
+    default:
+      return "Daily";
+  }
+}
+
+// Helper to format dosage for display
+function formatDosage(medicine: ScheduleMedicine): string {
+  return `${medicine.dosage} ${medicine.unit}`;
 }
 
 export function ConfirmScheduleScreen() {
   const colorScheme = useColorScheme();
   const isDark = colorScheme === "dark";
   const params = useLocalSearchParams<{ openAddMedicine?: string }>();
-  const [medicines, setMedicines] = useState<ScheduleMedicine[]>([]);
   const hasOpenedAddMedicine = useRef(false);
+
+  // Schedule store
+  const { medicines, deleteMedicine } = useScheduleStore();
+
+  // Bulk create mutation
+  const bulkCreateMutation = useBulkCreateSchedules();
+
+  // Format medicines for display
+  const displayMedicines = useMemo(() => {
+    return medicines.map((medicine) => ({
+      id: medicine.id,
+      name: medicine.name,
+      dosage: formatDosage(medicine),
+      frequency: formatFrequency(medicine),
+      intakeTimes: medicine.intakeTimes.map((t) => ({
+        id: t.id,
+        time: t.time,
+      })),
+      instructions: medicine.instructions
+        ? [{ id: "1", text: medicine.instructions, icon: "default" as const }]
+        : [],
+    }));
+  }, [medicines]);
 
   // Auto-open edit-medicine screen if openAddMedicine param is true
   useEffect(() => {
@@ -54,7 +87,7 @@ export function ConfirmScheduleScreen() {
   };
 
   const handleDeleteMedicine = (medicineId: string) => {
-    setMedicines((prev) => prev.filter((m) => m.id !== medicineId));
+    deleteMedicine(medicineId);
   };
 
   const handleEditDosage = (medicineId: string) => {
@@ -86,18 +119,8 @@ export function ConfirmScheduleScreen() {
     medicineId: string,
     instructionId: string
   ) => {
-    setMedicines((prev) =>
-      prev.map((m) =>
-        m.id === medicineId
-          ? {
-              ...m,
-              instructions: m.instructions.filter(
-                (i) => i.id !== instructionId
-              ),
-            }
-          : m
-      )
-    );
+    // TODO: Implement instruction deletion in store
+    console.log("Delete instruction:", medicineId, instructionId);
   };
 
   const handleAddInstruction = (medicineId: string) => {
@@ -119,9 +142,14 @@ export function ConfirmScheduleScreen() {
   };
 
   const handleConfirmSchedule = () => {
-    // TODO: Save medicines to schedule
-    console.log("Confirming schedule:", medicines);
-    router.replace("/(tabs)");
+    if (medicines.length === 0) {
+      Alert.alert(
+        "No Medicines",
+        "Please add at least one medicine to your schedule."
+      );
+      return;
+    }
+    bulkCreateMutation.mutate(medicines);
   };
 
   return (
@@ -173,7 +201,7 @@ export function ConfirmScheduleScreen() {
         </Text>
 
         {/* Medicine Cards */}
-        {medicines.map((medicine) => (
+        {displayMedicines.map((medicine) => (
           <MedicineCard
             key={medicine.id}
             id={medicine.id}
@@ -214,7 +242,12 @@ export function ConfirmScheduleScreen() {
 
       {/* Confirm Button */}
       <View className="absolute bottom-0 left-0 right-0 px-4 pb-8 pt-4 bg-background dark:bg-neutral-900">
-        <Button onPress={handleConfirmSchedule}>Confirm Schedule</Button>
+        <Button
+          onPress={handleConfirmSchedule}
+          isLoading={bulkCreateMutation.isPending}
+        >
+          Confirm Schedule
+        </Button>
       </View>
     </SafeAreaView>
   );

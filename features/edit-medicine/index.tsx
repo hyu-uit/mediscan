@@ -3,6 +3,7 @@ import { IntervalPicker, IntervalValue } from "@/components/interval-picker";
 import { Select } from "@/components/select";
 import { TextInput } from "@/components/text-input";
 import { TimePicker, TimeValue } from "@/components/time-picker";
+import { useScheduleStore } from "@/stores/schedule-store";
 import BottomSheet from "@gorhom/bottom-sheet";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { router, useLocalSearchParams } from "expo-router";
@@ -39,7 +40,6 @@ import {
   IntakeTimeTypeValue,
   IntervalUnitType,
   MedicineFormData,
-  MOCK_MEDICINE,
 } from "./types";
 import { formatTime, parseTime } from "./utils";
 
@@ -48,6 +48,10 @@ export function EditMedicineScreen() {
   const isDark = colorScheme === "dark";
   const params = useLocalSearchParams<{ id?: string }>();
   const isEditMode = !!params.id;
+
+  // Schedule store
+  const { addMedicine, updateMedicine, getMedicineById } = useScheduleStore();
+  const existingMedicine = isEditMode ? getMedicineById(params.id!) : undefined;
 
   // React Hook Form
   const {
@@ -58,7 +62,7 @@ export function EditMedicineScreen() {
     formState: { errors },
   } = useForm<MedicineFormData>({
     resolver: yupResolver(medicineFormSchema) as any,
-    defaultValues: isEditMode ? MOCK_MEDICINE : DEFAULT_FORM_DATA,
+    defaultValues: existingMedicine || DEFAULT_FORM_DATA,
   });
 
   // Watch form values for conditional rendering
@@ -97,7 +101,11 @@ export function EditMedicineScreen() {
 
   // Form submission
   const onSubmit = (data: MedicineFormData) => {
-    console.log("Saving medicine:", data);
+    if (isEditMode && params.id) {
+      updateMedicine(params.id, data);
+    } else {
+      addMedicine(data);
+    }
     router.back();
   };
 
