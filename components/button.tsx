@@ -1,4 +1,4 @@
-import { Text, TouchableOpacity, View } from "react-native";
+import { ActivityIndicator, Text, TouchableOpacity, View } from "react-native";
 
 type ButtonVariant = "primary" | "secondary" | "text" | "outline" | "danger";
 type ButtonSize = "sm" | "md" | "lg";
@@ -12,6 +12,7 @@ interface ButtonProps {
   fullWidth?: boolean;
   icon?: React.ReactNode;
   iconPosition?: "left" | "right";
+  isLoading?: boolean;
 }
 
 const variantStyles: Record<
@@ -65,9 +66,11 @@ export function Button({
   fullWidth = false,
   icon,
   iconPosition = "left",
+  isLoading = false,
 }: ButtonProps) {
   const variantStyle = variantStyles[variant];
   const sizeStyle = sizeStyles[size];
+  const indicatorColor = variant === "primary" ? "#171717" : "#4CD964";
 
   return (
     <TouchableOpacity
@@ -76,23 +79,29 @@ export function Button({
         ${sizeStyle.container}
         ${variantStyle.container}
         ${fullWidth ? "w-full" : ""}
-        ${disabled ? "opacity-50" : ""}
+        ${disabled || isLoading ? "opacity-50" : ""}
       `}
       onPress={onPress}
-      disabled={disabled}
+      disabled={disabled || isLoading}
       activeOpacity={0.8}
     >
-      {icon && iconPosition === "left" && <View>{icon}</View>}
-      <Text
-        className={`
-          font-poppins-semibold
-          ${sizeStyle.text}
-          ${variantStyle.text}
-        `}
-      >
-        {children}
-      </Text>
-      {icon && iconPosition === "right" && <View>{icon}</View>}
+      {isLoading ? (
+        <ActivityIndicator size="small" color={indicatorColor} />
+      ) : (
+        <>
+          {icon && iconPosition === "left" && <View>{icon}</View>}
+          <Text
+            className={`
+              font-poppins-semibold
+              ${sizeStyle.text}
+              ${variantStyle.text}
+            `}
+          >
+            {children}
+          </Text>
+          {icon && iconPosition === "right" && <View>{icon}</View>}
+        </>
+      )}
     </TouchableOpacity>
   );
 }

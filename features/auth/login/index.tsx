@@ -144,11 +144,11 @@ export function LoginScreen() {
               fullWidth
               size="lg"
               onPress={handleSubmit(onSubmit)}
-              disabled={loginMutation.isPending}
+              isLoading={loginMutation.isPending}
               icon={<ArrowRight size={20} color="#171717" />}
               iconPosition="right"
             >
-              {loginMutation.isPending ? "Signing in..." : "Login"}
+              Login
             </Button>
           </View>
 

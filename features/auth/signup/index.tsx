@@ -197,9 +197,9 @@ export function SignupScreen() {
             fullWidth
             size="lg"
             onPress={handleSubmit(onSubmit)}
-            disabled={registerMutation.isPending}
+            isLoading={registerMutation.isPending}
           >
-            {registerMutation.isPending ? "Creating account..." : "Sign Up"}
+            Sign Up
           </Button>
 
           {/* Divider */}
