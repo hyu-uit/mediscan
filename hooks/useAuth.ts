@@ -14,8 +14,7 @@ export function useRegister() {
     onSuccess: (data) => {
       setAuth(data.user, data.token);
       router.replace({
-        pathname: "/(onboarding)/camera-access",
-        params: { returning: "true" },
+        pathname: "/(auth)/login",
       });
     },
     onError: (error: Error) => {
@@ -33,8 +32,7 @@ export function useLogin() {
     onSuccess: (data) => {
       setAuth(data.user, data.token);
       router.replace({
-        pathname: "/(onboarding)/camera-access",
-        params: { returning: "true" },
+        pathname: "/(tabs)",
       });
     },
     onError: (error: Error) => {
