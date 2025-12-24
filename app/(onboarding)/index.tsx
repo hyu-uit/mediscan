@@ -9,8 +9,7 @@ export default function WelcomePage() {
   };
 
   const handleSignIn = () => {
-    // TODO: Navigate to sign-in screen
-    console.log("Sign In pressed");
+    router.push("/(auth)/login");
   };
 
   return (

@@ -1,8 +1,9 @@
 import { CameraAccessScreen } from "@/features/onboarding/camera-access";
-import { useRouter } from "expo-router";
+import { useLocalSearchParams, useRouter } from "expo-router";
 
 export default function CameraAccessPage() {
   const router = useRouter();
+  const { returning } = useLocalSearchParams<{ returning?: string }>();
 
   const handleBack = () => {
     router.back();
@@ -10,7 +11,11 @@ export default function CameraAccessPage() {
 
   const handleEnableCamera = () => {
     // TODO: Request camera permission
-    router.push("/(onboarding)/notification-access");
+    // Pass returning flag to next screen
+    router.push({
+      pathname: "/(onboarding)/notification-access",
+      params: returning ? { returning: "true" } : {},
+    });
   };
 
   const handleTypeManually = () => {
