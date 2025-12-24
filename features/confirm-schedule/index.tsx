@@ -1,8 +1,8 @@
 import { Button } from "@/components/button";
 import { MedicineCard } from "@/components/medicine-card";
-import { router } from "expo-router";
+import { router, useLocalSearchParams } from "expo-router";
 import { ChevronLeft, CircleHelp, Plus } from "lucide-react-native";
-import { useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import {
   ScrollView,
   Text,
@@ -12,34 +12,37 @@ import {
 } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 
-// Mock data for extracted medicines
-const INITIAL_MEDICINES = [
-  {
-    id: "1",
-    name: "Amoxicillin",
-    dosage: "500mg",
-    frequency: "3x Daily",
-    intakeTimes: [
-      { id: "1-1", time: "08:00 AM" },
-      { id: "1-2", time: "02:00 PM" },
-      { id: "1-3", time: "08:00 PM" },
-    ],
-    instructions: [{ id: "i1", text: "Take with food", icon: "food" as const }],
-  },
-  {
-    id: "2",
-    name: "Prednisone",
-    dosage: "10mg",
-    frequency: "1x Daily",
-    intakeTimes: [{ id: "2-1", time: "09:00 AM" }],
-    instructions: [],
-  },
-];
+// Medicine type for the schedule
+interface ScheduleMedicine {
+  id: string;
+  name: string;
+  dosage: string;
+  frequency: string;
+  intakeTimes: { id: string; time: string }[];
+  instructions: {
+    id: string;
+    text: string;
+    icon?: "food" | "default";
+  }[];
+}
 
 export function ConfirmScheduleScreen() {
   const colorScheme = useColorScheme();
   const isDark = colorScheme === "dark";
-  const [medicines, setMedicines] = useState(INITIAL_MEDICINES);
+  const params = useLocalSearchParams<{ openAddMedicine?: string }>();
+  const [medicines, setMedicines] = useState<ScheduleMedicine[]>([]);
+  const hasOpenedAddMedicine = useRef(false);
+
+  // Auto-open edit-medicine screen if openAddMedicine param is true
+  useEffect(() => {
+    if (params.openAddMedicine === "true" && !hasOpenedAddMedicine.current) {
+      hasOpenedAddMedicine.current = true;
+      // Use setTimeout to ensure the screen is mounted before navigating
+      setTimeout(() => {
+        router.push("/edit-medicine");
+      }, 100);
+    }
+  }, [params.openAddMedicine]);
 
   const handleBack = () => {
     router.back();
@@ -88,7 +91,9 @@ export function ConfirmScheduleScreen() {
         m.id === medicineId
           ? {
               ...m,
-              instructions: m.instructions.filter((i) => i.id !== instructionId),
+              instructions: m.instructions.filter(
+                (i) => i.id !== instructionId
+              ),
             }
           : m
       )
@@ -101,8 +106,7 @@ export function ConfirmScheduleScreen() {
   };
 
   const handleEditDetails = (medicineId: string) => {
-    // TODO: Navigate to edit medicine screen
-    console.log("Edit details:", medicineId);
+    router.push(`/edit-medicine?id=${medicineId}`);
   };
 
   const handleAddNote = (medicineId: string) => {
@@ -111,8 +115,7 @@ export function ConfirmScheduleScreen() {
   };
 
   const handleAddMedicineManually = () => {
-    // TODO: Navigate to add medicine screen
-    console.log("Add medicine manually");
+    router.push("/edit-medicine");
   };
 
   const handleConfirmSchedule = () => {
@@ -155,11 +158,18 @@ export function ConfirmScheduleScreen() {
       >
         {/* Summary */}
         <Text className="text-sm text-neutral-600 dark:text-neutral-400 font-poppins mb-4">
-          We extracted{" "}
-          <Text className="font-poppins-bold text-neutral-900 dark:text-neutral-100">
-            {medicines.length} medicines
-          </Text>{" "}
-          from your scan. Please verify the dosages and intake times below.
+          {medicines.length > 0 ? (
+            <>
+              You have{" "}
+              <Text className="font-poppins-bold text-neutral-900 dark:text-neutral-100">
+                {medicines.length} medicine{medicines.length > 1 ? "s" : ""}
+              </Text>{" "}
+              in your schedule. Please verify the dosages and intake times
+              below.
+            </>
+          ) : (
+            "Add medicines to your schedule by tapping the button below."
+          )}
         </Text>
 
         {/* Medicine Cards */}
@@ -209,4 +219,3 @@ export function ConfirmScheduleScreen() {
     </SafeAreaView>
   );
 }
-

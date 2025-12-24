@@ -19,7 +19,7 @@ const MOCK_SCHEDULE: {
     dosage: "500mg",
     instructions: "Take with food",
     time: "8:00 AM",
-    variant: "morning",
+    variant: "MORNING",
   },
   {
     id: "2",
@@ -27,7 +27,7 @@ const MOCK_SCHEDULE: {
     dosage: "1000IU",
     instructions: "Once daily",
     time: "12:00 PM",
-    variant: "noon",
+    variant: "NOON",
   },
 ];
 

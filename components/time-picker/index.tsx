@@ -33,6 +33,7 @@ interface TimePickerProps {
   onSave: (time: TimeValue) => void;
   initialTime?: TimeValue;
   title?: string;
+  lockedPeriod?: "AM" | "PM"; // Lock period to specific value (disables period selection)
 }
 
 export function TimePicker({
@@ -41,6 +42,7 @@ export function TimePicker({
   onSave,
   initialTime = { hour: "08", minute: "00", period: "AM" },
   title = "Edit Time",
+  lockedPeriod,
 }: TimePickerProps) {
   const bottomSheetRef = useRef<BottomSheet>(null);
   const snapPoints = useMemo(() => ["45%"], []);
@@ -56,9 +58,10 @@ export function TimePicker({
     if (isOpen) {
       setSelectedHour(initialTime.hour);
       setSelectedMinute(initialTime.minute);
-      setSelectedPeriod(initialTime.period);
+      // Use locked period if provided, otherwise use initial time period
+      setSelectedPeriod(lockedPeriod ?? initialTime.period);
     }
-  }, [isOpen, initialTime]);
+  }, [isOpen, initialTime, lockedPeriod]);
 
   // Handle open/close
   useEffect(() => {
@@ -157,11 +160,28 @@ export function TimePicker({
 
           {/* Period Column */}
           <View className="w-16 ml-2">
-            <TimeColumn
-              data={PERIODS}
-              selectedValue={selectedPeriod}
-              onValueChange={(value) => setSelectedPeriod(value as "AM" | "PM")}
-            />
+            {lockedPeriod ? (
+              // Show locked period as static text (matching TimeColumn styling)
+              <View className="h-[150px] overflow-hidden">
+                <View
+                  className="absolute left-0 right-0 bg-primary/10 rounded-xl"
+                  style={{ top: 50, height: 50 }}
+                />
+                <View className="h-full items-center justify-center">
+                  <Text className="text-2xl text-neutral-900 font-poppins-semibold">
+                    {lockedPeriod}
+                  </Text>
+                </View>
+              </View>
+            ) : (
+              <TimeColumn
+                data={PERIODS}
+                selectedValue={selectedPeriod}
+                onValueChange={(value) =>
+                  setSelectedPeriod(value as "AM" | "PM")
+                }
+              />
+            )}
           </View>
         </View>
 

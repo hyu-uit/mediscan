@@ -22,8 +22,8 @@ module.exports = {
           "afternoon-bg": "#E0F2FE",
           night: "#6366F1",
           "night-bg": "#EEF2FF",
-          "before-sleep": "#57534E",
-          "before-sleep-bg": "#F5F5F4",
+          "before-sleep": "#1E3A5F",
+          "before-sleep-bg": "#DBEAFE",
         },
       },
       fontFamily: {

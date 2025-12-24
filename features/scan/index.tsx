@@ -39,8 +39,7 @@ export function ScanScreen() {
   };
 
   const handleAddManually = () => {
-    // TODO: Navigate to manual entry screen
-    console.log("Add manually pressed");
+    router.push("/confirm-schedule?openAddMedicine=true");
   };
 
   return (

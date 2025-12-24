@@ -9,13 +9,13 @@ const tintColorLight = "#0a7ea4";
 const tintColorDark = "#fff";
 const primaryGreen = "#4CD964";
 
-// Time slot colors
+// Time slot colors (using API enum values)
 export const TimeSlotColors = {
-  morning: { color: "#EA580C", bgColor: "#FFEDD5" },
-  noon: { color: "#D97706", bgColor: "#FEF3C7" },
-  afternoon: { color: "#0EA5E9", bgColor: "#E0F2FE" },
-  night: { color: "#6366F1", bgColor: "#EEF2FF" },
-  "before-sleep": { color: "#57534E", bgColor: "#F5F5F4" },
+  MORNING: { color: "#EA580C", bgColor: "#FFEDD5" },
+  NOON: { color: "#D97706", bgColor: "#FEF3C7" },
+  AFTERNOON: { color: "#0EA5E9", bgColor: "#E0F2FE" },
+  NIGHT: { color: "#6366F1", bgColor: "#EEF2FF" },
+  BEFORE_SLEEP: { color: "#1E3A5F", bgColor: "#DBEAFE" },
 } as const;
 
 export type TimeSlotVariant = keyof typeof TimeSlotColors;

@@ -33,7 +33,7 @@ const INITIAL_SCHEDULE: ScheduleItemData[] = [
     instructions: "Take with food",
     time: "8:00 AM",
     period: "morning",
-    variant: "morning",
+    variant: "MORNING",
     status: "taken",
     takenAt: "8:15 AM",
   },
@@ -44,7 +44,7 @@ const INITIAL_SCHEDULE: ScheduleItemData[] = [
     instructions: "Once daily with lunch",
     time: "1:00 PM",
     period: "afternoon",
-    variant: "afternoon",
+    variant: "AFTERNOON",
     status: "pending",
   },
   {
@@ -54,7 +54,7 @@ const INITIAL_SCHEDULE: ScheduleItemData[] = [
     instructions: "Before bed",
     time: "9:00 PM",
     period: "evening",
-    variant: "night",
+    variant: "NIGHT",
     status: "upcoming",
   },
 ];
