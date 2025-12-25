@@ -1,27 +1,23 @@
 import { DosageUnitType } from "@/features/edit-medicine/types";
 
 /**
- * Created schedule item from API
+ * Schedule status enum
  */
-export interface CreatedScheduleResponse {
-  id: string;
-  medicationId: string;
-  name: string;
-}
+export const ScheduleStatus = {
+  CONFIRMED: "CONFIRMED",
+  SKIPPED: "SKIPPED",
+  PENDING: "PENDING",
+  UPCOMING: "UPCOMING",
+} as const;
+export type ScheduleStatusType =
+  (typeof ScheduleStatus)[keyof typeof ScheduleStatus];
 
 /**
- * Bulk create schedules response from API
+ * Schedule item from API
  */
-export interface BulkCreateSchedulesResponse {
-  schedules: CreatedScheduleResponse[];
-  count: number;
-}
-
-/**
- * Today schedule item from API
- */
-export interface TodayScheduleItemResponse {
+export interface ScheduleItemResponse {
   id: string;
+  logId: string | null;
   medicationId: string;
   medicationName: string;
   dosage: string;
@@ -30,13 +26,22 @@ export interface TodayScheduleItemResponse {
   time: string;
   timeSlot: string;
   isPassed: boolean;
+  status: ScheduleStatusType | null;
+  takenAt: string | null;
 }
 
 /**
  * Today schedules response from API
  */
 export interface TodaySchedulesResponse {
-  schedules: TodayScheduleItemResponse[];
+  schedules: ScheduleItemResponse[];
   totalCount: number;
   remainingCount: number;
+}
+
+/**
+ * Schedules by date response from API
+ */
+export interface SchedulesByDateResponse {
+  schedules: ScheduleItemResponse[];
 }

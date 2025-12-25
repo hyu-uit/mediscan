@@ -1,17 +1,16 @@
+import { ScheduleStatus, ScheduleStatusType } from "@/api/schedule";
 import { Badge } from "@/components/badge";
 import { Button } from "@/components/button";
 import { TimeSlotColors, TimeSlotVariant } from "@/constants/theme";
 import { Check, Pill } from "lucide-react-native";
 import { Text, View } from "react-native";
 
-export type ScheduleItemStatus = "taken" | "pending" | "upcoming";
-
 export interface ScheduleItemCardProps {
   name: string;
   dosage: string;
   instructions?: string;
   time: string;
-  status: ScheduleItemStatus;
+  status: ScheduleStatusType | null;
   takenAt?: string;
   variant: TimeSlotVariant;
   isNextPending?: boolean;
@@ -39,7 +38,7 @@ export function ScheduleItemCard({
   return (
     <View
       className={`bg-white dark:bg-neutral-800 rounded-2xl px-4 py-4 mb-3 shadow-xs overflow-hidden ${
-        status === "taken" ? "opacity-60" : ""
+        status !== ScheduleStatus.PENDING ? "opacity-40" : ""
       }`}
       style={
         isNextPending
@@ -49,7 +48,7 @@ export function ScheduleItemCard({
     >
       <View className="flex-row items-center">
         {/* Icon */}
-        {status === "taken" ? (
+        {status === ScheduleStatus.CONFIRMED ? (
           <View className="w-12 h-12 rounded-xl items-center justify-center mr-4 bg-primary/10">
             <Check size={24} color="#36EC37" />
           </View>
@@ -77,7 +76,7 @@ export function ScheduleItemCard({
           <Text className="text-sm text-neutral-500 dark:text-neutral-400 font-poppins mt-0.5">
             {dosageText}
           </Text>
-          {status === "taken" && takenAt && (
+          {status === ScheduleStatus.CONFIRMED && takenAt && (
             <Text className="text-xs text-green-500 font-poppins-medium mt-1">
               TAKEN AT {takenAt}
             </Text>
@@ -85,7 +84,7 @@ export function ScheduleItemCard({
         </View>
 
         {/* Time Badge */}
-        {status === "taken" ? (
+        {status === ScheduleStatus.CONFIRMED ? (
           <View className="px-3 py-1.5 rounded-full bg-primary-light">
             <Text className="text-sm font-poppins-semibold text-green-500">
               {time}
@@ -97,7 +96,7 @@ export function ScheduleItemCard({
       </View>
 
       {/* Action Buttons */}
-      {status === "pending" && (
+      {status === ScheduleStatus.PENDING && (
         <View className="flex-row mt-4 gap-3">
           <View className="flex-1">
             <Button variant="outline" size="md" onPress={onSkip}>

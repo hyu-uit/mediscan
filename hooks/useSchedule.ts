@@ -2,7 +2,11 @@ import { useMutation, useQuery } from "@tanstack/react-query";
 import { useRouter } from "expo-router";
 import { Alert } from "react-native";
 
-import { bulkCreateSchedules, getTodaySchedules } from "@/api/schedule";
+import {
+  bulkCreateSchedules,
+  getSchedulesByDate,
+  getTodaySchedules,
+} from "@/api/schedule";
 import { useScheduleStore } from "@/stores/schedule-store";
 
 export function useBulkCreateSchedules() {
@@ -25,5 +29,13 @@ export function useTodaySchedules() {
   return useQuery({
     queryKey: ["schedules", "today"],
     queryFn: getTodaySchedules,
+  });
+}
+
+export function useSchedulesByDate(date: string) {
+  return useQuery({
+    queryKey: ["schedules", "date", date],
+    queryFn: () => getSchedulesByDate(date),
+    enabled: !!date,
   });
 }

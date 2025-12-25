@@ -1,35 +1,12 @@
 import { BadgeVariant } from "@/components/badge";
+import { ScheduleStatusType } from "./schedule.response";
 
 /**
- * Created schedule DTO for app usage
+ * Schedule item DTO for app usage
  */
-export interface CreatedScheduleDto {
+export interface ScheduleItemDto {
   id: string;
-  medicationId: string;
-  name: string;
-}
-
-/**
- * Bulk create result DTO for app usage
- */
-export interface BulkCreateResultDto {
-  schedules: CreatedScheduleDto[];
-  count: number;
-}
-
-/**
- * Today schedule item DTO for app usage
- */
-export interface TodayScheduleDto {
-  id: string;
-  // medicationId: string;
-  // medicationName: string;
-  // dosage: string;
-  // unit: string;
-  // instructions: string;
-  // time: string;
-  // timeSlot: string;
-  // isPassed: boolean;
+  logId: string | null;
   name: string;
   dosage: string;
   unit: string;
@@ -37,13 +14,22 @@ export interface TodayScheduleDto {
   time: string;
   variant: BadgeVariant;
   isPassed: boolean;
+  status: ScheduleStatusType | null;
+  takenAt: string | null;
 }
 
 /**
  * Today schedules result DTO for app usage
  */
 export interface TodaySchedulesDto {
-  schedules: TodayScheduleDto[];
+  schedules: ScheduleItemDto[];
   totalCount: number;
   remainingCount: number;
+}
+
+/**
+ * Schedules by date result DTO for app usage
+ */
+export interface SchedulesByDateDto {
+  schedules: ScheduleItemDto[];
 }

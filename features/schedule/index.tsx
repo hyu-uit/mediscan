@@ -1,11 +1,9 @@
-import { DailyProgressCard } from "@/components/daily-progress-card";
+import { ScheduleItemDto, ScheduleStatusType } from "@/api/schedule";
 import { Header } from "@/components/header";
-import {
-  ScheduleItemCard,
-  ScheduleItemStatus,
-} from "@/components/schedule-item-card";
+import { ScheduleItemCard } from "@/components/schedule-item-card";
 import { WeekDaySelector } from "@/components/week-day-selector";
 import { TimeSlotVariant } from "@/constants/theme";
+import { useSchedulesByDate } from "@/hooks/useSchedule";
 import { useState } from "react";
 import { ScrollView, Text, View } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
@@ -20,78 +18,45 @@ interface ScheduleItemData {
   time: string;
   period: TimePeriod;
   variant: TimeSlotVariant;
-  status: ScheduleItemStatus;
+  status: ScheduleStatusType;
   takenAt?: string;
 }
-
-// Mock data for schedule
-const INITIAL_SCHEDULE: ScheduleItemData[] = [
-  {
-    id: "1",
-    name: "Amoxicillin",
-    dosage: "500mg",
-    instructions: "Take with food",
-    time: "8:00 AM",
-    period: "morning",
-    variant: "MORNING",
-    status: "taken",
-    takenAt: "8:15 AM",
-  },
-  {
-    id: "2",
-    name: "Vitamin D",
-    dosage: "1000IU",
-    instructions: "Once daily with lunch",
-    time: "1:00 PM",
-    period: "afternoon",
-    variant: "AFTERNOON",
-    status: "pending",
-  },
-  {
-    id: "3",
-    name: "Atorvastatin",
-    dosage: "20mg",
-    instructions: "Before bed",
-    time: "9:00 PM",
-    period: "evening",
-    variant: "NIGHT",
-    status: "upcoming",
-  },
-];
 
 interface ScheduleScreenProps {
   onNotificationPress?: () => void;
 }
 
-export function ScheduleScreen({ onNotificationPress }: ScheduleScreenProps) {
+export function ScheduleScreen() {
   const [selectedDate, setSelectedDate] = useState(new Date());
-  const [schedule, setSchedule] = useState(INITIAL_SCHEDULE);
+  // const [schedule, setSchedule] = useState(INITIAL_SCHEDULE);
 
-  const dosesTaken = schedule.filter((item) => item.status === "taken").length;
-  const totalDoses = schedule.length;
+  const { data: schedules } = useSchedulesByDate(selectedDate.toISOString());
 
-  // Find the first non-completed item (pending or upcoming)
-  const firstPendingId = schedule.find(
-    (item) => item.status === "pending" || item.status === "upcoming"
-  )?.id;
+  // const dosesTaken = schedule.filter((item) => item.status === "taken").length;
+  // const totalDoses = schedule.length;
 
-  const handleTakeNow = (id: string) => {
-    setSchedule((prev) =>
-      prev.map((item) =>
-        item.id === id
-          ? {
-              ...item,
-              status: "taken" as ScheduleItemStatus,
-              takenAt: new Date().toLocaleTimeString("en-US", {
-                hour: "numeric",
-                minute: "2-digit",
-                hour12: true,
-              }),
-            }
-          : item
-      )
-    );
-  };
+  // // Find the first non-completed item (pending or upcoming)
+  // const firstPendingId = schedule.find(
+  //   (item) => item.status === "pending" || item.status === "upcoming"
+  // )?.id;
+
+  // const handleTakeNow = (id: string) => {
+  //   setSchedule((prev) =>
+  //     prev.map((item) =>
+  //       item.id === id
+  //         ? {
+  //             ...item,
+  //             status: "taken" as ScheduleItemStatus,
+  //             takenAt: new Date().toLocaleTimeString("en-US", {
+  //               hour: "numeric",
+  //               minute: "2-digit",
+  //               hour12: true,
+  //             }),
+  //           }
+  //         : item
+  //     )
+  //   );
+  // };
 
   const handleSkip = (id: string) => {
     // For now, just log - in real app would mark as skipped
@@ -99,15 +64,27 @@ export function ScheduleScreen({ onNotificationPress }: ScheduleScreenProps) {
   };
 
   const handleMarkAsTaken = (id: string) => {
-    handleTakeNow(id);
+    // handleTakeNow(id);
   };
 
   // Group schedule items by period
-  const morningItems = schedule.filter((item) => item.period === "morning");
-  const afternoonItems = schedule.filter((item) => item.period === "afternoon");
-  const eveningItems = schedule.filter((item) => item.period === "evening");
+  const morningItems = schedules?.schedules.filter(
+    (item) => item.variant === "MORNING"
+  );
+  const noonItems = schedules?.schedules.filter(
+    (item) => item.variant === "NOON"
+  );
+  const afternoonItems = schedules?.schedules.filter(
+    (item) => item.variant === "AFTERNOON"
+  );
+  const eveningItems = schedules?.schedules.filter(
+    (item) => item.variant === "NIGHT"
+  );
+  const beforeSleepItems = schedules?.schedules.filter(
+    (item) => item.variant === "BEFORE_SLEEP"
+  );
 
-  const renderSection = (title: string, items: ScheduleItemData[]) => {
+  const renderSection = (title: string, items: ScheduleItemDto[]) => {
     if (items.length === 0) return null;
 
     return (
@@ -123,10 +100,10 @@ export function ScheduleScreen({ onNotificationPress }: ScheduleScreenProps) {
             instructions={item.instructions}
             time={item.time}
             status={item.status}
-            takenAt={item.takenAt}
+            takenAt={""}
             variant={item.variant}
-            isNextPending={item.id === firstPendingId}
-            onTakeNow={() => handleTakeNow(item.id)}
+            isNextPending={false}
+            // onTakeNow={() => handleTakeNow(item.id)}
             onSkip={() => handleSkip(item.id)}
             onMarkAsTaken={() => handleMarkAsTaken(item.id)}
           />
@@ -155,13 +132,15 @@ export function ScheduleScreen({ onNotificationPress }: ScheduleScreenProps) {
         />
 
         {/* Daily Progress Card */}
-        <DailyProgressCard dosesTaken={dosesTaken} totalDoses={totalDoses} />
+        {/* <DailyProgressCard dosesTaken={dosesTaken} totalDoses={totalDoses} /> */}
 
         {/* Schedule Sections */}
         <View className="px-6">
-          {renderSection("Morning", morningItems)}
-          {renderSection("Afternoon", afternoonItems)}
-          {renderSection("Evening", eveningItems)}
+          {renderSection("Morning", morningItems || [])}
+          {renderSection("Noon", noonItems || [])}
+          {renderSection("Afternoon", afternoonItems || [])}
+          {renderSection("Evening", eveningItems || [])}
+          {renderSection("Before Sleep", beforeSleepItems || [])}
         </View>
       </ScrollView>
     </SafeAreaView>

@@ -1,9 +1,8 @@
 import { BadgeVariant } from "@/components/badge";
 import { ScheduleMedicine } from "@/stores/schedule-store";
 import {
-  BulkCreateResultDto,
-  CreatedScheduleDto,
-  TodayScheduleDto,
+  ScheduleItemDto,
+  SchedulesByDateDto,
   TodaySchedulesDto,
 } from "./schedule.dto";
 import {
@@ -12,9 +11,8 @@ import {
   MedicationRequest,
 } from "./schedule.request";
 import {
-  BulkCreateSchedulesResponse,
-  CreatedScheduleResponse,
-  TodayScheduleItemResponse,
+  ScheduleItemResponse,
+  SchedulesByDateResponse,
   TodaySchedulesResponse,
 } from "./schedule.response";
 
@@ -65,38 +63,14 @@ export function toBulkCreateRequest(
 // ============================================
 
 /**
- * Convert CreatedScheduleResponse to CreatedScheduleDto
+ * Convert ScheduleItemResponse to ScheduleItemDto
  */
-export function toCreatedScheduleDto(
-  response: CreatedScheduleResponse
-): CreatedScheduleDto {
+export function toScheduleItemDto(
+  response: ScheduleItemResponse
+): ScheduleItemDto {
   return {
     id: response.id,
-    medicationId: response.medicationId,
-    name: response.name,
-  };
-}
-
-/**
- * Convert BulkCreateSchedulesResponse to BulkCreateResultDto
- */
-export function toBulkCreateResultDto(
-  response: BulkCreateSchedulesResponse
-): BulkCreateResultDto {
-  return {
-    schedules: response.schedules.map(toCreatedScheduleDto),
-    count: response.count,
-  };
-}
-
-/**
- * Convert TodayScheduleItemResponse to TodayScheduleDto
- */
-export function toTodayScheduleDto(
-  response: TodayScheduleItemResponse
-): TodayScheduleDto {
-  return {
-    id: response.id,
+    logId: response.logId,
     name: response.medicationName,
     dosage: response.dosage,
     unit: response.unit.toLowerCase(),
@@ -104,6 +78,8 @@ export function toTodayScheduleDto(
     time: response.time,
     variant: response.timeSlot as BadgeVariant,
     isPassed: response.isPassed,
+    status: response.status,
+    takenAt: response.takenAt,
   };
 }
 
@@ -114,8 +90,19 @@ export function toTodaySchedulesDto(
   response: TodaySchedulesResponse
 ): TodaySchedulesDto {
   return {
-    schedules: response.schedules.map(toTodayScheduleDto),
+    schedules: response.schedules.map(toScheduleItemDto),
     totalCount: response.totalCount,
     remainingCount: response.remainingCount,
+  };
+}
+
+/**
+ * Convert SchedulesByDateResponse to SchedulesByDateDto
+ */
+export function toSchedulesByDateDto(
+  response: SchedulesByDateResponse
+): SchedulesByDateDto {
+  return {
+    schedules: response.schedules.map(toScheduleItemDto),
   };
 }

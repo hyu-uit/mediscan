@@ -1,14 +1,14 @@
 import { ScheduleMedicine } from "@/stores/schedule-store";
 import { apiClient } from "../api.client";
 import { ApiResponse } from "../api.types";
-import { BulkCreateResultDto, TodaySchedulesDto } from "./schedule.dto";
+import { SchedulesByDateDto, TodaySchedulesDto } from "./schedule.dto";
 import {
-  BulkCreateSchedulesResponse,
+  SchedulesByDateResponse,
   TodaySchedulesResponse,
 } from "./schedule.response";
 import {
   toBulkCreateRequest,
-  toBulkCreateResultDto,
+  toSchedulesByDateDto,
   toTodaySchedulesDto,
 } from "./schedule.service";
 
@@ -17,14 +17,9 @@ import {
  */
 export async function bulkCreateSchedules(
   medications: ScheduleMedicine[]
-): Promise<BulkCreateResultDto> {
+): Promise<void> {
   const request = toBulkCreateRequest(medications);
-
-  const response = await apiClient.post<
-    ApiResponse<BulkCreateSchedulesResponse>
-  >("/api/schedules/bulk", request);
-
-  return toBulkCreateResultDto(response.data.data);
+  await apiClient.post("/api/schedules/bulk", request);
 }
 
 /**
@@ -36,4 +31,18 @@ export async function getTodaySchedules(): Promise<TodaySchedulesDto> {
   );
 
   return toTodaySchedulesDto(response.data.data);
+}
+
+/**
+ * Get schedules by date
+ * @param date - Date in YYYY-MM-DD format
+ */
+export async function getSchedulesByDate(
+  date: string
+): Promise<SchedulesByDateDto> {
+  const response = await apiClient.get<ApiResponse<SchedulesByDateResponse>>(
+    `/api/schedules/date/${date}`
+  );
+
+  return toSchedulesByDateDto(response.data.data);
 }
