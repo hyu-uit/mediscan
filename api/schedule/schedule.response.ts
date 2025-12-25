@@ -7,7 +7,7 @@ export const ScheduleStatus = {
   CONFIRMED: "CONFIRMED",
   SKIPPED: "SKIPPED",
   PENDING: "PENDING",
-  UPCOMING: "UPCOMING",
+  MISSED: "MISSED",
 } as const;
 export type ScheduleStatusType =
   (typeof ScheduleStatus)[keyof typeof ScheduleStatus];

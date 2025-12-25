@@ -1,5 +1,6 @@
 import { BadgeVariant } from "@/components/badge";
 import { ScheduleMedicine } from "@/stores/schedule-store";
+import { formatTime } from "@/utils/date";
 import {
   ScheduleItemDto,
   SchedulesByDateDto,
@@ -65,8 +66,9 @@ export function toBulkCreateRequest(
 /**
  * Convert ScheduleItemResponse to ScheduleItemDto
  */
-export function toScheduleItemDto(
-  response: ScheduleItemResponse
+function toScheduleItemDto(
+  response: ScheduleItemResponse,
+  isUpcoming: boolean = false
 ): ScheduleItemDto {
   return {
     id: response.id,
@@ -79,8 +81,37 @@ export function toScheduleItemDto(
     variant: response.timeSlot as BadgeVariant,
     isPassed: response.isPassed,
     status: response.status,
-    takenAt: response.takenAt,
+    takenAt: response.takenAt ? formatTime(response.takenAt) : null,
+    isUpcoming,
   };
+}
+
+/**
+ * Convert array of ScheduleItemResponse to ScheduleItemDto[]
+ * Sets isUpcoming = true for only the first PENDING item after a non-PENDING item
+ */
+function toScheduleItemDtoList(
+  responses: ScheduleItemResponse[]
+): ScheduleItemDto[] {
+  let foundUpcoming = false;
+
+  return responses.map((response, index) => {
+    if (foundUpcoming) {
+      return toScheduleItemDto(response, false);
+    }
+
+    const isPending = response.status === "PENDING";
+    const prevNotPending =
+      index === 0 || responses[index - 1].status !== "PENDING";
+
+    const isUpcoming = isPending && prevNotPending;
+
+    if (isUpcoming) {
+      foundUpcoming = true;
+    }
+
+    return toScheduleItemDto(response, isUpcoming);
+  });
 }
 
 /**
@@ -90,7 +121,7 @@ export function toTodaySchedulesDto(
   response: TodaySchedulesResponse
 ): TodaySchedulesDto {
   return {
-    schedules: response.schedules.map(toScheduleItemDto),
+    schedules: toScheduleItemDtoList(response.schedules),
     totalCount: response.totalCount,
     remainingCount: response.remainingCount,
   };
@@ -103,6 +134,6 @@ export function toSchedulesByDateDto(
   response: SchedulesByDateResponse
 ): SchedulesByDateDto {
   return {
-    schedules: response.schedules.map(toScheduleItemDto),
+    schedules: toScheduleItemDtoList(response.schedules),
   };
 }

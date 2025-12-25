@@ -2,7 +2,7 @@ import { ScheduleStatus, ScheduleStatusType } from "@/api/schedule";
 import { Badge } from "@/components/badge";
 import { Button } from "@/components/button";
 import { TimeSlotColors, TimeSlotVariant } from "@/constants/theme";
-import { Check, Pill } from "lucide-react-native";
+import { AlertCircle, Check, Minus, Pill } from "lucide-react-native";
 import { Text, View } from "react-native";
 
 export interface ScheduleItemCardProps {
@@ -13,10 +13,11 @@ export interface ScheduleItemCardProps {
   status: ScheduleStatusType | null;
   takenAt?: string;
   variant: TimeSlotVariant;
-  isNextPending?: boolean;
+  isUpcoming?: boolean;
   onTakeNow?: () => void;
   onSkip?: () => void;
-  onMarkAsTaken?: () => void;
+  isMarkingAsTaken?: boolean;
+  isSkippingMedication?: boolean;
 }
 
 export function ScheduleItemCard({
@@ -27,10 +28,11 @@ export function ScheduleItemCard({
   status,
   takenAt,
   variant,
-  isNextPending = false,
+  isUpcoming = false,
   onTakeNow,
   onSkip,
-  onMarkAsTaken,
+  isMarkingAsTaken = false,
+  isSkippingMedication = false,
 }: ScheduleItemCardProps) {
   const dosageText = instructions ? `${dosage} • ${instructions}` : dosage;
   const { color, bgColor } = TimeSlotColors[variant];
@@ -38,19 +40,25 @@ export function ScheduleItemCard({
   return (
     <View
       className={`bg-white dark:bg-neutral-800 rounded-2xl px-4 py-4 mb-3 shadow-xs overflow-hidden ${
-        status !== ScheduleStatus.PENDING ? "opacity-40" : ""
+        status !== ScheduleStatus.PENDING ? "opacity-60" : ""
       }`}
       style={
-        isNextPending
-          ? { borderLeftWidth: 4, borderLeftColor: color }
-          : undefined
+        isUpcoming ? { borderLeftWidth: 4, borderLeftColor: color } : undefined
       }
     >
       <View className="flex-row items-center">
         {/* Icon */}
         {status === ScheduleStatus.CONFIRMED ? (
-          <View className="w-12 h-12 rounded-xl items-center justify-center mr-4 bg-primary/10">
-            <Check size={24} color="#36EC37" />
+          <View className="w-12 h-12 rounded-xl items-center justify-center mr-4 bg-green-500/10">
+            <Check size={24} color="#22C55E" />
+          </View>
+        ) : status === ScheduleStatus.MISSED ? (
+          <View className="w-12 h-12 rounded-xl items-center justify-center mr-4 bg-red-500/10">
+            <AlertCircle size={24} color="#EF4444" />
+          </View>
+        ) : status === ScheduleStatus.SKIPPED ? (
+          <View className="w-12 h-12 rounded-xl items-center justify-center mr-4 bg-neutral-400/10">
+            <Minus size={24} color="#9CA3AF" />
           </View>
         ) : (
           <View
@@ -64,29 +72,59 @@ export function ScheduleItemCard({
         {/* Content */}
         <View className="flex-1">
           <Text
-            className="text-base text-neutral-500 dark:text-neutral-100 font-poppins-semibold"
-            style={{
-              textDecorationStyle: "solid",
-              textDecorationColor: "#687076",
-              textDecorationLine: "line-through",
-            }}
+            className={`text-xl font-poppins-bold ${
+              status !== ScheduleStatus.PENDING
+                ? "text-neutral-400"
+                : "text-neutral-900 dark:text-neutral-100"
+            }`}
+            style={
+              status !== ScheduleStatus.PENDING
+                ? {
+                    textDecorationStyle: "solid",
+                    textDecorationColor: "#687076",
+                    textDecorationLine: "line-through",
+                  }
+                : undefined
+            }
           >
             {name}
           </Text>
-          <Text className="text-sm text-neutral-500 dark:text-neutral-400 font-poppins mt-0.5">
+          <Text className="text-sm text-neutral-400 dark:text-neutral-400 font-poppins-medium mt-1">
             {dosageText}
           </Text>
           {status === ScheduleStatus.CONFIRMED && takenAt && (
-            <Text className="text-xs text-green-500 font-poppins-medium mt-1">
-              TAKEN AT {takenAt}
+            <Text className="text-xs text-green-500 font-poppins-semibold mt-1">
+              • TAKEN AT {takenAt}
+            </Text>
+          )}
+          {status === ScheduleStatus.MISSED && (
+            <Text className="text-xs text-red-500 font-poppins-semibold mt-1">
+              • MISSED
+            </Text>
+          )}
+          {status === ScheduleStatus.SKIPPED && (
+            <Text className="text-xs text-neutral-400 font-poppins-semibold mt-1">
+              • SKIPPED
             </Text>
           )}
         </View>
 
         {/* Time Badge */}
         {status === ScheduleStatus.CONFIRMED ? (
-          <View className="px-3 py-1.5 rounded-full bg-primary-light">
+          <View className="px-3 py-1.5 rounded-full bg-green-500/10">
             <Text className="text-sm font-poppins-semibold text-green-500">
+              {time}
+            </Text>
+          </View>
+        ) : status === ScheduleStatus.MISSED ? (
+          <View className="px-3 py-1.5 rounded-full bg-red-500/10">
+            <Text className="text-sm font-poppins-semibold text-red-500">
+              {time}
+            </Text>
+          </View>
+        ) : status === ScheduleStatus.SKIPPED ? (
+          <View className="px-3 py-1.5 rounded-full bg-neutral-400/10">
+            <Text className="text-sm font-poppins-semibold text-neutral-400">
               {time}
             </Text>
           </View>
@@ -96,10 +134,15 @@ export function ScheduleItemCard({
       </View>
 
       {/* Action Buttons */}
-      {status === ScheduleStatus.PENDING && (
+      {status === ScheduleStatus.PENDING && isUpcoming && (
         <View className="flex-row mt-4 gap-3">
           <View className="flex-1">
-            <Button variant="outline" size="md" onPress={onSkip}>
+            <Button
+              variant="outline"
+              size="md"
+              onPress={onSkip}
+              isLoading={isSkippingMedication}
+            >
               Skip
             </Button>
           </View>
@@ -109,6 +152,7 @@ export function ScheduleItemCard({
               size="md"
               icon={<Check size={18} color="#171717" />}
               onPress={onTakeNow}
+              isLoading={isMarkingAsTaken}
             >
               Take Now
             </Button>

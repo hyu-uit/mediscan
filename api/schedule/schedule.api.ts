@@ -46,3 +46,11 @@ export async function getSchedulesByDate(
 
   return toSchedulesByDateDto(response.data.data);
 }
+
+export async function markAsTaken(logId: string): Promise<void> {
+  await apiClient.post(`/api/medication-logs/${logId}/taken`);
+}
+
+export async function skipMedication(logId: string): Promise<void> {
+  await apiClient.post(`/api/medication-logs/${logId}/skip`);
+}

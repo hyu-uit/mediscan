@@ -3,7 +3,11 @@ import { Header } from "@/components/header";
 import { ScheduleItemCard } from "@/components/schedule-item-card";
 import { WeekDaySelector } from "@/components/week-day-selector";
 import { TimeSlotVariant } from "@/constants/theme";
-import { useSchedulesByDate } from "@/hooks/useSchedule";
+import {
+  useMarkAsTaken,
+  useSchedulesByDate,
+  useSkipMedication,
+} from "@/hooks/useSchedule";
 import { useState } from "react";
 import { ScrollView, Text, View } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
@@ -28,43 +32,21 @@ interface ScheduleScreenProps {
 
 export function ScheduleScreen() {
   const [selectedDate, setSelectedDate] = useState(new Date());
-  // const [schedule, setSchedule] = useState(INITIAL_SCHEDULE);
 
   const { data: schedules } = useSchedulesByDate(selectedDate.toISOString());
 
-  // const dosesTaken = schedule.filter((item) => item.status === "taken").length;
-  // const totalDoses = schedule.length;
+  console.log("AAA", schedules);
 
-  // // Find the first non-completed item (pending or upcoming)
-  // const firstPendingId = schedule.find(
-  //   (item) => item.status === "pending" || item.status === "upcoming"
-  // )?.id;
+  const { mutate: markAsTaken, isPending: isMarkingAsTaken } = useMarkAsTaken();
+  const { mutate: skipMedication, isPending: isSkippingMedication } =
+    useSkipMedication();
 
-  // const handleTakeNow = (id: string) => {
-  //   setSchedule((prev) =>
-  //     prev.map((item) =>
-  //       item.id === id
-  //         ? {
-  //             ...item,
-  //             status: "taken" as ScheduleItemStatus,
-  //             takenAt: new Date().toLocaleTimeString("en-US", {
-  //               hour: "numeric",
-  //               minute: "2-digit",
-  //               hour12: true,
-  //             }),
-  //           }
-  //         : item
-  //     )
-  //   );
-  // };
-
-  const handleSkip = (id: string) => {
-    // For now, just log - in real app would mark as skipped
-    console.log("Skipped:", id);
+  const handleSkip = (logId: string) => {
+    skipMedication(logId);
   };
 
-  const handleMarkAsTaken = (id: string) => {
-    // handleTakeNow(id);
+  const handleMarkAsTaken = (logId: string) => {
+    markAsTaken(logId);
   };
 
   // Group schedule items by period
@@ -100,12 +82,21 @@ export function ScheduleScreen() {
             instructions={item.instructions}
             time={item.time}
             status={item.status}
-            takenAt={""}
+            takenAt={item.takenAt ?? ""}
             variant={item.variant}
-            isNextPending={false}
-            // onTakeNow={() => handleTakeNow(item.id)}
-            onSkip={() => handleSkip(item.id)}
-            onMarkAsTaken={() => handleMarkAsTaken(item.id)}
+            isUpcoming={item.isUpcoming}
+            onSkip={() => {
+              if (item.logId) {
+                handleSkip(item.logId);
+              }
+            }}
+            onTakeNow={() => {
+              if (item.logId) {
+                handleMarkAsTaken(item.logId);
+              }
+            }}
+            isMarkingAsTaken={isMarkingAsTaken}
+            isSkippingMedication={isSkippingMedication}
           />
         ))}
       </View>

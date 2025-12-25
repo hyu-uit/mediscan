@@ -16,6 +16,7 @@ export interface ScheduleItemDto {
   isPassed: boolean;
   status: ScheduleStatusType | null;
   takenAt: string | null;
+  isUpcoming?: boolean;
 }
 
 /**

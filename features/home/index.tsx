@@ -47,6 +47,8 @@ export function HomeScreen({ onNotificationPress }: HomeScreenProps) {
               instructions={item.instructions}
               time={item.time}
               variant={item.variant}
+              isUpcoming={item.isUpcoming}
+              status={item.status}
             />
           ))}
         </View>

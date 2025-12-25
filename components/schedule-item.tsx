@@ -1,3 +1,4 @@
+import { ScheduleStatus, ScheduleStatusType } from "@/api/schedule";
 import { Badge, BadgeVariant } from "@/components/badge";
 import { TimeSlotColors } from "@/constants/theme";
 import { Pill } from "lucide-react-native";
@@ -10,6 +11,8 @@ export interface ScheduleItemProps {
   instructions?: string;
   time: string;
   variant: BadgeVariant;
+  isUpcoming?: boolean;
+  status: ScheduleStatusType | null;
 }
 
 export function ScheduleItem({
@@ -19,6 +22,8 @@ export function ScheduleItem({
   instructions,
   time,
   variant,
+  isUpcoming = false,
+  status,
 }: ScheduleItemProps) {
   const dosageText = instructions
     ? `${dosage} ${unit} • ${instructions}`
@@ -26,7 +31,11 @@ export function ScheduleItem({
   const { color, bgColor } = TimeSlotColors[variant];
 
   return (
-    <View className="flex-row items-center bg-white dark:bg-neutral-800 rounded-2xl px-4 py-4 mb-3 shadow-xs">
+    <View
+      className={`flex-row items-center bg-white dark:bg-neutral-800 rounded-2xl px-4 py-4 mb-3 shadow-xs ${
+        status !== ScheduleStatus.PENDING ? "opacity-60" : ""
+      }`}
+    >
       {/* Icon */}
       <View
         className="w-12 h-12 rounded-xl items-center justify-center mr-4"
@@ -37,10 +46,21 @@ export function ScheduleItem({
 
       {/* Content */}
       <View className="flex-1">
-        <Text className="text-base text-neutral-900 dark:text-neutral-100 font-poppins-semibold">
+        <Text
+          style={
+            status !== ScheduleStatus.PENDING
+              ? {
+                  textDecorationStyle: "solid",
+                  textDecorationColor: "#687076",
+                  textDecorationLine: "line-through",
+                }
+              : undefined
+          }
+          className="text-xl text-neutral-900 dark:text-neutral-100 font-poppins-bold"
+        >
           {name}
         </Text>
-        <Text className="text-sm text-neutral-500 dark:text-neutral-400 font-poppins mt-0.5">
+        <Text className="text-sm text-neutral-400 dark:text-neutral-400 font-poppins-medium mt-1">
           {dosageText}
         </Text>
       </View>
