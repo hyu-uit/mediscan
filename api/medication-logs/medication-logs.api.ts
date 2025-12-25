@@ -1,11 +1,15 @@
 import { apiClient } from "../api.client";
 import { ApiResponse } from "../api.types";
-import { MedicationLogsStatsDto } from "./medication-logs.dto";
+import { HistoryDto, MedicationLogsStatsDto } from "./medication-logs.dto";
 import {
+  HistoryResponse,
   MedicationLogsStatsResponse,
   StatsPeriodType,
 } from "./medication-logs.response";
-import { toMedicationLogsStatsDto } from "./medication-logs.service";
+import {
+  toHistoryDto,
+  toMedicationLogsStatsDto,
+} from "./medication-logs.service";
 
 /**
  * Get medication logs stats
@@ -21,4 +25,21 @@ export async function getMedicationLogsStats(
   });
 
   return toMedicationLogsStatsDto(response.data.data);
+}
+
+/**
+ * Get medication logs history
+ * @param period - History period (daily, weekly, monthly)
+ */
+export async function getMedicationLogsHistory(
+  period: StatsPeriodType
+): Promise<HistoryDto> {
+  const response = await apiClient.get<ApiResponse<HistoryResponse>>(
+    "/api/medication-logs/history",
+    {
+      params: { period },
+    }
+  );
+
+  return toHistoryDto(response.data.data);
 }

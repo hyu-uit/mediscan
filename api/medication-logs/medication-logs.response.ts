@@ -24,3 +24,31 @@ export interface MedicationLogsStatsResponse {
   periodStart: string;
   periodEnd: string;
 }
+
+/**
+ * History log item from API
+ */
+export interface HistoryLogItemResponse {
+  id: string;
+  logId: string | null;
+  medicationId: string;
+  medicationName: string;
+  dosage: string;
+  unit: string;
+  instructions: string | null;
+  scheduledDate: string;
+  time: string;
+  timeSlot: string;
+  status: string;
+  takenAt: string | null;
+}
+
+/**
+ * History response from API
+ */
+export interface HistoryResponse {
+  period: StatsPeriodType;
+  periodStart: string;
+  periodEnd: string;
+  logs: HistoryLogItemResponse[];
+}

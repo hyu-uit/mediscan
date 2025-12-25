@@ -1,4 +1,4 @@
-import { Pill, X } from "lucide-react-native";
+import { Clock, Minus, Pill, X } from "lucide-react-native";
 import { Text, useColorScheme, View } from "react-native";
 
 export type HistoryStatus = "confirmed" | "missed" | "late";
@@ -6,13 +6,16 @@ export type HistoryStatus = "confirmed" | "missed" | "late";
 export interface HistoryItemProps {
   name: string;
   dosage: string;
-  time: string;
+  unit: string;
+  instructions: string | null;
+  scheduledAt: string;
+  takenAt: string | null;
   status: HistoryStatus;
   isLast?: boolean;
 }
 
 const STATUS_CONFIG = {
-  confirmed: {
+  CONFIRMED: {
     label: "CONFIRMED",
     badgeBg: "bg-green-100 dark:bg-green-900/30",
     badgeText: "text-green-600 dark:text-green-400",
@@ -22,7 +25,7 @@ const STATUS_CONFIG = {
     Icon: Pill,
     timePrefix: "Taken at",
   },
-  missed: {
+  MISSED: {
     label: "MISSED",
     badgeBg: "bg-red-100 dark:bg-red-900/30",
     badgeText: "text-red-600 dark:text-red-400",
@@ -32,7 +35,7 @@ const STATUS_CONFIG = {
     Icon: X,
     timePrefix: "Scheduled",
   },
-  late: {
+  LATE: {
     label: "LATE",
     badgeBg: "bg-amber-100 dark:bg-amber-900/30",
     badgeText: "text-amber-600 dark:text-amber-400",
@@ -42,16 +45,37 @@ const STATUS_CONFIG = {
     Icon: Pill,
     timePrefix: "Taken at",
   },
+  SKIPPED: {
+    label: "SKIPPED",
+    badgeBg: "bg-neutral-100 dark:bg-neutral-900/30",
+    badgeText: "text-neutral-600 dark:text-neutral-400",
+    iconBg: "#F3F4F6",
+    iconBgDark: "rgba(107, 114, 128, 0.2)",
+    iconColor: "#6B7280",
+    Icon: Minus,
+  },
+  PENDING: {
+    label: "PENDING",
+    badgeBg: "bg-neutral-100 dark:bg-neutral-900/30",
+    badgeText: "text-neutral-600 dark:text-neutral-400",
+    iconBg: "#F3F4F6",
+    iconBgDark: "rgba(107, 114, 128, 0.2)",
+    iconColor: "#6B7280",
+    Icon: Clock,
+  },
 } as const;
 
 export function HistoryItem({
   name,
   dosage,
-  time,
+  unit,
+  instructions,
+  scheduledAt,
+  takenAt,
   status,
   isLast = false,
 }: HistoryItemProps) {
-  const config = STATUS_CONFIG[status];
+  const config = STATUS_CONFIG[status as keyof typeof STATUS_CONFIG];
   const IconComponent = config.Icon;
   const colorScheme = useColorScheme();
   const isDark = colorScheme === "dark";
@@ -87,8 +111,20 @@ export function HistoryItem({
             {name}
           </Text>
           <Text className="text-sm text-neutral-500 dark:text-neutral-400 font-poppins mt-0.5">
-            {dosage} • {config.timePrefix} {time}
+            {dosage} {unit} • {instructions}
           </Text>
+          {scheduledAt && (
+            <Text className="text-sm text-neutral-500 dark:text-neutral-400 font-poppins mt-0.5">
+              • Scheduled at{" "}
+              <Text className="font-poppins-semibold">{scheduledAt}</Text>
+            </Text>
+          )}
+          {takenAt && (
+            <Text className="text-sm text-neutral-500 dark:text-neutral-400 font-poppins mt-0.5">
+              • Taken at{" "}
+              <Text className="font-poppins-semibold">{takenAt}</Text>
+            </Text>
+          )}
         </View>
 
         {/* Status Badge */}
