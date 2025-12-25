@@ -35,8 +35,6 @@ export function ScheduleScreen() {
 
   const { data: schedules } = useSchedulesByDate(selectedDate.toISOString());
 
-  console.log("AAA", schedules);
-
   const { mutate: markAsTaken, isPending: isMarkingAsTaken } = useMarkAsTaken();
   const { mutate: skipMedication, isPending: isSkippingMedication } =
     useSkipMedication();

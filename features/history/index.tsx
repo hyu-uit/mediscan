@@ -1,9 +1,11 @@
+import { StatsPeriodType } from "@/api/medication-logs";
 import { AdherenceCard } from "@/components/adherence-card";
 import { Button } from "@/components/button";
 import { Header } from "@/components/header";
 import { HistoryItem, HistoryStatus } from "@/components/history-item";
-import { PeriodOption, PeriodTabs } from "@/components/period-tabs";
+import { PeriodTabs } from "@/components/period-tabs";
 import { StatsRow } from "@/components/stats-row";
+import { useMedicationLogsStats } from "@/hooks/useMedicationLogs";
 import { Upload } from "lucide-react-native";
 import { useState } from "react";
 import { ScrollView, Text, View } from "react-native";
@@ -86,8 +88,11 @@ const PERIOD_DATA = {
 };
 
 export function HistoryScreen() {
-  const [selectedPeriod, setSelectedPeriod] = useState<PeriodOption>("weekly");
+  const [selectedPeriod, setSelectedPeriod] =
+    useState<StatsPeriodType>("weekly");
   const periodData = PERIOD_DATA[selectedPeriod];
+
+  const { data: medicationLogsStats } = useMedicationLogsStats(selectedPeriod);
 
   return (
     <SafeAreaView
@@ -96,7 +101,7 @@ export function HistoryScreen() {
     >
       <ScrollView className="flex-1" showsVerticalScrollIndicator={false}>
         {/* Header */}
-        <Header userName="Sarah" />
+        <Header />
 
         {/* Title Row */}
         <View className="px-6 mb-4 flex-row items-center justify-between">
@@ -126,16 +131,22 @@ export function HistoryScreen() {
         {/* Adherence Card */}
         <View className="px-6 mb-4">
           <AdherenceCard
-            percentage={periodData.percentage}
-            comparison={periodData.comparison}
+            percentage={medicationLogsStats?.adherence ?? 0}
+            comparison={
+              medicationLogsStats
+                ? `${medicationLogsStats.adherenceChange > 0 ? "+" : ""}${
+                    medicationLogsStats.adherenceChange
+                  }% ${medicationLogsStats.comparisonLabel}`
+                : ""
+            }
           />
         </View>
 
         {/* Stats Row */}
         <View className="px-6 mb-6">
           <StatsRow
-            takenCount={periodData.taken}
-            missedCount={periodData.missed}
+            takenCount={medicationLogsStats?.taken ?? 0}
+            missedCount={medicationLogsStats?.missed ?? 0}
           />
         </View>
 
