@@ -2,7 +2,7 @@ import { useMutation } from "@tanstack/react-query";
 import { useRouter } from "expo-router";
 import { Alert } from "react-native";
 
-import { login, register } from "@/api/auth.api";
+import { login, register } from "@/api/auth";
 import { useAuthStore } from "@/stores/auth-store";
 
 export function useRegister() {

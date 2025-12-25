@@ -1,15 +1,15 @@
 import { setAuthTokenGetter } from "@/api/api.client";
-import { User } from "@/api/auth.api";
+import { UserDto } from "@/api/auth";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { create } from "zustand";
 import { createJSONStorage, persist } from "zustand/middleware";
 
 interface AuthState {
-  user: User | null;
+  user: UserDto | null;
   token: string | null;
   isAuthenticated: boolean;
   isHydrated: boolean;
-  setAuth: (user: User, token: string) => void;
+  setAuth: (user: UserDto, token: string) => void;
   clearAuth: () => void;
   setHydrated: (hydrated: boolean) => void;
 }
@@ -22,7 +22,7 @@ export const useAuthStore = create<AuthState>()(
       isAuthenticated: false,
       isHydrated: false,
 
-      setAuth: (user: User, token: string) => {
+      setAuth: (user: UserDto, token: string) => {
         set({
           user,
           token,

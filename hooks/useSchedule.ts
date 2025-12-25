@@ -1,8 +1,8 @@
-import { useMutation } from "@tanstack/react-query";
+import { useMutation, useQuery } from "@tanstack/react-query";
 import { useRouter } from "expo-router";
 import { Alert } from "react-native";
 
-import { bulkCreateSchedules } from "@/api/schedule.api";
+import { bulkCreateSchedules, getTodaySchedules } from "@/api/schedule";
 import { useScheduleStore } from "@/stores/schedule-store";
 
 export function useBulkCreateSchedules() {
@@ -18,5 +18,12 @@ export function useBulkCreateSchedules() {
     onError: (error: Error) => {
       Alert.alert("Failed to Create Schedule", error.message);
     },
+  });
+}
+
+export function useTodaySchedules() {
+  return useQuery({
+    queryKey: ["schedules", "today"],
+    queryFn: getTodaySchedules,
   });
 }

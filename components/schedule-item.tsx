@@ -6,6 +6,7 @@ import { Text, View } from "react-native";
 export interface ScheduleItemProps {
   name: string;
   dosage: string;
+  unit: string;
   instructions?: string;
   time: string;
   variant: BadgeVariant;
@@ -14,11 +15,14 @@ export interface ScheduleItemProps {
 export function ScheduleItem({
   name,
   dosage,
+  unit,
   instructions,
   time,
   variant,
 }: ScheduleItemProps) {
-  const dosageText = instructions ? `${dosage} • ${instructions}` : dosage;
+  const dosageText = instructions
+    ? `${dosage} ${unit} • ${instructions}`
+    : `${dosage} ${unit}`;
   const { color, bgColor } = TimeSlotColors[variant];
 
   return (

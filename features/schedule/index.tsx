@@ -146,7 +146,7 @@ export function ScheduleScreen({ onNotificationPress }: ScheduleScreenProps) {
         showsVerticalScrollIndicator={false}
       >
         {/* Header */}
-        <Header userName="Sarah" onNotificationPress={onNotificationPress} />
+        <Header />
 
         {/* Week Day Selector */}
         <WeekDaySelector
