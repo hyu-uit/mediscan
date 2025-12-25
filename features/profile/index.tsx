@@ -3,7 +3,12 @@ import { Button } from "@/components/button";
 import { ProfileHeader } from "@/components/profile-header";
 import { SettingsRow } from "@/components/settings-row";
 import { SettingsSection } from "@/components/settings-section";
-import { useLogout } from "@/hooks/useAuth";
+import { useAuth, useGetMe, useLogout } from "@/hooks/useAuth";
+import {
+  useToggleAutomatedCalls,
+  useToggleDarkMode,
+  useTogglePushNotifications,
+} from "@/hooks/useUserSettings";
 import {
   Bell,
   Clock,
@@ -14,13 +19,20 @@ import {
   Shield,
   Users,
 } from "lucide-react-native";
-import { useState } from "react";
 import { ScrollView, Text, TouchableOpacity, View } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 
 export function ProfileScreen() {
-  const [darkMode, setDarkMode] = useState(false);
   const { logout } = useLogout();
+  const { user } = useAuth();
+
+  // Fetch user data
+  useGetMe();
+
+  // Toggle mutations
+  const { mutate: togglePush } = useTogglePushNotifications();
+  const { mutate: toggleCalls } = useToggleAutomatedCalls();
+  const { mutate: toggleDark } = useToggleDarkMode();
 
   return (
     <SafeAreaView
@@ -41,8 +53,8 @@ export function ProfileScreen() {
         {/* Profile Header */}
         <View className="px-6">
           <ProfileHeader
-            name="Sarah Jenkins"
-            email="sarahj@example.com"
+            name={user?.name ?? "User"}
+            email={user?.email ?? ""}
             avatarUrl="https://i.pravatar.cc/150?img=47"
           />
         </View>
@@ -60,18 +72,26 @@ export function ProfileScreen() {
             <SettingsRow
               icon={<Bell size={20} color="#6B7280" />}
               title="Push Notifications"
-              subtitle="Reminders enabled"
-              action="chevron"
-              onPress={() => {}}
+              subtitle={
+                user?.settings?.pushNotifications
+                  ? "Reminders enabled"
+                  : "Reminders disabled"
+              }
+              action="toggle"
+              toggleValue={user?.settings?.pushNotifications ?? false}
+              onToggleChange={() => togglePush()}
             />
             <SettingsRow
               icon={<Phone size={20} color="#6B7280" />}
               title="Automated Calls"
-              subtitle="Escalation setup"
-              action="badge"
-              badgeText="On"
-              badgeColor="#22C55E"
-              onPress={() => {}}
+              subtitle={
+                user?.settings?.automatedCalls
+                  ? "Escalation enabled"
+                  : "Escalation disabled"
+              }
+              action="toggle"
+              toggleValue={user?.settings?.automatedCalls ?? false}
+              onToggleChange={() => toggleCalls()}
             />
             <SettingsRow
               icon={<Users size={20} color="#6B7280" />}
@@ -96,8 +116,8 @@ export function ProfileScreen() {
               icon={<Moon size={20} color="#6B7280" />}
               title="Dark Mode"
               action="toggle"
-              toggleValue={darkMode}
-              onToggleChange={setDarkMode}
+              toggleValue={user?.settings?.darkMode ?? false}
+              onToggleChange={() => toggleDark()}
               isLast
             />
           </SettingsSection>

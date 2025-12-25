@@ -1,4 +1,18 @@
 /**
+ * User settings DTO for app usage
+ */
+export interface UserSettingsDto {
+  pushNotifications: boolean;
+  automatedCalls: boolean;
+  darkMode: boolean;
+  morningTime: string;
+  noonTime: string;
+  afternoonTime: string;
+  nightTime: string;
+  beforeSleepTime: string;
+}
+
+/**
  * User DTO for app usage
  */
 export interface UserDto {
@@ -7,6 +21,7 @@ export interface UserDto {
   name: string;
   createdAt?: string;
   updatedAt?: string;
+  settings?: UserSettingsDto;
 }
 
 /**

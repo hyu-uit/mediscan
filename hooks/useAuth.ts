@@ -1,8 +1,9 @@
-import { useMutation } from "@tanstack/react-query";
+import { useMutation, useQuery } from "@tanstack/react-query";
 import { useRouter } from "expo-router";
+import { useEffect } from "react";
 import { Alert } from "react-native";
 
-import { login, register } from "@/api/auth";
+import { getMe, login, register } from "@/api/auth";
 import { saveFcmToken } from "@/api/user-settings";
 import { useAuthStore } from "@/stores/auth-store";
 import { getPushToken } from "@/utils/notifications";
@@ -75,4 +76,27 @@ export function useAuth() {
     token,
     isAuthenticated,
   };
+}
+
+/**
+ * Fetch current user and update store
+ */
+export function useGetMe() {
+  const isAuthenticated = useAuthStore((state) => state.isAuthenticated);
+  const setUser = useAuthStore((state) => state.setUser);
+
+  const query = useQuery({
+    queryKey: ["auth", "me"],
+    queryFn: getMe,
+    enabled: isAuthenticated,
+  });
+
+  // Update store when user data is fetched
+  useEffect(() => {
+    if (query.data) {
+      setUser(query.data);
+    }
+  }, [query.data, setUser]);
+
+  return query;
 }

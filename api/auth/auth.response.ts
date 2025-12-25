@@ -1,4 +1,18 @@
 /**
+ * User settings from API
+ */
+export interface UserSettingsResponse {
+  pushNotifications: boolean;
+  automatedCalls: boolean;
+  darkMode: boolean;
+  morningTime: string;
+  noonTime: string;
+  afternoonTime: string;
+  nightTime: string;
+  beforeSleepTime: string;
+}
+
+/**
  * User entity returned from API
  */
 export interface UserResponse {
@@ -7,6 +21,7 @@ export interface UserResponse {
   name: string;
   createdAt?: string;
   updatedAt?: string;
+  settings?: UserSettingsResponse;
 }
 
 /**
