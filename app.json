@@ -1,6 +1,6 @@
 {
   "expo": {
-    "name": "mediscan",
+    "name": "MediScan",
     "slug": "mediscan",
     "version": "1.0.0",
     "orientation": "portrait",
@@ -10,8 +10,7 @@
     "newArchEnabled": true,
     "ios": {
       "supportsTablet": true,
-      "bundleIdentifier": "com.mediscan.app",
-
+      "bundleIdentifier": "com.mediscan.app"
     },
     "android": {
       "package": "com.mediscan.app",
@@ -22,13 +21,19 @@
         "monochromeImage": "./assets/images/android-icon-monochrome.png"
       },
       "edgeToEdgeEnabled": true,
-      "predictiveBackGestureEnabled": false
+      "predictiveBackGestureEnabled": false,
+      "usesCleartextTraffic": true,
+      "permissions": [
+        "android.permission.CAMERA",
+        "android.permission.RECORD_AUDIO"
+      ]
     },
     "web": {
       "output": "static",
       "favicon": "./assets/images/favicon.png"
     },
     "plugins": [
+      "expo-notifications",
       "expo-router",
       [
         "expo-splash-screen",
@@ -50,11 +55,17 @@
           "recordAudioAndroid": true
         }
       ]
-
     ],
     "experiments": {
       "typedRoutes": true,
       "reactCompiler": true
-    }
+    },
+    "extra": {
+      "router": {},
+      "eas": {
+        "projectId": "27f2e29b-596d-4519-bfac-34b25919c43d"
+      }
+    },
+    "owner": "viht232"
   }
 }

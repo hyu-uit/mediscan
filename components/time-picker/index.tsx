@@ -4,7 +4,7 @@ import BottomSheet, {
   BottomSheetView,
 } from "@gorhom/bottom-sheet";
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
-import { Text, View } from "react-native";
+import { Text, useColorScheme, View } from "react-native";
 
 import { TimeColumn } from "./time-column";
 
@@ -46,6 +46,8 @@ export function TimePicker({
 }: TimePickerProps) {
   const bottomSheetRef = useRef<BottomSheet>(null);
   const snapPoints = useMemo(() => ["45%"], []);
+  const colorScheme = useColorScheme();
+  const isDark = colorScheme === "dark";
 
   const [selectedHour, setSelectedHour] = useState(initialTime.hour);
   const [selectedMinute, setSelectedMinute] = useState(initialTime.minute);
@@ -115,11 +117,11 @@ export function TimePicker({
       backdropComponent={renderBackdrop}
       enablePanDownToClose
       handleIndicatorStyle={{
-        backgroundColor: "#D1D5DB",
+        backgroundColor: isDark ? "#525252" : "#D1D5DB",
         width: 40,
       }}
       backgroundStyle={{
-        backgroundColor: "#FFFFFF",
+        backgroundColor: isDark ? "#262626" : "#FFFFFF",
         borderTopLeftRadius: 24,
         borderTopRightRadius: 24,
       }}
@@ -127,10 +129,10 @@ export function TimePicker({
       <BottomSheetView className="flex-1 px-6 pb-8">
         {/* Header */}
         <View className="items-center mb-6">
-          <Text className="text-xl text-neutral-900 font-poppins-bold">
+          <Text className="text-xl text-neutral-900 dark:text-neutral-100 font-poppins-bold">
             {title}
           </Text>
-          <Text className="text-sm text-neutral-500 font-poppins mt-1">
+          <Text className="text-sm text-neutral-500 dark:text-neutral-400 font-poppins mt-1">
             Scroll to select a new time
           </Text>
         </View>
@@ -147,7 +149,9 @@ export function TimePicker({
           </View>
 
           {/* Separator */}
-          <Text className="text-2xl text-neutral-900 font-poppins-bold">:</Text>
+          <Text className="text-2xl text-neutral-900 dark:text-neutral-100 font-poppins-bold">
+            :
+          </Text>
 
           {/* Minute Column */}
           <View className="w-20">
@@ -164,11 +168,11 @@ export function TimePicker({
               // Show locked period as static text (matching TimeColumn styling)
               <View className="h-[150px] overflow-hidden">
                 <View
-                  className="absolute left-0 right-0 bg-primary/10 rounded-xl"
+                  className="absolute left-0 right-0 bg-primary/10 dark:bg-primary/20 rounded-xl"
                   style={{ top: 50, height: 50 }}
                 />
                 <View className="h-full items-center justify-center">
-                  <Text className="text-2xl text-neutral-900 font-poppins-semibold">
+                  <Text className="text-2xl text-neutral-900 dark:text-neutral-100 font-poppins-semibold">
                     {lockedPeriod}
                   </Text>
                 </View>

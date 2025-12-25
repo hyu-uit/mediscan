@@ -21,9 +21,16 @@ import "../global.css";
 
 import { useColorScheme } from "@/hooks/use-color-scheme";
 import { QueryProvider } from "@/providers/query-provider";
+import {
+  configureNotifications,
+  requestNotificationPermissions,
+} from "@/utils/notifications";
 
 // Prevent the splash screen from auto-hiding before asset loading is complete.
 SplashScreen.preventAutoHideAsync();
+
+// Configure notifications on app load
+configureNotifications();
 
 export const unstable_settings = {
   initialRouteName: "index",
@@ -43,6 +50,11 @@ export default function RootLayout() {
       SplashScreen.hideAsync();
     }
   }, [fontsLoaded]);
+
+  // Request notification permissions on app start
+  useEffect(() => {
+    requestNotificationPermissions();
+  }, []);
 
   if (!fontsLoaded) {
     return null;

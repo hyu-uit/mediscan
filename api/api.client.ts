@@ -1,8 +1,30 @@
 import axios, { AxiosError, InternalAxiosRequestConfig } from "axios";
+import Constants from "expo-constants";
+import { Platform } from "react-native";
 import { ApiError } from "./api.types";
 
-// API base URL - can be configured via environment variables
-const API_BASE_URL = process.env.EXPO_PUBLIC_API_URL || "http://localhost:3000";
+// API base URL configuration
+const getApiBaseUrl = () => {
+  // Use env variable if set
+  if (process.env.EXPO_PUBLIC_API_URL) {
+    return process.env.EXPO_PUBLIC_API_URL;
+  }
+
+  // Get debugger host from Expo (works for real devices in dev)
+  const debuggerHost = Constants.expoConfig?.hostUri?.split(":")[0];
+  if (debuggerHost) {
+    return `http://${debuggerHost}:3000`;
+  }
+
+  // Fallback for Android emulator
+  if (Platform.OS === "android") {
+    return "http://10.0.2.2:3000";
+  }
+
+  return "http://localhost:3000";
+};
+
+const API_BASE_URL = getApiBaseUrl();
 
 /**
  * Configured axios instance for API requests

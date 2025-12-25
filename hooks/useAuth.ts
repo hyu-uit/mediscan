@@ -3,7 +3,9 @@ import { useRouter } from "expo-router";
 import { Alert } from "react-native";
 
 import { login, register } from "@/api/auth";
+import { saveFcmToken } from "@/api/user-settings";
 import { useAuthStore } from "@/stores/auth-store";
+import { getPushToken } from "@/utils/notifications";
 
 export function useRegister() {
   const router = useRouter();
@@ -29,8 +31,20 @@ export function useLogin() {
 
   return useMutation({
     mutationFn: login,
-    onSuccess: (data) => {
+    onSuccess: async (data) => {
       setAuth(data.user, data.token);
+
+      // Save FCM token for push notifications
+      try {
+        const pushToken = await getPushToken();
+        console.log("🔔 FCM Token:", pushToken);
+        if (pushToken) {
+          await saveFcmToken(pushToken);
+        }
+      } catch (error) {
+        console.error("Failed to save FCM token:", error);
+      }
+
       router.replace({
         pathname: "/(tabs)",
       });
