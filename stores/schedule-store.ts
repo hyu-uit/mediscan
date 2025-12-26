@@ -12,6 +12,7 @@ interface ScheduleState {
   updateMedicine: (id: string, medicine: MedicineFormData) => void;
   deleteMedicine: (id: string) => void;
   clearMedicines: () => void;
+  setMedicines: (medicines: ScheduleMedicine[]) => void;
   getMedicineById: (id: string) => ScheduleMedicine | undefined;
 }
 
@@ -44,6 +45,10 @@ export const useScheduleStore = create<ScheduleState>((set, get) => ({
 
   clearMedicines: () => {
     set({ medicines: [] });
+  },
+
+  setMedicines: (medicines: ScheduleMedicine[]) => {
+    set({ medicines });
   },
 
   getMedicineById: (id: string) => {

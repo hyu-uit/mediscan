@@ -106,21 +106,21 @@ export function ScheduleScreen() {
       className="flex-1 bg-background dark:bg-neutral-900"
       edges={["top"]}
     >
+      {/* Header */}
+      <Header />
+
+      {/* Week Day Selector */}
+      <WeekDaySelector
+        selectedDate={selectedDate}
+        onDaySelect={setSelectedDate}
+      />
+
+      {/* Daily Progress Card */}
       <ScrollView
         className="flex-1"
         contentContainerStyle={{ paddingBottom: 32 }}
         showsVerticalScrollIndicator={false}
       >
-        {/* Header */}
-        <Header />
-
-        {/* Week Day Selector */}
-        <WeekDaySelector
-          selectedDate={selectedDate}
-          onDaySelect={setSelectedDate}
-        />
-
-        {/* Daily Progress Card */}
         {/* <DailyProgressCard dosesTaken={dosesTaken} totalDoses={totalDoses} /> */}
 
         {/* Schedule Sections */}

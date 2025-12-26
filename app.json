@@ -10,7 +10,11 @@
     "newArchEnabled": true,
     "ios": {
       "supportsTablet": true,
-      "bundleIdentifier": "com.mediscan.app"
+      "bundleIdentifier": "com.mediscan.app",
+      "infoPlist": {
+        "NSPhotoLibraryUsageDescription": "MediScan needs access to photos to allow you to upload images for prescriptions."
+      }
+
     },
     "android": {
       "package": "com.mediscan.app",
@@ -50,9 +54,15 @@
       [
         "expo-camera",
         {
-          "cameraPermission": "Allow $(PRODUCT_NAME) to access your camera",
-          "microphonePermission": "Allow $(PRODUCT_NAME) to access your microphone",
+          "cameraPermission": "Allow MedisScan to access your camera",
+          "microphonePermission": "Allow MedisScan to access your microphone",
           "recordAudioAndroid": true
+        }
+      ],
+      [
+        "expo-image-picker",
+        {
+          "photosPermission": "Allow MediScan to access your photos to upload prescriptions"
         }
       ]
     ],

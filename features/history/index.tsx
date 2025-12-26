@@ -29,10 +29,9 @@ export function HistoryScreen() {
       className="flex-1 bg-background dark:bg-neutral-900"
       edges={["top"]}
     >
+      {/* Header */}
+      <Header />
       <ScrollView className="flex-1" showsVerticalScrollIndicator={false}>
-        {/* Header */}
-        <Header />
-
         {/* Title Row */}
         <View className="px-6 mb-4 flex-row items-center justify-between">
           <View>

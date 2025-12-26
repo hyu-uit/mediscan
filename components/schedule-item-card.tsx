@@ -37,10 +37,17 @@ export function ScheduleItemCard({
   const dosageText = instructions ? `${dosage} • ${instructions}` : dosage;
   const { color, bgColor } = TimeSlotColors[variant];
 
+  // Status check variables (only check if status is not null)
+  const isConfirmed = status !== null && status === ScheduleStatus.CONFIRMED;
+  const isMissed = status !== null && status === ScheduleStatus.MISSED;
+  const isSkipped = status !== null && status === ScheduleStatus.SKIPPED;
+  const isPending = status !== null && status === ScheduleStatus.PENDING;
+  const isNotPending = status !== null && status !== ScheduleStatus.PENDING;
+
   return (
     <View
       className={`bg-white dark:bg-neutral-800 rounded-2xl px-4 py-4 mb-3 shadow-xs overflow-hidden ${
-        status !== ScheduleStatus.PENDING ? "opacity-60" : ""
+        isNotPending ? "opacity-60" : ""
       }`}
       style={
         isUpcoming ? { borderLeftWidth: 4, borderLeftColor: color } : undefined
@@ -48,15 +55,15 @@ export function ScheduleItemCard({
     >
       <View className="flex-row items-center">
         {/* Icon */}
-        {status === ScheduleStatus.CONFIRMED ? (
+        {isConfirmed ? (
           <View className="w-12 h-12 rounded-xl items-center justify-center mr-4 bg-green-500/10">
             <Check size={24} color="#22C55E" />
           </View>
-        ) : status === ScheduleStatus.MISSED ? (
+        ) : isMissed ? (
           <View className="w-12 h-12 rounded-xl items-center justify-center mr-4 bg-red-500/10">
             <AlertCircle size={24} color="#EF4444" />
           </View>
-        ) : status === ScheduleStatus.SKIPPED ? (
+        ) : isSkipped ? (
           <View className="w-12 h-12 rounded-xl items-center justify-center mr-4 bg-neutral-400/10">
             <Minus size={24} color="#9CA3AF" />
           </View>
@@ -73,12 +80,12 @@ export function ScheduleItemCard({
         <View className="flex-1">
           <Text
             className={`text-xl font-poppins-bold ${
-              status !== ScheduleStatus.PENDING
+              isNotPending
                 ? "text-neutral-400"
                 : "text-neutral-900 dark:text-neutral-100"
             }`}
             style={
-              status !== ScheduleStatus.PENDING
+              isNotPending
                 ? {
                     textDecorationStyle: "solid",
                     textDecorationColor: "#687076",
@@ -92,17 +99,17 @@ export function ScheduleItemCard({
           <Text className="text-sm text-neutral-400 dark:text-neutral-400 font-poppins-medium mt-1">
             {dosageText}
           </Text>
-          {status === ScheduleStatus.CONFIRMED && takenAt && (
+          {isConfirmed && takenAt && (
             <Text className="text-xs text-green-500 font-poppins-semibold mt-1">
               • TAKEN AT {takenAt}
             </Text>
           )}
-          {status === ScheduleStatus.MISSED && (
+          {isMissed && (
             <Text className="text-xs text-red-500 font-poppins-semibold mt-1">
               • MISSED
             </Text>
           )}
-          {status === ScheduleStatus.SKIPPED && (
+          {isSkipped && (
             <Text className="text-xs text-neutral-400 font-poppins-semibold mt-1">
               • SKIPPED
             </Text>
@@ -110,19 +117,19 @@ export function ScheduleItemCard({
         </View>
 
         {/* Time Badge */}
-        {status === ScheduleStatus.CONFIRMED ? (
+        {isConfirmed ? (
           <View className="px-3 py-1.5 rounded-full bg-green-500/10">
             <Text className="text-sm font-poppins-semibold text-green-500">
               {time}
             </Text>
           </View>
-        ) : status === ScheduleStatus.MISSED ? (
+        ) : isMissed ? (
           <View className="px-3 py-1.5 rounded-full bg-red-500/10">
             <Text className="text-sm font-poppins-semibold text-red-500">
               {time}
             </Text>
           </View>
-        ) : status === ScheduleStatus.SKIPPED ? (
+        ) : isSkipped ? (
           <View className="px-3 py-1.5 rounded-full bg-neutral-400/10">
             <Text className="text-sm font-poppins-semibold text-neutral-400">
               {time}
@@ -134,7 +141,7 @@ export function ScheduleItemCard({
       </View>
 
       {/* Action Buttons */}
-      {status === ScheduleStatus.PENDING && isUpcoming && (
+      {isPending && isUpcoming && (
         <View className="flex-row mt-4 gap-3">
           <View className="flex-1">
             <Button

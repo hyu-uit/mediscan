@@ -1,33 +1,79 @@
+import { scanPrescription } from "@/api/scan";
 import { ScanPreview } from "@/components/scan-preview";
 import { ScanTapCard } from "@/components/scan-tap-card";
+import { useScheduleStore } from "@/stores/schedule-store";
+import * as ImagePicker from "expo-image-picker";
 import { router } from "expo-router";
 import { PenLine, X } from "lucide-react-native";
 import { useState } from "react";
-import { Text, TouchableOpacity, useColorScheme, View } from "react-native";
+import {
+  ActivityIndicator,
+  Alert,
+  Text,
+  TouchableOpacity,
+  useColorScheme,
+  View,
+} from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 
 export function ScanScreen() {
   const colorScheme = useColorScheme();
   const isDark = colorScheme === "dark";
   const [isScanning, setIsScanning] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
+
+  const { setMedicines } = useScheduleStore();
+
+  /**
+   * Process an image through the scan API
+   */
+  const handleScanImage = async (uri: string) => {
+    setIsLoading(true);
+    try {
+      const result = await scanPrescription(uri);
+      setMedicines(result.medications);
+      router.replace("/confirm-schedule");
+    } catch (error) {
+      const message =
+        error instanceof Error ? error.message : "Failed to scan prescription";
+      Alert.alert("Scan Failed", message);
+    } finally {
+      setIsLoading(false);
+      setIsScanning(false);
+    }
+  };
 
   const handleTapToScan = () => {
     setIsScanning(true);
   };
 
-  const handleCapture = (uri: string) => {
-    // TODO: Process captured image with OCR
-    console.log("Captured image:", uri);
-    setIsScanning(false);
-    // Navigate to confirm schedule screen
-    router.replace("/confirm-schedule");
+  const handleCapture = async (uri: string) => {
+    await handleScanImage(uri);
   };
 
-  const handleGallery = () => {
-    // TODO: Open image picker and process result
-    console.log("Gallery pressed");
-    // For now, navigate to confirm schedule as if image was selected
-    router.replace("/confirm-schedule");
+  const handleGallery = async () => {
+    // Request permission
+    const permissionResult =
+      await ImagePicker.requestMediaLibraryPermissionsAsync();
+
+    if (!permissionResult.granted) {
+      Alert.alert(
+        "Permission Required",
+        "Please allow access to your photo library to upload prescriptions."
+      );
+      return;
+    }
+
+    // Launch image picker
+    const result = await ImagePicker.launchImageLibraryAsync({
+      mediaTypes: ["images"],
+      allowsEditing: false,
+      quality: 0.8,
+    });
+
+    if (!result.canceled && result.assets[0]) {
+      await handleScanImage(result.assets[0].uri);
+    }
   };
 
   const handleCancel = () => {
@@ -47,6 +93,21 @@ export function ScanScreen() {
       className="flex-1 bg-background dark:bg-neutral-900"
       edges={["top"]}
     >
+      {/* Loading Overlay */}
+      {isLoading && (
+        <View className="absolute inset-0 z-50 bg-black/60 items-center justify-center">
+          <View className="bg-white dark:bg-neutral-800 rounded-2xl p-6 items-center mx-8">
+            <ActivityIndicator size="large" color="#36EC37" />
+            <Text className="text-lg text-neutral-900 dark:text-neutral-100 font-poppins-bold mt-4">
+              Scanning Prescription
+            </Text>
+            <Text className="text-sm text-neutral-500 dark:text-neutral-400 font-poppins text-center mt-1">
+              Extracting medication details...
+            </Text>
+          </View>
+        </View>
+      )}
+
       {/* Header */}
       <View className="flex-row items-center justify-between px-6 py-4">
         <View className="w-10" />
@@ -56,6 +117,7 @@ export function ScanScreen() {
         <TouchableOpacity
           onPress={handleClose}
           className="w-10 h-10 items-center justify-center rounded-full bg-neutral-100 dark:bg-neutral-800"
+          disabled={isLoading}
         >
           <X size={20} color={isDark ? "#F5F5F5" : "#171717"} />
         </TouchableOpacity>
@@ -102,6 +164,7 @@ export function ScanScreen() {
             <TouchableOpacity
               onPress={handleAddManually}
               className="flex-row items-center justify-center bg-neutral-100 dark:bg-neutral-800 rounded-2xl py-4"
+              disabled={isLoading}
             >
               <PenLine size={20} color={isDark ? "#F5F5F5" : "#171717"} />
               <Text className="text-base text-neutral-900 dark:text-neutral-100 font-poppins-semibold ml-2">

@@ -109,6 +109,11 @@ export function EditMedicineScreen() {
     router.back();
   };
 
+  // Form validation error handler
+  const onError = (errors: any) => {
+    console.log("Form validation errors:", errors);
+  };
+
   // Intake time handlers
   const handleAddTimePress = () => {
     setSelectedTimeSlot(IntakeTimeType.MORNING);
@@ -412,7 +417,7 @@ export function EditMedicineScreen() {
 
         {/* Bottom Buttons */}
         <View className="absolute bottom-0 left-0 right-0 px-4 pb-8 pt-4 bg-background dark:bg-neutral-900">
-          <Button fullWidth onPress={handleSubmit(onSubmit)}>
+          <Button fullWidth onPress={handleSubmit(onSubmit, onError)}>
             Save Changes
           </Button>
           <View className="h-3" />
