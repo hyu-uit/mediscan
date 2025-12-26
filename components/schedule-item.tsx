@@ -1,6 +1,6 @@
 import { ScheduleStatus, ScheduleStatusType } from "@/api/schedule";
 import { Badge, BadgeVariant } from "@/components/badge";
-import { TimeSlotColors } from "@/constants/theme";
+import { TimeSlotId, useTimeSlotColor } from "@/stores/color-store";
 import { Pill } from "lucide-react-native";
 import { Text, View } from "react-native";
 
@@ -28,7 +28,7 @@ export function ScheduleItem({
   const dosageText = instructions
     ? `${dosage} ${unit} • ${instructions}`
     : `${dosage} ${unit}`;
-  const { color, bgColor } = TimeSlotColors[variant];
+  const { color, bgColor } = useTimeSlotColor(variant as TimeSlotId);
 
   return (
     <View

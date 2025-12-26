@@ -9,6 +9,7 @@ import {
   useToggleDarkMode,
   useTogglePushNotifications,
 } from "@/hooks/useUserSettings";
+import { router } from "expo-router";
 import {
   Bell,
   Clock,
@@ -19,7 +20,7 @@ import {
   Shield,
   Users,
 } from "lucide-react-native";
-import { ScrollView, Text, TouchableOpacity, View } from "react-native";
+import { ScrollView, Text, View } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 
 export function ProfileScreen() {
@@ -41,14 +42,10 @@ export function ProfileScreen() {
     >
       <ScrollView className="flex-1" showsVerticalScrollIndicator={false}>
         {/* Header */}
-        <View className="flex-row justify-between items-center px-6 pt-2 mb-6">
-          <Text className="text-2xl text-neutral-900 dark:text-neutral-100 font-poppins-bold">
-            Profile & Settings
-          </Text>
-          <TouchableOpacity className="w-10 h-10 rounded-full bg-white dark:bg-neutral-800 items-center justify-center">
-            <Bell size={20} color="#171717" />
-          </TouchableOpacity>
-        </View>
+
+        <Text className="text-2xl text-center mb-8 text-neutral-900 dark:text-neutral-100 font-poppins-bold">
+          Profile & Settings
+        </Text>
 
         {/* Profile Header */}
         <View className="px-6">
@@ -110,7 +107,7 @@ export function ProfileScreen() {
               title="Default Intake Times"
               subtitle="Morning & Evening"
               action="chevron"
-              onPress={() => {}}
+              onPress={() => router.push("/default-schedule" as never)}
             />
             <SettingsRow
               icon={<Moon size={20} color="#6B7280" />}

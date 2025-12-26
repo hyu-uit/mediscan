@@ -37,6 +37,7 @@ export function ScanScreen() {
     } catch (error) {
       const message =
         error instanceof Error ? error.message : "Failed to scan prescription";
+      console.log(error);
       Alert.alert("Scan Failed", message);
     } finally {
       setIsLoading(false);

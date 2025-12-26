@@ -1,6 +1,6 @@
 import { Button } from "@/components/button";
 import { TimeValue } from "@/components/time-picker";
-import { TimeSlotColors } from "@/constants/theme";
+import { TimeSlotId, useTimeSlotColor } from "@/stores/color-store";
 import BottomSheet, {
   BottomSheetBackdrop,
   BottomSheetScrollView,
@@ -20,6 +20,41 @@ interface AddIntakeTimeSheetProps {
   onClose: () => void;
   onSheetChange: (index: number) => void;
   isDark: boolean;
+}
+
+// Sub-component for time slot button that can use hooks
+function TimeSlotButton({
+  slot,
+  isSelected,
+  onPress,
+  isDark,
+}: {
+  slot: (typeof TIME_SLOT_OPTIONS)[0];
+  isSelected: boolean;
+  onPress: () => void;
+  isDark: boolean;
+}) {
+  const { color, bgColor } = useTimeSlotColor(slot.id as TimeSlotId);
+
+  return (
+    <Pressable
+      onPress={onPress}
+      className={`flex-row items-center px-3 py-2 rounded-xl ${
+        isSelected ? "" : "bg-neutral-100 dark:bg-neutral-700"
+      }`}
+      style={isSelected ? { backgroundColor: bgColor } : {}}
+    >
+      {slot.icon(isSelected ? color : isDark ? "#9CA3AF" : "#6B7280")}
+      <Text
+        className={`ml-2 text-sm font-poppins-medium ${
+          isSelected ? "" : "text-neutral-600 dark:text-neutral-300"
+        }`}
+        style={isSelected ? { color } : {}}
+      >
+        {slot.name}
+      </Text>
+    </Pressable>
+  );
 }
 
 export const AddIntakeTimeSheet = forwardRef<
@@ -89,32 +124,15 @@ export const AddIntakeTimeSheet = forwardRef<
           Time Slot
         </Text>
         <View className="flex-row flex-wrap gap-2 mb-6">
-          {TIME_SLOT_OPTIONS.map((slot) => {
-            const isSelected = selectedTimeSlot === slot.id;
-            const colors = TimeSlotColors[slot.id];
-            return (
-              <Pressable
-                key={slot.id}
-                onPress={() => onTimeSlotSelect(slot.id)}
-                className={`flex-row items-center px-3 py-2 rounded-xl ${
-                  isSelected ? "" : "bg-neutral-100 dark:bg-neutral-700"
-                }`}
-                style={isSelected ? { backgroundColor: colors.bgColor } : {}}
-              >
-                {slot.icon(
-                  isSelected ? colors.color : isDark ? "#9CA3AF" : "#6B7280"
-                )}
-                <Text
-                  className={`ml-2 text-sm font-poppins-medium ${
-                    isSelected ? "" : "text-neutral-600 dark:text-neutral-300"
-                  }`}
-                  style={isSelected ? { color: colors.color } : {}}
-                >
-                  {slot.name}
-                </Text>
-              </Pressable>
-            );
-          })}
+          {TIME_SLOT_OPTIONS.map((slot) => (
+            <TimeSlotButton
+              key={slot.id}
+              slot={slot}
+              isSelected={selectedTimeSlot === slot.id}
+              onPress={() => onTimeSlotSelect(slot.id)}
+              isDark={isDark}
+            />
+          ))}
         </View>
 
         {/* Time Display */}
