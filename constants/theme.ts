@@ -18,7 +18,7 @@ export const Colors = {
   primaryMuted: "#FFB6C1",
 
   // Background colors
-  background: "#FFF8F9",
+  background: "#FAFAFA",
   backgroundWhite: "#FFFFFF",
   backgroundDark: "#1A1517",
 
@@ -89,6 +89,7 @@ export const Colors = {
     toggleThumb: "#FFFFFF",
     divider: "#E5E7EB",
     cardBg: "#FFF5F7",
+    iconBg: "#E2E8F0",
   },
 } as const;
 

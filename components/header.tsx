@@ -1,6 +1,8 @@
+import { Colors } from "@/constants/theme";
 import { useAuthStore } from "@/stores/auth-store";
+import { router } from "expo-router";
 import { Bell } from "lucide-react-native";
-import { Text, TouchableOpacity, View } from "react-native";
+import { Text, TouchableOpacity, useColorScheme, View } from "react-native";
 
 // Get time-based greeting
 function getGreeting(): string {
@@ -14,9 +16,9 @@ export function Header() {
   const { user } = useAuthStore();
   const greeting = getGreeting();
   const initial = user?.name?.charAt(0).toUpperCase();
-
+  const theme = useColorScheme();
   const handleNotificationPress = () => {
-    console.log("Notification pressed");
+    router.push("/notification" as never);
   };
 
   return (
@@ -48,10 +50,13 @@ export function Header() {
 
       {/* Notification Bell */}
       <TouchableOpacity
-        className="w-10 h-10 rounded-full bg-white dark:bg-neutral-200 items-center justify-center shadow-xs"
+        className="w-10 h-10 rounded-full bg-iconBg dark:bg-neutral-800 items-center justify-center shadow-xs"
         onPress={handleNotificationPress}
       >
-        <Bell size={20} color="#171717" />
+        <Bell
+          size={20}
+          color={theme === "dark" ? Colors.icon.light : Colors.icon.dark}
+        />
       </TouchableOpacity>
     </View>
   );

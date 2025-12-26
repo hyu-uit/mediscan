@@ -22,7 +22,8 @@ module.exports = {
         "primary-muted": "#FFB6C1",
 
         // Background colors (sync with Colors.background*)
-        background: "#FFF8F9",
+        background: "#FAFAFA",
+        iconBg: "#E2E8F0",
 
         // Status colors (sync with Colors.status.*)
         success: {
