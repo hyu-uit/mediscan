@@ -5,7 +5,7 @@ import { Colors } from "@/constants/theme";
 import { useScheduleStore } from "@/stores/schedule-store";
 import * as ImagePicker from "expo-image-picker";
 import { router } from "expo-router";
-import { PenLine, X } from "lucide-react-native";
+import { PenLine } from "lucide-react-native";
 import { useState } from "react";
 import {
   ActivityIndicator,
@@ -110,7 +110,7 @@ export function ScanScreen() {
       )}
 
       {/* Header */}
-      <View className="flex-row items-center justify-between px-6 py-4">
+      {/* <View className="flex-row items-center justify-between px-6 py-4">
         <View className="w-10" />
         <Text className="text-lg text-neutral-900 dark:text-neutral-100 font-poppins-bold">
           Add Prescription
@@ -125,14 +125,14 @@ export function ScanScreen() {
             color={isDark ? Colors.text.primaryDark : Colors.text.primary}
           />
         </TouchableOpacity>
-      </View>
+      </View> */}
 
       {/* Content */}
       <View className="flex-1 px-6">
         {/* Scan Section */}
         <View className="mb-6">
           <Text className="text-xl text-center text-neutral-900 dark:text-neutral-100 font-poppins-bold mb-1">
-            {isScanning ? "Scan Prescription" : "Capture Prescription"}
+            {isScanning ? "Scan Prescription" : "Add Prescription"}
           </Text>
           <Text className="text-sm text-center text-neutral-500 dark:text-neutral-400 font-poppins mb-4">
             {isScanning
