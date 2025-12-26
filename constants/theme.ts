@@ -1,15 +1,100 @@
 /**
- * Below are the colors that are used in the app. The colors are defined in the light and dark mode.
- * There are many other ways to style your app. For example, [Nativewind](https://www.nativewind.dev/), [Tamagui](https://tamagui.dev/), [unistyles](https://reactnativeunistyles.vercel.app), etc.
+ * Centralized theme colors for the app.
+ * All colors should be defined here and used via:
+ * - Tailwind CSS classes (configured in tailwind.config.js)
+ * - Direct import for inline styles (e.g., icon colors)
  */
 
 import { Platform } from "react-native";
 
-const tintColorLight = "#0a7ea4";
-const tintColorDark = "#fff";
-const primaryGreen = "#4CD964";
+// ============================================
+// Primary Brand Colors
+// ============================================
+export const Colors = {
+  // Primary accent color (pink pastel)
+  primary: "#FFD1DC",
+  primaryBright: "#FF85A2",
+  primaryLight: "#FFF0F3",
+  primaryMuted: "#FFB6C1",
 
-// Time slot colors (using API enum values)
+  // Background colors
+  background: "#FFF8F9",
+  backgroundWhite: "#FFFFFF",
+  backgroundDark: "#1A1517",
+
+  // ============================================
+  // Text Colors
+  // ============================================
+  text: {
+    primary: "#171717", // Main text (light mode)
+    primaryDark: "#F5F5F5", // Main text (dark mode)
+    secondary: "#687076", // Muted text
+    secondaryDark: "#9BA1A6", // Muted text (dark mode)
+    muted: "#6B7280", // Gray text
+    mutedDark: "#9CA3AF", // Muted gray (dark mode)
+    placeholder: "#A3A3A3", // Placeholder text
+  },
+
+  // ============================================
+  // Icon Colors
+  // ============================================
+  icon: {
+    default: "#6B7280",
+    muted: "#9CA3AF",
+    dark: "#171717",
+    light: "#F5F5F5",
+  },
+
+  // ============================================
+  // Status Colors
+  // ============================================
+  status: {
+    success: "#22C55E",
+    successLight: "#DCFCE7",
+    successMuted: "#86EFAC",
+
+    error: "#EF4444",
+    errorLight: "#FEE2E2",
+
+    warning: "#F59E0B",
+    warningLight: "#FEF3C7",
+
+    info: "#3B82F6",
+    infoLight: "#DBEAFE",
+  },
+
+  // ============================================
+  // Neutral Colors
+  // ============================================
+  neutral: {
+    50: "#FAFAFA",
+    100: "#F5F5F5",
+    200: "#E5E5E5",
+    300: "#D4D4D4",
+    400: "#A3A3A3",
+    500: "#737373",
+    600: "#525252",
+    700: "#404040",
+    800: "#262626",
+    900: "#171717",
+  },
+
+  // ============================================
+  // UI Element Colors
+  // ============================================
+  ui: {
+    tabInactive: "#94A3B8",
+    toggleTrackOff: "#E5E7EB",
+    toggleTrackOn: "#FFB6C1",
+    toggleThumb: "#FFFFFF",
+    divider: "#E5E7EB",
+    cardBg: "#FFF5F7",
+  },
+} as const;
+
+// ============================================
+// Time Slot Colors (for badges and schedule items)
+// ============================================
 export const TimeSlotColors = {
   MORNING: { color: "#EA580C", bgColor: "#FFEDD5" },
   NOON: { color: "#D97706", bgColor: "#FEF3C7" },
@@ -20,39 +105,41 @@ export const TimeSlotColors = {
 
 export type TimeSlotVariant = keyof typeof TimeSlotColors;
 
-export const Colors = {
-  background: "#F6F8F6",
+// ============================================
+// Legacy Colors (for backward compatibility)
+// Keep these for now but prefer using Colors object
+// ============================================
+export const LegacyColors = {
   light: {
-    text: "#11181C",
-    textSecondary: "#687076",
-    background: "#fff",
-    tint: tintColorLight,
-    icon: "#687076",
-    tabIconDefault: "#687076",
-    tabIconSelected: tintColorLight,
-    primary: primaryGreen,
+    text: Colors.text.primary,
+    textSecondary: Colors.text.secondary,
+    background: Colors.backgroundWhite,
+    tint: "#0a7ea4",
+    icon: Colors.icon.default,
+    tabIconDefault: Colors.icon.default,
+    tabIconSelected: "#0a7ea4",
+    primary: Colors.primary,
   },
   dark: {
-    text: "#ECEDEE",
-    textSecondary: "#9BA1A6",
-    background: "#151718",
-    tint: tintColorDark,
-    icon: "#9BA1A6",
-    tabIconDefault: "#9BA1A6",
-    tabIconSelected: tintColorDark,
-    primary: primaryGreen,
+    text: Colors.text.primaryDark,
+    textSecondary: Colors.text.secondaryDark,
+    background: Colors.backgroundDark,
+    tint: Colors.backgroundWhite,
+    icon: Colors.icon.muted,
+    tabIconDefault: Colors.icon.muted,
+    tabIconSelected: Colors.backgroundWhite,
+    primary: Colors.primary,
   },
 };
 
+// ============================================
+// Font Configuration
+// ============================================
 export const Fonts = Platform.select({
   ios: {
-    /** iOS `UIFontDescriptorSystemDesignDefault` */
     sans: "system-ui",
-    /** iOS `UIFontDescriptorSystemDesignSerif` */
     serif: "ui-serif",
-    /** iOS `UIFontDescriptorSystemDesignRounded` */
     rounded: "ui-rounded",
-    /** iOS `UIFontDescriptorSystemDesignMonospaced` */
     mono: "ui-monospace",
   },
   default: {

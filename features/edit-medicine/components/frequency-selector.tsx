@@ -1,3 +1,4 @@
+import { Colors } from "@/constants/theme";
 import { Pencil } from "lucide-react-native";
 import { Pressable, Text, View } from "react-native";
 import { FREQUENCY_TYPE_OPTIONS } from "../constants";
@@ -84,7 +85,7 @@ export function FrequencySelector({
               </View>
               {/* Edit button for interval when selected */}
               {option.id === FrequencyType.INTERVAL && isSelected && (
-                <Pencil size={16} color="#4CD964" />
+                <Pencil size={16} color={Colors.primary} />
               )}
             </Pressable>
           );

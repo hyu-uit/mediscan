@@ -1,3 +1,8 @@
+/**
+ * Tailwind CSS Configuration
+ * Colors are synced with constants/theme.ts - update both when changing colors
+ */
+
 /** @type {import('tailwindcss').Config} */
 module.exports = {
   content: [
@@ -10,10 +15,40 @@ module.exports = {
   theme: {
     extend: {
       colors: {
-        primary: "#4CD964",
-        "primary-light": "#F3FEF5",
-        background: "#F6F8F6",
-        // Badge time slot colors
+        // Primary brand colors (sync with Colors.primary*)
+        primary: "#FFD1DC",
+        "primary-bright": "#FF85A2",
+        "primary-light": "#FFF0F3",
+        "primary-muted": "#FFB6C1",
+
+        // Background colors (sync with Colors.background*)
+        background: "#FFF8F9",
+
+        // Status colors (sync with Colors.status.*)
+        success: {
+          DEFAULT: "#22C55E",
+          light: "#DCFCE7",
+          muted: "#86EFAC",
+        },
+        error: {
+          DEFAULT: "#EF4444",
+          light: "#FEE2E2",
+        },
+        warning: {
+          DEFAULT: "#F59E0B",
+          light: "#FEF3C7",
+        },
+        info: {
+          DEFAULT: "#3B82F6",
+          light: "#DBEAFE",
+        },
+
+        // UI colors (sync with Colors.ui.*)
+        "tab-inactive": "#94A3B8",
+        "toggle-track-off": "#E5E7EB",
+        "toggle-track-on": "#FFB6C1",
+
+        // Badge time slot colors (sync with TimeSlotColors)
         badge: {
           morning: "#EA580C",
           "morning-bg": "#FFEDD5",

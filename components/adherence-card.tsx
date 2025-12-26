@@ -1,3 +1,4 @@
+import { Colors } from "@/constants/theme";
 import { LinearGradient } from "expo-linear-gradient";
 import { Check, TrendingUp } from "lucide-react-native";
 import { Text, View } from "react-native";
@@ -23,7 +24,7 @@ export function AdherenceCard({
 
   return (
     <LinearGradient
-      colors={["#36EC37", "#32D74B"]}
+      colors={[Colors.primaryBright, Colors.primary]}
       start={{ x: 0, y: 0 }}
       end={{ x: 1, y: 1 }}
       style={{
@@ -68,7 +69,7 @@ export function AdherenceCard({
             paddingVertical: 6,
           }}
         >
-          <TrendingUp size={14} color="#171717" />
+          <TrendingUp size={14} color={Colors.text.primary} />
           <Text
             style={{
               color: "#171717",
@@ -132,7 +133,7 @@ export function AdherenceCard({
               justifyContent: "center",
             }}
           >
-            <Check size={22} color="#22C55E" strokeWidth={3} />
+            <Check size={22} color={Colors.primaryBright} strokeWidth={3} />
           </View>
         </View>
       </View>

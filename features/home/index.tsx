@@ -52,6 +52,9 @@ export function HomeScreen({ onNotificationPress }: HomeScreenProps) {
             status={item.status}
           />
         ))}
+
+        {/* Bottom Padding */}
+        <View className="h-16" />
       </ScrollView>
     </SafeAreaView>
   );

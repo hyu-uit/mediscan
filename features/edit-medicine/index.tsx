@@ -3,6 +3,7 @@ import { IntervalPicker, IntervalValue } from "@/components/interval-picker";
 import { Select } from "@/components/select";
 import { TextInput } from "@/components/text-input";
 import { TimePicker, TimeValue } from "@/components/time-picker";
+import { Colors } from "@/constants/theme";
 import { useScheduleStore } from "@/stores/schedule-store";
 import BottomSheet from "@gorhom/bottom-sheet";
 import { yupResolver } from "@hookform/resolvers/yup";
@@ -361,8 +362,8 @@ export function EditMedicineScreen() {
                 className="flex-row items-center"
                 activeOpacity={0.7}
               >
-                <Plus size={16} color="#4CD964" />
-                <Text className="text-sm font-poppins-semibold text-primary ml-1">
+                <Plus size={16} color={Colors.primaryBright} />
+                <Text className="text-sm font-poppins-semibold text-primary-bright ml-1">
                   Add Time
                 </Text>
               </TouchableOpacity>

@@ -1,4 +1,5 @@
 import { Button } from "@/components/button";
+import { Colors } from "@/constants/theme";
 import { LinearGradient } from "expo-linear-gradient";
 import { ArrowLeft, Phone, PhoneCall, PhoneOff } from "lucide-react-native";
 import { Pressable, Text, View } from "react-native";
@@ -23,7 +24,7 @@ export function EmergencyAccessScreen({
     <View className="flex-1 bg-background dark:bg-neutral-900">
       {/* Gradient Background */}
       <LinearGradient
-        colors={["#E8FFF0", "#F0FFF5", "#F6F8F6"]}
+        colors={[Colors.primaryLight, "#FFF5F7", Colors.background]}
         locations={[0, 0.4, 0.7]}
         style={{
           position: "absolute",
@@ -40,7 +41,7 @@ export function EmergencyAccessScreen({
           className="w-10 h-10 items-center justify-center -ml-2"
           onPress={onBack}
         >
-          <ArrowLeft size={24} color="#171717" />
+          <ArrowLeft size={24} color={Colors.text.primary} />
         </Pressable>
 
         {/* Scrollable Content Area */}
@@ -66,13 +67,13 @@ export function EmergencyAccessScreen({
               className="w-48 h-48 rounded-full items-center justify-center"
               style={{
                 borderWidth: 2,
-                borderColor: "#36EC3740",
+                borderColor: `${Colors.primaryBright}40`,
                 borderStyle: "dashed",
               }}
             >
               {/* Inner circle with phone */}
               <View className="w-32 h-32 rounded-full bg-white items-center justify-center shadow-lg">
-                <PhoneOff size={48} color="#36EC37" />
+                <PhoneOff size={48} color={Colors.primaryBright} />
               </View>
 
               {/* Decorative dots */}
@@ -101,7 +102,7 @@ export function EmergencyAccessScreen({
             <View className="flex-row items-center justify-between">
               <View className="flex-row items-center gap-3">
                 <View className="w-12 h-12 rounded-full bg-primary-light items-center justify-center">
-                  <Phone size={24} color="#36EC37" />
+                  <Phone size={24} color={Colors.primaryBright} />
                 </View>
                 <View>
                   <Text className="text-xs text-primary font-poppins-semibold uppercase tracking-wider">
@@ -114,7 +115,7 @@ export function EmergencyAccessScreen({
               </View>
               <View className="flex-row gap-3">
                 <View className="w-10 h-10 rounded-full bg-red-100 items-center justify-center">
-                  <PhoneOff size={18} color="#EF4444" />
+                  <PhoneOff size={18} color={Colors.status.error} />
                 </View>
                 <View className="w-10 h-10 rounded-full bg-primary items-center justify-center">
                   <PhoneCall size={18} color="#ffffff" />
@@ -128,7 +129,7 @@ export function EmergencyAccessScreen({
         <Button
           fullWidth
           size="lg"
-          icon={<Phone size={20} color="#171717" />}
+          icon={<Phone size={20} color={Colors.text.primary} />}
           onPress={onEnablePhoneCalls}
         >
           Enable Phone Calls

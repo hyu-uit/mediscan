@@ -1,3 +1,4 @@
+import { Colors } from "@/constants/theme";
 import { ChevronRight, ExternalLink } from "lucide-react-native";
 import { ReactNode } from "react";
 import { Switch, Text, TouchableOpacity, View } from "react-native";
@@ -28,7 +29,7 @@ export function SettingsRow({
   subtitle,
   action = "chevron",
   badgeText,
-  badgeColor = "#22C55E",
+  badgeColor = Colors.primaryBright,
   toggleValue = false,
   onToggleChange,
   onPress,
@@ -58,14 +59,21 @@ export function SettingsRow({
       </View>
 
       {/* Action */}
-      {action === "chevron" && <ChevronRight size={20} color="#9CA3AF" />}
+      {action === "chevron" && (
+        <ChevronRight size={20} color={Colors.icon.muted} />
+      )}
 
       {action === "toggle" && (
         <Switch
           value={toggleValue}
           onValueChange={onToggleChange}
-          trackColor={{ false: "#E5E7EB", true: "#86EFAC" }}
-          thumbColor={toggleValue ? "#22C55E" : "#FFFFFF"}
+          trackColor={{
+            false: Colors.ui.toggleTrackOff,
+            true: Colors.primaryMuted,
+          }}
+          thumbColor={
+            toggleValue ? Colors.primaryBright : Colors.backgroundWhite
+          }
         />
       )}
 
@@ -82,11 +90,13 @@ export function SettingsRow({
               {badgeText}
             </Text>
           </View>
-          <ChevronRight size={20} color="#9CA3AF" />
+          <ChevronRight size={20} color={Colors.icon.muted} />
         </View>
       )}
 
-      {action === "external" && <ExternalLink size={18} color="#9CA3AF" />}
+      {action === "external" && (
+        <ExternalLink size={18} color={Colors.icon.muted} />
+      )}
     </View>
   );
 

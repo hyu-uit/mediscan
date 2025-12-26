@@ -1,3 +1,4 @@
+import { Colors } from "@/constants/theme";
 import { Bell } from "lucide-react-native";
 import { Text, View } from "react-native";
 
@@ -24,7 +25,7 @@ export function DecorativeBell({ size, style, badge }: DecorativeBellProps) {
         style,
       ]}
     >
-      <Bell size={size} color="#36EC37" />
+      <Bell size={size} color={Colors.primaryBright} />
       {badge && (
         <View
           className="absolute bg-red-500 rounded-full items-center justify-center"

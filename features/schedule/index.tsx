@@ -131,6 +131,9 @@ export function ScheduleScreen() {
           {renderSection("Evening", eveningItems || [])}
           {renderSection("Before Sleep", beforeSleepItems || [])}
         </View>
+
+        {/* Bottom Padding */}
+        <View className="h-24" />
       </ScrollView>
     </SafeAreaView>
   );

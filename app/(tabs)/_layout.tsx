@@ -1,3 +1,4 @@
+import { Colors } from "@/constants/theme";
 import { BlurView } from "expo-blur";
 import { router } from "expo-router";
 import { Icon, Label, NativeTabs } from "expo-router/unstable-native-tabs";
@@ -35,7 +36,7 @@ function FloatingAddButton() {
           style={styles.fabBlur}
         >
           <View className="bg-white shadow-lgdark:bg-[#11181C] items-center justify-center rounded-full p-2">
-            <Plus size={26} color="#36EC37" strokeWidth={2.5} />
+            <Plus size={26} color={Colors.primaryBright} strokeWidth={2.5} />
           </View>
         </BlurView>
       </TouchableOpacity>
@@ -47,10 +48,10 @@ export default function TabLayout() {
   return (
     <View style={styles.container}>
       <NativeTabs
-        tintColor="#4CD964"
+        tintColor={Colors.primaryBright}
         labelStyle={{
-          color: "#94A3B8",
-          selected: { color: "#4CD964" },
+          color: Colors.ui.tabInactive,
+          selected: { color: Colors.primaryBright },
         }}
       >
         <NativeTabs.Trigger name="index">

@@ -1,6 +1,7 @@
 import { scanPrescription } from "@/api/scan";
 import { ScanPreview } from "@/components/scan-preview";
 import { ScanTapCard } from "@/components/scan-tap-card";
+import { Colors } from "@/constants/theme";
 import { useScheduleStore } from "@/stores/schedule-store";
 import * as ImagePicker from "expo-image-picker";
 import { router } from "expo-router";
@@ -97,7 +98,7 @@ export function ScanScreen() {
       {isLoading && (
         <View className="absolute inset-0 z-50 bg-black/60 items-center justify-center">
           <View className="bg-white dark:bg-neutral-800 rounded-2xl p-6 items-center mx-8">
-            <ActivityIndicator size="large" color="#36EC37" />
+            <ActivityIndicator size="large" color={Colors.primaryBright} />
             <Text className="text-lg text-neutral-900 dark:text-neutral-100 font-poppins-bold mt-4">
               Scanning Prescription
             </Text>
@@ -119,7 +120,10 @@ export function ScanScreen() {
           className="w-10 h-10 items-center justify-center rounded-full bg-neutral-100 dark:bg-neutral-800"
           disabled={isLoading}
         >
-          <X size={20} color={isDark ? "#F5F5F5" : "#171717"} />
+          <X
+            size={20}
+            color={isDark ? Colors.text.primaryDark : Colors.text.primary}
+          />
         </TouchableOpacity>
       </View>
 
@@ -163,10 +167,13 @@ export function ScanScreen() {
 
             <TouchableOpacity
               onPress={handleAddManually}
-              className="flex-row items-center justify-center bg-neutral-100 dark:bg-neutral-800 rounded-2xl py-4"
+              className="flex-row items-center justify-center bg-white dark:bg-neutral-800 rounded-2xl py-4"
               disabled={isLoading}
             >
-              <PenLine size={20} color={isDark ? "#F5F5F5" : "#171717"} />
+              <PenLine
+                size={20}
+                color={isDark ? Colors.text.primaryDark : Colors.text.primary}
+              />
               <Text className="text-base text-neutral-900 dark:text-neutral-100 font-poppins-semibold ml-2">
                 Add Manually
               </Text>

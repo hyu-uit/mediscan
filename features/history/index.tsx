@@ -125,7 +125,7 @@ export function HistoryScreen() {
         )}
 
         {/* Bottom Padding */}
-        <View className="h-8" />
+        <View className="h-32" />
       </ScrollView>
     </SafeAreaView>
   );

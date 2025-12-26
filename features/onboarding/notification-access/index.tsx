@@ -1,4 +1,5 @@
 import { Button } from "@/components/button";
+import { Colors } from "@/constants/theme";
 import { LinearGradient } from "expo-linear-gradient";
 import {
   ArrowLeft,
@@ -30,7 +31,7 @@ export function NotificationAccessScreen({
     <View className="flex-1 bg-background dark:bg-neutral-900">
       {/* Gradient Background */}
       <LinearGradient
-        colors={["#E8FFF0", "#F0FFF5", "#F6F8F6"]}
+        colors={[Colors.primaryLight, "#FFF5F7", Colors.background]}
         locations={[0, 0.4, 0.7]}
         style={{
           position: "absolute",
@@ -47,7 +48,7 @@ export function NotificationAccessScreen({
           className="w-10 h-10 items-center justify-center -ml-2"
           onPress={onBack}
         >
-          <ArrowLeft size={24} color="#171717" />
+          <ArrowLeft size={24} color={Colors.text.primary} />
         </Pressable>
 
         {/* Scrollable Content Area */}
@@ -73,13 +74,13 @@ export function NotificationAccessScreen({
               className="w-48 h-48 rounded-full items-center justify-center"
               style={{
                 borderWidth: 2,
-                borderColor: "#36EC3740",
+                borderColor: `${Colors.primaryBright}40`,
                 borderStyle: "dashed",
               }}
             >
               {/* Inner circle with bell */}
               <View className="w-32 h-32 rounded-full bg-white items-center justify-center shadow-lg">
-                <Bell size={48} color="#36EC37" />
+                <Bell size={48} color={Colors.primaryBright} />
               </View>
 
               {/* Decorative dots */}
@@ -105,17 +106,17 @@ export function NotificationAccessScreen({
           {/* Feature List */}
           <View className="bg-white dark:bg-neutral-800 rounded-2xl px-4 py-2 shadow-xs">
             <FeatureItem
-              icon={<Bell size={20} color="#36EC37" />}
+              icon={<Bell size={20} color={Colors.primaryBright} />}
               title="Daily Reminders"
               description="Get alerted at your specific times"
             />
             <FeatureItem
-              icon={<CircleAlert size={20} color="#EF4444" />}
+              icon={<CircleAlert size={20} color={Colors.status.error} />}
               title="Escalating Alerts"
               description="We'll nudge harder if you forget"
             />
             <FeatureItem
-              icon={<Pill size={20} color="#3B82F6" />}
+              icon={<Pill size={20} color={Colors.status.info} />}
               title="Refill Warnings"
               description="Know before you run out"
             />
@@ -126,7 +127,7 @@ export function NotificationAccessScreen({
         <Button
           fullWidth
           size="lg"
-          icon={<ArrowRight size={20} color="#171717" />}
+          icon={<ArrowRight size={20} color={Colors.text.primary} />}
           iconPosition="right"
           onPress={onEnableNotifications}
         >

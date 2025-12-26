@@ -1,4 +1,5 @@
 import { Button } from "@/components/button";
+import { Colors } from "@/constants/theme";
 import { Image } from "expo-image";
 import { ArrowLeft, Camera, Lock } from "lucide-react-native";
 import { Pressable, Text, View } from "react-native";
@@ -27,7 +28,7 @@ export function CameraAccessScreen({
         className="w-10 h-10 items-center justify-center -ml-2"
         onPress={onBack}
       >
-        <ArrowLeft size={24} color="#171717" />
+        <ArrowLeft size={24} color={Colors.text.primary} />
       </Pressable>
       {/* Illustration Container */}
       <View className="flex-1 items-center justify-center">
@@ -36,7 +37,7 @@ export function CameraAccessScreen({
           className="w-64 h-64 rounded-full items-center justify-center"
           style={{
             borderWidth: 2,
-            borderColor: "#4CD96440",
+            borderColor: `${Colors.primary}40`,
             borderStyle: "dashed",
           }}
         >
@@ -81,7 +82,7 @@ export function CameraAccessScreen({
 
         {/* Privacy Notice */}
         <View className="flex-row items-center mt-6 gap-2">
-          <Lock size={14} color="#9CA3AF" />
+          <Lock size={14} color={Colors.icon.muted} />
           <Text className="text-sm text-neutral-400 font-poppins">
             Your photos are processed privately and not shared
           </Text>

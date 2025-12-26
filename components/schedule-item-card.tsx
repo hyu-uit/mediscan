@@ -1,7 +1,7 @@
 import { ScheduleStatus, ScheduleStatusType } from "@/api/schedule";
 import { Badge } from "@/components/badge";
 import { Button } from "@/components/button";
-import { TimeSlotColors, TimeSlotVariant } from "@/constants/theme";
+import { Colors, TimeSlotColors, TimeSlotVariant } from "@/constants/theme";
 import { AlertCircle, Check, Minus, Pill } from "lucide-react-native";
 import { Text, View } from "react-native";
 
@@ -56,16 +56,16 @@ export function ScheduleItemCard({
       <View className="flex-row items-center">
         {/* Icon */}
         {isConfirmed ? (
-          <View className="w-12 h-12 rounded-xl items-center justify-center mr-4 bg-green-500/10">
-            <Check size={24} color="#22C55E" />
+          <View className="w-12 h-12 rounded-xl items-center justify-center mr-4 bg-success/10">
+            <Check size={24} color={Colors.status.success} />
           </View>
         ) : isMissed ? (
-          <View className="w-12 h-12 rounded-xl items-center justify-center mr-4 bg-red-500/10">
-            <AlertCircle size={24} color="#EF4444" />
+          <View className="w-12 h-12 rounded-xl items-center justify-center mr-4 bg-error/10">
+            <AlertCircle size={24} color={Colors.status.error} />
           </View>
         ) : isSkipped ? (
           <View className="w-12 h-12 rounded-xl items-center justify-center mr-4 bg-neutral-400/10">
-            <Minus size={24} color="#9CA3AF" />
+            <Minus size={24} color={Colors.icon.muted} />
           </View>
         ) : (
           <View
@@ -88,7 +88,7 @@ export function ScheduleItemCard({
               isNotPending
                 ? {
                     textDecorationStyle: "solid",
-                    textDecorationColor: "#687076",
+                    textDecorationColor: Colors.text.secondary,
                     textDecorationLine: "line-through",
                   }
                 : undefined
@@ -157,7 +157,7 @@ export function ScheduleItemCard({
             <Button
               variant="primary"
               size="md"
-              icon={<Check size={18} color="#171717" />}
+              icon={<Check size={18} color={Colors.text.primary} />}
               onPress={onTakeNow}
               isLoading={isMarkingAsTaken}
             >

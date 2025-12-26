@@ -1,3 +1,4 @@
+import { Colors } from "@/constants/theme";
 import { Clock, Minus, Pill, X } from "lucide-react-native";
 import { Text, useColorScheme, View } from "react-native";
 
@@ -17,31 +18,31 @@ export interface HistoryItemProps {
 const STATUS_CONFIG = {
   CONFIRMED: {
     label: "CONFIRMED",
-    badgeBg: "bg-green-100 dark:bg-green-900/30",
+    badgeBg: "bg-success-light dark:bg-green-900/30",
     badgeText: "text-green-600 dark:text-green-400",
-    iconBg: "#DCFCE7",
+    iconBg: Colors.status.successLight,
     iconBgDark: "rgba(34, 197, 94, 0.2)",
-    iconColor: "#22C55E",
+    iconColor: Colors.status.success,
     Icon: Pill,
     timePrefix: "Taken at",
   },
   MISSED: {
     label: "MISSED",
-    badgeBg: "bg-red-100 dark:bg-red-900/30",
+    badgeBg: "bg-error-light dark:bg-red-900/30",
     badgeText: "text-red-600 dark:text-red-400",
-    iconBg: "#FEE2E2",
+    iconBg: Colors.status.errorLight,
     iconBgDark: "rgba(239, 68, 68, 0.2)",
-    iconColor: "#EF4444",
+    iconColor: Colors.status.error,
     Icon: X,
     timePrefix: "Scheduled",
   },
   LATE: {
     label: "LATE",
-    badgeBg: "bg-amber-100 dark:bg-amber-900/30",
+    badgeBg: "bg-warning-light dark:bg-amber-900/30",
     badgeText: "text-amber-600 dark:text-amber-400",
-    iconBg: "#FEF3C7",
+    iconBg: Colors.status.warningLight,
     iconBgDark: "rgba(245, 158, 11, 0.2)",
-    iconColor: "#F59E0B",
+    iconColor: Colors.status.warning,
     Icon: Pill,
     timePrefix: "Taken at",
   },
@@ -49,18 +50,18 @@ const STATUS_CONFIG = {
     label: "SKIPPED",
     badgeBg: "bg-neutral-100 dark:bg-neutral-900/30",
     badgeText: "text-neutral-600 dark:text-neutral-400",
-    iconBg: "#F3F4F6",
+    iconBg: Colors.ui.cardBg,
     iconBgDark: "rgba(107, 114, 128, 0.2)",
-    iconColor: "#6B7280",
+    iconColor: Colors.icon.default,
     Icon: Minus,
   },
   PENDING: {
     label: "PENDING",
     badgeBg: "bg-neutral-100 dark:bg-neutral-900/30",
     badgeText: "text-neutral-600 dark:text-neutral-400",
-    iconBg: "#F3F4F6",
+    iconBg: Colors.ui.cardBg,
     iconBgDark: "rgba(107, 114, 128, 0.2)",
-    iconColor: "#6B7280",
+    iconColor: Colors.icon.default,
     Icon: Clock,
   },
 } as const;

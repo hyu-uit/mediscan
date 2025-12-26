@@ -2,6 +2,7 @@ import { Button } from "@/components/button";
 import { InstructionItem } from "@/components/instruction-item";
 import { IntakeTimeChip } from "@/components/intake-time-chip";
 import { MedicineBadge } from "@/components/medicine-badge";
+import { Colors } from "@/constants/theme";
 import { NotebookPen, Pill, Trash2 } from "lucide-react-native";
 import { Text, TouchableOpacity, useColorScheme, View } from "react-native";
 
@@ -61,7 +62,7 @@ export function MedicineCard({
       <View className="flex-row items-start">
         {/* Medicine Icon - Square rounded, light green bg, primary green icon */}
         <View className="w-12 h-12 rounded-xl border-[0.2px] border-primary bg-primary-light items-center justify-center mr-3">
-          <Pill size={24} color="#4CD964" />
+          <Pill size={24} color={Colors.primary} />
         </View>
 
         {/* Name and Badges */}
@@ -72,13 +73,13 @@ export function MedicineCard({
           <View className="flex-row items-center">
             <MedicineBadge
               text={dosage}
-              color="#6B7280"
+              color={Colors.icon.default}
               onPress={onEditDosage}
             />
             <View className="w-2" />
             <MedicineBadge
               text={frequency}
-              color="#3B82F6"
+              color={Colors.status.info}
               onPress={onEditFrequency}
             />
           </View>
@@ -90,7 +91,10 @@ export function MedicineCard({
           className="p-2"
           activeOpacity={0.7}
         >
-          <Trash2 size={20} color={isDark ? "#6B7280" : "#9CA3AF"} />
+          <Trash2
+            size={20}
+            color={isDark ? Colors.icon.default : Colors.icon.muted}
+          />
         </TouchableOpacity>
       </View>
 
@@ -135,7 +139,12 @@ export function MedicineCard({
         variant="secondary"
         fullWidth
         onPress={onEditDetails}
-        icon={<NotebookPen size={18} color={isDark ? "#F5F5F5" : "#171717"} />}
+        icon={
+          <NotebookPen
+            size={18}
+            color={isDark ? Colors.icon.light : Colors.icon.dark}
+          />
+        }
       >
         Edit Details
       </Button>

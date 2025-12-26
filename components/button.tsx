@@ -1,3 +1,4 @@
+import { Colors } from "@/constants/theme";
 import { ActivityIndicator, Text, TouchableOpacity, View } from "react-native";
 
 type ButtonVariant = "primary" | "secondary" | "text" | "outline" | "danger";
@@ -70,7 +71,8 @@ export function Button({
 }: ButtonProps) {
   const variantStyle = variantStyles[variant];
   const sizeStyle = sizeStyles[size];
-  const indicatorColor = variant === "primary" ? "#171717" : "#4CD964";
+  const indicatorColor =
+    variant === "primary" ? Colors.text.primary : Colors.primary;
 
   return (
     <TouchableOpacity

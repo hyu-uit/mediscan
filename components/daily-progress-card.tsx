@@ -1,3 +1,4 @@
+import { Colors } from "@/constants/theme";
 import { Text, View } from "react-native";
 import Svg, { Circle } from "react-native-svg";
 
@@ -51,7 +52,7 @@ export function DailyProgressCard({
             cx={size / 2}
             cy={size / 2}
             r={radius}
-            stroke="#36EC37"
+            stroke={Colors.primaryBright}
             strokeWidth={strokeWidth}
             fill="transparent"
             strokeDasharray={circumference}

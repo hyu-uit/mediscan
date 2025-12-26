@@ -1,5 +1,6 @@
 import { Button } from "@/components/button";
 import { MedicineCard } from "@/components/medicine-card";
+import { Colors } from "@/constants/theme";
 import { FrequencyType } from "@/features/edit-medicine/types";
 import { useBulkCreateSchedules } from "@/hooks/useSchedule";
 import { ScheduleMedicine, useScheduleStore } from "@/stores/schedule-store";
@@ -174,7 +175,7 @@ export function ConfirmScheduleScreen() {
           className="w-10 h-10 items-center justify-center"
           activeOpacity={0.7}
         >
-          <CircleHelp size={22} color="#4CD964" />
+          <CircleHelp size={22} color={Colors.primary} />
         </TouchableOpacity>
       </View>
 
