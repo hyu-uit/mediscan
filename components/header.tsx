@@ -1,7 +1,7 @@
 import { Colors } from "@/constants/theme";
 import { useAuthStore } from "@/stores/auth-store";
 import { router } from "expo-router";
-import { Bell } from "lucide-react-native";
+import { Bell, Pill } from "lucide-react-native";
 import { Text, TouchableOpacity, useColorScheme, View } from "react-native";
 
 // Get time-based greeting
@@ -19,6 +19,9 @@ export function Header() {
   const theme = useColorScheme();
   const handleNotificationPress = () => {
     router.push("/notification" as never);
+  };
+  const handleMedicinesPress = () => {
+    router.push("/my-medicines" as never);
   };
 
   return (
@@ -48,16 +51,30 @@ export function Header() {
         </View>
       </View>
 
-      {/* Notification Bell */}
-      <TouchableOpacity
-        className="w-10 h-10 rounded-full bg-iconBg dark:bg-neutral-800 items-center justify-center shadow-xs"
-        onPress={handleNotificationPress}
-      >
-        <Bell
-          size={20}
-          color={theme === "dark" ? Colors.icon.light : Colors.icon.dark}
-        />
-      </TouchableOpacity>
+      {/* Header Actions */}
+      <View className="flex-row items-center">
+        {/* My Medicines */}
+        <TouchableOpacity
+          className="w-10 h-10 rounded-full bg-iconBg dark:bg-neutral-800 items-center justify-center shadow-xs mr-2"
+          onPress={handleMedicinesPress}
+        >
+          <Pill
+            size={20}
+            color={theme === "dark" ? Colors.icon.light : Colors.icon.dark}
+          />
+        </TouchableOpacity>
+
+        {/* Notification Bell */}
+        <TouchableOpacity
+          className="w-10 h-10 rounded-full bg-iconBg dark:bg-neutral-800 items-center justify-center shadow-xs"
+          onPress={handleNotificationPress}
+        >
+          <Bell
+            size={20}
+            color={theme === "dark" ? Colors.icon.light : Colors.icon.dark}
+          />
+        </TouchableOpacity>
+      </View>
     </View>
   );
 }

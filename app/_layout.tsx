@@ -80,6 +80,7 @@ export default function RootLayout() {
                 }}
               />
               <Stack.Screen name="confirm-schedule" />
+              <Stack.Screen name="my-medicines" />
               <Stack.Screen
                 name="edit-medicine"
                 options={{

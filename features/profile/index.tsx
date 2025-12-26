@@ -17,6 +17,7 @@ import {
   LogOut,
   Moon,
   Phone,
+  Pill,
   Shield,
   Users,
 } from "lucide-react-native";
@@ -96,6 +97,13 @@ export function ProfileScreen() {
               subtitle="1 person connected"
               action="chevron"
               onPress={() => {}}
+              isLast
+            />
+            <SettingsRow
+              icon={<Pill size={20} color="#6B7280" />}
+              title="My Medicines"
+              action="chevron"
+              onPress={() => router.push("/my-medicines" as never)}
               isLast
             />
           </SettingsSection>
