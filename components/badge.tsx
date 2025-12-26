@@ -1,4 +1,5 @@
-import { TimeSlotColors, TimeSlotVariant } from "@/constants/theme";
+import { TimeSlotVariant } from "@/constants/theme";
+import { TimeSlotId, useTimeSlotColor } from "@/stores/color-store";
 import { Text, View } from "react-native";
 
 export type BadgeVariant = TimeSlotVariant;
@@ -9,7 +10,7 @@ export interface BadgeProps {
 }
 
 export function Badge({ title, variant }: BadgeProps) {
-  const { color, bgColor } = TimeSlotColors[variant];
+  const { color, bgColor } = useTimeSlotColor(variant as TimeSlotId);
 
   return (
     <View

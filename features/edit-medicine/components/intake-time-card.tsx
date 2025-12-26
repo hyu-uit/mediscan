@@ -1,4 +1,4 @@
-import { TimeSlotColors } from "@/constants/theme";
+import { TimeSlotId, useTimeSlotColor } from "@/stores/color-store";
 import { Pencil, Trash2 } from "lucide-react-native";
 import { Text, TouchableOpacity, View } from "react-native";
 import { IntakeTimeTypeValue } from "../types";
@@ -19,7 +19,7 @@ export function IntakeTimeCard({
   onDelete,
   isDark,
 }: IntakeTimeCardProps) {
-  const colors = TimeSlotColors[type];
+  const { color, bgColor } = useTimeSlotColor(type as TimeSlotId);
 
   return (
     <View
@@ -32,17 +32,14 @@ export function IntakeTimeCard({
       {/* Icon */}
       <View
         className="w-12 h-12 rounded-xl items-center justify-center mr-4"
-        style={{ backgroundColor: colors.bgColor }}
+        style={{ backgroundColor: bgColor }}
       >
-        {getTimeSlotIcon(type, colors.color)}
+        {getTimeSlotIcon(type, color)}
       </View>
 
       {/* Time and Type */}
       <View className="flex-1">
-        <Text
-          className="text-lg font-poppins-bold"
-          style={{ color: colors.color }}
-        >
+        <Text className="text-lg font-poppins-bold" style={{ color }}>
           {time}
         </Text>
         <Text className="text-sm text-neutral-500 dark:text-neutral-400 font-poppins">

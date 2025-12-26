@@ -1,9 +1,16 @@
 import { Button } from "@/components/button";
 import { ColorPickerModal } from "@/components/color-picker-modal";
 import { TimePicker, TimeValue } from "@/components/time-picker";
-import { ChevronLeft } from "lucide-react-native";
+import { ChevronLeft, RotateCcw } from "lucide-react-native";
 import { useState } from "react";
-import { Pressable, Text, useColorScheme, View } from "react-native";
+import {
+  Alert,
+  Pressable,
+  Text,
+  TouchableOpacity,
+  useColorScheme,
+  View,
+} from "react-native";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 
 import { Colors } from "@/constants/theme";
@@ -101,7 +108,18 @@ export function DefaultScheduleScreen({
   const isDark = colorScheme === "dark";
 
   // Color store
-  const { setTimeSlotColor, colors } = useColorStore();
+  const { setTimeSlotColor, colors, resetToDefaults } = useColorStore();
+
+  const handleResetColors = () => {
+    Alert.alert(
+      "Reset Colors",
+      "Are you sure you want to reset all colors to default?",
+      [
+        { text: "Cancel", style: "cancel" },
+        { text: "Reset", style: "destructive", onPress: resetToDefaults },
+      ]
+    );
+  };
 
   // State for custom times per slot - use initial values if provided
   const [times, setTimes] = useState<Record<string, TimeValue>>(() =>
@@ -161,7 +179,7 @@ export function DefaultScheduleScreen({
       style={{ paddingTop: insets.top }}
     >
       {/* Header */}
-      <View className="flex-row items-center py-4">
+      <View className="flex-row items-center justify-between py-4">
         <Pressable
           className="w-10 h-10 items-center justify-center -ml-2"
           onPress={onBack}
@@ -171,9 +189,19 @@ export function DefaultScheduleScreen({
             color={isDark ? Colors.icon.light : Colors.icon.dark}
           />
         </Pressable>
-        <Text className="flex-1 text-center text-lg text-neutral-900 dark:text-neutral-100 font-poppins-semibold mr-8">
+        <Text className="text-lg text-neutral-900 dark:text-neutral-100 font-poppins-semibold">
           Default Intake Times
         </Text>
+        <TouchableOpacity
+          className="w-10 h-10 items-center justify-center -mr-2"
+          onPress={handleResetColors}
+          activeOpacity={0.7}
+        >
+          <RotateCcw
+            size={20}
+            color={isDark ? Colors.icon.light : Colors.icon.dark}
+          />
+        </TouchableOpacity>
       </View>
 
       {/* Content */}

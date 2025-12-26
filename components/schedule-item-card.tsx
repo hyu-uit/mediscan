@@ -1,7 +1,8 @@
 import { ScheduleStatus, ScheduleStatusType } from "@/api/schedule";
 import { Badge } from "@/components/badge";
 import { Button } from "@/components/button";
-import { Colors, TimeSlotColors, TimeSlotVariant } from "@/constants/theme";
+import { Colors, TimeSlotVariant } from "@/constants/theme";
+import { TimeSlotId, useTimeSlotColor } from "@/stores/color-store";
 import { AlertCircle, Check, Minus, Pill } from "lucide-react-native";
 import { Text, View } from "react-native";
 
@@ -35,7 +36,7 @@ export function ScheduleItemCard({
   isSkippingMedication = false,
 }: ScheduleItemCardProps) {
   const dosageText = instructions ? `${dosage} • ${instructions}` : dosage;
-  const { color, bgColor } = TimeSlotColors[variant];
+  const { color, bgColor } = useTimeSlotColor(variant as TimeSlotId);
 
   // Status check variables (only check if status is not null)
   const isConfirmed = status !== null && status === ScheduleStatus.CONFIRMED;
@@ -166,26 +167,6 @@ export function ScheduleItemCard({
           </View>
         </View>
       )}
-
-      {/* {status === "upcoming" && (
-        <View className="flex-row mt-3 items-center border-t border-neutral-100 dark:border-neutral-700 pt-3">
-          <View className="flex-1">
-            <TouchableOpacity onPress={onSkip} className="items-center">
-              <Text className="text-sm text-neutral-500 font-poppins-medium">
-                Skip
-              </Text>
-            </TouchableOpacity>
-          </View>
-          <View className="h-4 w-px bg-neutral-300 dark:bg-neutral-700" />
-          <View className="flex-1">
-            <TouchableOpacity onPress={onMarkAsTaken} className="items-center">
-              <Text className="text-sm text-primary font-poppins-semibold">
-                MARK AS TAKEN
-              </Text>
-            </TouchableOpacity>
-          </View>
-        </View>
-      )} */}
     </View>
   );
 }
