@@ -101,7 +101,7 @@ export const TimeSlotColors = {
   NOON: { color: "#D97706", bgColor: "#FEF3C7" },
   AFTERNOON: { color: "#0EA5E9", bgColor: "#E0F2FE" },
   NIGHT: { color: "#6366F1", bgColor: "#EEF2FF" },
-  BEFORE_SLEEP: { color: "#1E3A5F", bgColor: "#DBEAFE" },
+  BEFORE_SLEEP: { color: "#3B5F8A", bgColor: "#DBEAFE" },
 } as const;
 
 export type TimeSlotVariant = keyof typeof TimeSlotColors;

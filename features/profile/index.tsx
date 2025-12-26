@@ -9,6 +9,7 @@ import {
   useToggleDarkMode,
   useTogglePushNotifications,
 } from "@/hooks/useUserSettings";
+import { router } from "expo-router";
 import {
   Bell,
   Clock,
@@ -110,7 +111,7 @@ export function ProfileScreen() {
               title="Default Intake Times"
               subtitle="Morning & Evening"
               action="chevron"
-              onPress={() => {}}
+              onPress={() => router.push("/default-schedule" as never)}
             />
             <SettingsRow
               icon={<Moon size={20} color="#6B7280" />}

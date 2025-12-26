@@ -1,24 +1,62 @@
 import { Button } from "@/components/button";
+import { ColorPickerModal } from "@/components/color-picker-modal";
 import { TimePicker, TimeValue } from "@/components/time-picker";
-import {
-  Bed,
-  ChevronLeft,
-  CloudSun,
-  MoonStar,
-  Sun,
-  Sunrise,
-} from "lucide-react-native";
+import { ChevronLeft } from "lucide-react-native";
 import { useState } from "react";
-import { Pressable, Text, View } from "react-native";
+import { Pressable, Text, useColorScheme, View } from "react-native";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 
-import { TimeSlotColors } from "@/constants/theme";
-import { TimeSlot, TimeSlotCard } from "./time-slot-card";
+import { Colors } from "@/constants/theme";
+import { TimeSlotId, useColorStore } from "@/stores/color-store";
+import { TimeSlotCard } from "./time-slot-card";
+
+export interface DefaultTimeValues {
+  MORNING?: string;
+  NOON?: string;
+  AFTERNOON?: string;
+  NIGHT?: string;
+  BEFORE_SLEEP?: string;
+}
 
 interface DefaultScheduleScreenProps {
   onBack?: () => void;
   onSaveConfiguration?: (schedule: Record<string, boolean>) => void;
+  /** Initial time values to pre-fill (e.g., from user settings) */
+  initialValues?: DefaultTimeValues;
+  /** Mode determines the screen title and behavior */
+  mode?: "onboarding" | "settings";
 }
+
+// Static slot configuration (without icons - they'll be rendered in the card)
+interface SlotConfig {
+  id: TimeSlotId;
+  name: string;
+  defaultTime: string;
+  defaultEnabled: boolean;
+}
+
+const SLOT_CONFIGS: SlotConfig[] = [
+  {
+    id: "MORNING",
+    name: "Morning",
+    defaultTime: "08:00 AM",
+    defaultEnabled: true,
+  },
+  { id: "NOON", name: "Noon", defaultTime: "12:00 PM", defaultEnabled: true },
+  {
+    id: "AFTERNOON",
+    name: "Afternoon",
+    defaultTime: "04:00 PM",
+    defaultEnabled: true,
+  },
+  { id: "NIGHT", name: "Night", defaultTime: "08:00 PM", defaultEnabled: true },
+  {
+    id: "BEFORE_SLEEP",
+    name: "Before Sleep",
+    defaultTime: "10:00 PM",
+    defaultEnabled: false,
+  },
+];
 
 // Parse time string like "08:00 AM" to TimeValue
 function parseTime(timeStr: string): TimeValue {
@@ -38,89 +76,84 @@ function formatTime(time: TimeValue): string {
   return `${time.hour}:${time.minute} ${time.period}`;
 }
 
-const TIME_SLOTS: TimeSlot[] = [
-  {
-    id: "MORNING",
-    name: "Morning",
-    time: "08:00 AM",
-    icon: <Sunrise size={24} color={TimeSlotColors.MORNING.color} />,
-    bgColor: TimeSlotColors.MORNING.bgColor,
-    defaultEnabled: true,
-  },
-  {
-    id: "NOON",
-    name: "Noon",
-    time: "12:00 PM",
-    icon: <Sun size={24} color={TimeSlotColors.NOON.color} />,
-    bgColor: TimeSlotColors.NOON.bgColor,
-    defaultEnabled: true,
-  },
-  {
-    id: "AFTERNOON",
-    name: "Afternoon",
-    time: "04:00 PM",
-    icon: <CloudSun size={24} color={TimeSlotColors.AFTERNOON.color} />,
-    bgColor: TimeSlotColors.AFTERNOON.bgColor,
-    defaultEnabled: true,
-  },
-  {
-    id: "NIGHT",
-    name: "Night",
-    time: "08:00 PM",
-    icon: <MoonStar size={24} color={TimeSlotColors.NIGHT.color} />,
-    bgColor: TimeSlotColors.NIGHT.bgColor,
-    defaultEnabled: true,
-  },
-  {
-    id: "BEFORE_SLEEP",
-    name: "Before Sleep",
-    time: "10:00 PM",
-    icon: <Bed size={24} color={TimeSlotColors.BEFORE_SLEEP.color} />,
-    bgColor: TimeSlotColors.BEFORE_SLEEP.bgColor,
-    defaultEnabled: false,
-  },
-];
+// Initialize times from slot configs
+function initializeTimes(
+  configs: SlotConfig[],
+  initialValues?: DefaultTimeValues
+): Record<string, TimeValue> {
+  return configs.reduce((acc, slot) => {
+    const initialTime = initialValues?.[slot.id];
+    acc[slot.id] = initialTime
+      ? parseTime(initialTime)
+      : parseTime(slot.defaultTime);
+    return acc;
+  }, {} as Record<string, TimeValue>);
+}
 
 export function DefaultScheduleScreen({
   onBack,
   onSaveConfiguration,
+  initialValues,
+  mode = "onboarding",
 }: DefaultScheduleScreenProps) {
   const insets = useSafeAreaInsets();
+  const colorScheme = useColorScheme();
+  const isDark = colorScheme === "dark";
 
-  // State for custom times per slot
+  // Color store
+  const { setTimeSlotColor, colors } = useColorStore();
+
+  // State for custom times per slot - use initial values if provided
   const [times, setTimes] = useState<Record<string, TimeValue>>(() =>
-    TIME_SLOTS.reduce((acc, slot) => {
-      acc[slot.id] = parseTime(slot.time);
-      return acc;
-    }, {} as Record<string, TimeValue>)
+    initializeTimes(SLOT_CONFIGS, initialValues)
   );
 
   // State for time picker
   const [pickerOpen, setPickerOpen] = useState(false);
-  const [editingSlot, setEditingSlot] = useState<TimeSlot | null>(null);
+  const [editingSlotId, setEditingSlotId] = useState<TimeSlotId | null>(null);
 
-  const handleSlotPress = (slot: TimeSlot) => {
-    setEditingSlot(slot);
+  // State for color picker
+  const [colorPickerOpen, setColorPickerOpen] = useState(false);
+  const [editingColorSlot, setEditingColorSlot] = useState<TimeSlotId | null>(
+    null
+  );
+
+  const handleSlotPress = (slotId: TimeSlotId) => {
+    setEditingSlotId(slotId);
     setPickerOpen(true);
   };
 
+  const handleColorPress = (slotId: TimeSlotId) => {
+    setEditingColorSlot(slotId);
+    setColorPickerOpen(true);
+  };
+
   const handleTimeChange = (newTime: TimeValue) => {
-    if (editingSlot) {
+    if (editingSlotId) {
       setTimes((prev) => ({
         ...prev,
-        [editingSlot.id]: newTime,
+        [editingSlotId]: newTime,
       }));
     }
   };
 
+  const handleColorChange = (newColor: string) => {
+    if (editingColorSlot) {
+      setTimeSlotColor(editingColorSlot, newColor);
+    }
+  };
+
   const handleSave = () => {
-    // Build schedule from default values
-    const schedule = TIME_SLOTS.reduce((acc, slot) => {
+    const schedule = SLOT_CONFIGS.reduce((acc, slot) => {
       acc[slot.id] = slot.defaultEnabled;
       return acc;
     }, {} as Record<string, boolean>);
     onSaveConfiguration?.(schedule);
   };
+
+  const editingSlotConfig = editingSlotId
+    ? SLOT_CONFIGS.find((s) => s.id === editingSlotId)
+    : null;
 
   return (
     <View
@@ -133,10 +166,13 @@ export function DefaultScheduleScreen({
           className="w-10 h-10 items-center justify-center -ml-2"
           onPress={onBack}
         >
-          <ChevronLeft size={28} color="#171717" />
+          <ChevronLeft
+            size={28}
+            color={isDark ? Colors.icon.light : Colors.icon.dark}
+          />
         </Pressable>
         <Text className="flex-1 text-center text-lg text-neutral-900 dark:text-neutral-100 font-poppins-semibold mr-8">
-          Default Schedule
+          Default Intake Times
         </Text>
       </View>
 
@@ -152,12 +188,14 @@ export function DefaultScheduleScreen({
 
         {/* Time Slots */}
         <View>
-          {TIME_SLOTS.map((slot) => (
+          {SLOT_CONFIGS.map((slot) => (
             <TimeSlotCard
               key={slot.id}
-              slot={slot}
+              slotId={slot.id}
+              name={slot.name}
               displayTime={formatTime(times[slot.id])}
-              onPress={() => handleSlotPress(slot)}
+              onPress={() => handleSlotPress(slot.id)}
+              onColorPress={() => handleColorPress(slot.id)}
             />
           ))}
         </View>
@@ -175,8 +213,25 @@ export function DefaultScheduleScreen({
         isOpen={pickerOpen}
         onClose={() => setPickerOpen(false)}
         onSave={handleTimeChange}
-        initialTime={editingSlot ? times[editingSlot.id] : undefined}
-        title={editingSlot ? `Edit ${editingSlot.name} Time` : "Edit Time"}
+        initialTime={editingSlotId ? times[editingSlotId] : undefined}
+        title={
+          editingSlotConfig
+            ? `Edit ${editingSlotConfig.name} Time`
+            : "Edit Time"
+        }
+      />
+
+      {/* Color Picker */}
+      <ColorPickerModal
+        isOpen={colorPickerOpen}
+        initialColor={editingColorSlot ? colors[editingColorSlot] : "#000000"}
+        title={
+          editingColorSlot
+            ? `Choose ${editingColorSlot.replace("_", " ")} Color`
+            : "Choose Color"
+        }
+        onClose={() => setColorPickerOpen(false)}
+        onSave={handleColorChange}
       />
     </View>
   );
