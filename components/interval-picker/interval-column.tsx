@@ -101,7 +101,7 @@ export function IntervalColumn({
     >
       {/* Selection highlight - in the middle */}
       <View
-        className="absolute left-0 right-0 bg-primary/10 rounded-xl"
+        className="absolute left-0 right-0 bg-primary-bright/10 rounded-xl"
         style={{
           top: ITEM_HEIGHT,
           height: ITEM_HEIGHT,

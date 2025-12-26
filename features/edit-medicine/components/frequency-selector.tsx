@@ -47,7 +47,7 @@ export function FrequencySelector({
               }}
               className={`flex-row items-center px-4 py-3 rounded-xl border ${
                 isSelected
-                  ? "border-primary bg-primary/5"
+                  ? "border-primary-bright bg-primary/5"
                   : "border-neutral-200 dark:border-neutral-700 bg-white dark:bg-neutral-800"
               }`}
             >
@@ -55,19 +55,19 @@ export function FrequencySelector({
               <View
                 className={`w-5 h-5 rounded-full border-2 mr-3 items-center justify-center ${
                   isSelected
-                    ? "border-primary"
+                    ? "border-primary-bright"
                     : "border-neutral-300 dark:border-neutral-600"
                 }`}
               >
                 {isSelected && (
-                  <View className="w-2.5 h-2.5 rounded-full bg-primary" />
+                  <View className="w-2.5 h-2.5 rounded-full bg-primary-bright" />
                 )}
               </View>
               <View className="flex-1">
                 <Text
                   className={`text-base font-poppins-semibold ${
                     isSelected
-                      ? "text-primary"
+                      ? "text-primary-bright"
                       : "text-neutral-900 dark:text-neutral-100"
                   }`}
                 >

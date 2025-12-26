@@ -45,7 +45,14 @@ export function ConfirmScheduleScreen() {
   const hasOpenedAddMedicine = useRef(false);
 
   // Schedule store
-  const { medicines, deleteMedicine } = useScheduleStore();
+  const { medicines, deleteMedicine, clearMedicines } = useScheduleStore();
+
+  // Clear medicines when unmounting (user navigates away without confirming)
+  useEffect(() => {
+    return () => {
+      clearMedicines();
+    };
+  }, [clearMedicines]);
 
   // Bulk create mutation
   const bulkCreateMutation = useBulkCreateSchedules();
@@ -60,6 +67,7 @@ export function ConfirmScheduleScreen() {
       intakeTimes: medicine.intakeTimes.map((t) => ({
         id: t.id,
         time: t.time,
+        type: t.type,
       })),
       instructions: medicine.instructions
         ? [{ id: "1", text: medicine.instructions, icon: "default" as const }]
@@ -175,7 +183,7 @@ export function ConfirmScheduleScreen() {
           className="w-10 h-10 items-center justify-center"
           activeOpacity={0.7}
         >
-          <CircleHelp size={22} color={Colors.primary} />
+          <CircleHelp size={22} color={Colors.primaryBright} />
         </TouchableOpacity>
       </View>
 

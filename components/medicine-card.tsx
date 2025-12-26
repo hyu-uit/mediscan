@@ -3,18 +3,13 @@ import { InstructionItem } from "@/components/instruction-item";
 import { IntakeTimeChip } from "@/components/intake-time-chip";
 import { MedicineBadge } from "@/components/medicine-badge";
 import { Colors } from "@/constants/theme";
+import { IntakeTime } from "@/features/edit-medicine/types";
 import { NotebookPen, Pill, Trash2 } from "lucide-react-native";
 import { Text, TouchableOpacity, useColorScheme, View } from "react-native";
-
-interface IntakeTime {
-  id: string;
-  time: string;
-}
 
 interface Instruction {
   id: string;
   text: string;
-  icon?: "food" | "default";
 }
 
 interface MedicineCardProps {
@@ -62,7 +57,7 @@ export function MedicineCard({
       <View className="flex-row items-start">
         {/* Medicine Icon - Square rounded, light green bg, primary green icon */}
         <View className="w-12 h-12 rounded-xl border-[0.2px] border-primary bg-primary-light items-center justify-center mr-3">
-          <Pill size={24} color={Colors.primary} />
+          <Pill size={24} color={Colors.primaryBright} />
         </View>
 
         {/* Name and Badges */}
@@ -107,8 +102,12 @@ export function MedicineCard({
           SUGGESTED INTAKE TIMES
         </Text>
         <View className="gap-2">
-          {intakeTimes.map((time) => (
-            <IntakeTimeChip key={time.id} time={time.time} />
+          {intakeTimes.map((intake) => (
+            <IntakeTimeChip
+              key={intake.id}
+              time={intake.time}
+              type={intake.type}
+            />
           ))}
         </View>
       </View>
@@ -124,7 +123,6 @@ export function MedicineCard({
               <InstructionItem
                 key={instruction.id}
                 instruction={instruction.text}
-                icon={instruction.icon}
               />
             ))}
           </View>

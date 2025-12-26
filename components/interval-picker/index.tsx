@@ -151,7 +151,7 @@ export function IntervalPicker({
 
         {/* Preview */}
         <View className="bg-primary/10 rounded-xl py-3 mb-4">
-          <Text className="text-center text-lg text-primary font-poppins-bold">
+          <Text className="text-center text-lg text-primary-bright font-poppins-bold">
             {getPreviewText()}
           </Text>
         </View>

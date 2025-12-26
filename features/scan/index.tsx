@@ -33,7 +33,7 @@ export function ScanScreen() {
     try {
       const result = await scanPrescription(uri);
       setMedicines(result.medications);
-      router.replace("/confirm-schedule");
+      router.push("/confirm-schedule");
     } catch (error) {
       const message =
         error instanceof Error ? error.message : "Failed to scan prescription";

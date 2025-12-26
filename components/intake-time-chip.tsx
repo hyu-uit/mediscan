@@ -1,25 +1,32 @@
+import { TimeSlotId, useTimeSlotColor } from "@/stores/color-store";
 import { Clock } from "lucide-react-native";
-import { Text, useColorScheme, View } from "react-native";
+import { Text, View } from "react-native";
 
 interface IntakeTimeChipProps {
   time: string;
+  type?: TimeSlotId;
 }
 
-export function IntakeTimeChip({ time }: IntakeTimeChipProps) {
-  const colorScheme = useColorScheme();
-  const isDark = colorScheme === "dark";
+export function IntakeTimeChip({ time, type }: IntakeTimeChipProps) {
+  // Use store colors if type is provided, otherwise use neutral colors
+  const { color, bgColor } = useTimeSlotColor(type || "MORNING");
+  const hasType = !!type;
 
   return (
     <View
-      className="flex-row items-center self-start bg-neutral-50 dark:bg-neutral-800 px-4 py-3"
+      className="flex-row items-center self-start px-4 py-3"
       style={{
         borderRadius: 8,
-        borderWidth: 1,
-        borderColor: isDark ? "#404040" : "#E5E5E5",
+        backgroundColor: hasType ? bgColor : undefined,
+        borderWidth: hasType ? 0 : 1,
+        borderColor: "#E5E5E5",
       }}
     >
-      <Clock size={16} color={isDark ? "#9CA3AF" : "#6B7280"} />
-      <Text className="text-base text-neutral-800 dark:text-neutral-200 font-poppins-semibold ml-2">
+      <Clock size={16} color={hasType ? color : "#6B7280"} />
+      <Text
+        className="text-base font-poppins-semibold ml-2"
+        style={{ color: hasType ? color : "#525252" }}
+      >
         {time}
       </Text>
     </View>

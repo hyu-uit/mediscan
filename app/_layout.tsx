@@ -80,7 +80,13 @@ export default function RootLayout() {
                 }}
               />
               <Stack.Screen name="confirm-schedule" />
-              <Stack.Screen name="edit-medicine" />
+              <Stack.Screen
+                name="edit-medicine"
+                options={{
+                  presentation: "modal",
+                  animation: "slide_from_bottom",
+                }}
+              />
             </Stack>
             <StatusBar style="auto" />
           </ThemeProvider>
